@@ -1,0 +1,89 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="container">
+  <tabset>
+    <tab>
+      <tab-heading>
+        <i class="fa fa-circle amarillo"></i>
+        En Espera
+      </tab-heading>
+
+        <table class="table table-striped" ng-table="tableParams" template-pagination="custom/pager">
+          <tbody ng-repeat="actividad in $data">
+            <tr>
+             <td class="text-center" data-title="'Fecha de solicitud'" rowspan="{{actividad.turnos.length}}" sortable="'fechaCreacion'">
+               {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
+             </td>
+              <td class="text-center" data-title="'Actividad'" rowspan="{{actividad.turnos.length}}">
+                <h4>{{actividad.nombre}}</h4>
+              <label>Solicitante:</label>
+              {{actividad.encargado}}
+            </br>
+            <span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':aula.estado == 'desaprobado', 'amarillo':actividad.estado == 'en espera' }"></span>
+            {{actividad.estado}}
+          </br>
+        </br>
+        <button class="btn btn-success" type="button">
+          <span aria-hidden="true" class="fa fa-check ">Aprobar</span>
+        </button>
+        <button class="btn btn-danger" type="button">
+          <span aria-hidden="true" class="fa fa-close">Rechazar</span>
+        </button>
+      </td>
+        <td class="text-center" data-title="'Materia'"  rowspan="{{actividad.turnos.length}}" > Diseño de sistemas I</td>
+      <td class="text-center" data-title="'# Turno'">1</td>
+      <td class="text-center" data-title="'Día'">{{actividad.turnos[0].inicio | date:'fullDate'}}</td>
+      <td class="text-center" data-title="'Inicio'">{{actividad.turnos[0].inicio | date:'shortTime'}}</td>
+      <td class="text-center" data-title="'Fin'">{{actividad.turnos[0].fin | date:'shortTime'}}</td>
+      <td class="text-center" data-title="'Aulas'">
+        <b ng-repeat="aula in actividad.turnos[0].aulas">
+          {{aula.nombre}}</b>
+      </td>
+
+    </tr>
+
+    <tr ng-repeat="turno in actividad.turnos.slice(1)">
+      <td class="text-center" data-title="'# Turno'">{{$index + 2}}</td>
+      <td class="text-center" data-title="'Día'">{{turno.inicio | date:'fullDate'}}</td>
+      <td class="text-center" data-title="'Inicio'">{{turno.inicio | date:'shortTime'}}</td>
+      <td class="text-center" data-title="'Fin'" ng-repeat-end>{{turno.fin | date:'shortTime'}}</td>
+      <td class="text-center" data-title="'Aulas'">
+        <b ng-repeat="aula in turno.aulas">
+          {{aula.nombre}}</b>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</tab>
+<tab>
+<tab-heading>
+<i class="fa fa-circle verde"></i>
+Aprobados
+</tab-heading>
+</tab>
+<tab>
+<tab-heading>
+<i class="fa fa-circle rojo"></i>
+Rechazados
+</tab-heading>
+</tab>
+</tabset>
+</div>
+
+<script id="custom/pager" type="text/ng-template">
+<ul class="ng-cloak pager">
+<li ng-class="{'disabled': !page.active}" ng-repeat="page in pages" ng-switch="page.type">
+<a href="" ng-click="params.page(page.number)" ng-switch-when="prev">&laquo;</a>
+<a href="" ng-click="params.page(page.number)" ng-switch-when="first">
+<span ng-bind="page.number"></span>
+</a>
+<a href="" ng-click="params.page(page.number)" ng-switch-when="page">
+<span ng-bind="page.number"></span>
+</a>
+<a href="" ng-click="params.page(page.number)" ng-switch-when="more">&#8230;</a>
+<a href="" ng-click="params.page(page.number)" ng-switch-when="last">
+<span ng-bind="page.number"></span>
+</a>
+<a href="" ng-click="params.page(page.number)" ng-switch-when="next">&raquo;</a>
+</li>
+</ul>
+</script>

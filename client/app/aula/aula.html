@@ -1,0 +1,44 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="container">
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <h4>Aulas</h4>
+    </div>
+   <div class="table-responsive">
+    <table class="table table-striped" template-pagination="custom/pager" show-filter="true" ng-table="tableParams">
+      <tr ng-repeat="aula in $data">
+        <td data-title="'Nombre'" class="text-center" filter="{ 'nombre': 'text' }">{{aula.nombre}}</td>
+        <td data-title="'Descripción'" class="text-center">{{aula.descripcion}}</td>
+        <td data-title="'Estado'" class="text-center"><span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':aula.estado == true, 'fa-close rojo':aula.estado == false }"></span></td>
+        <td data-title="'Sonido'" class="text-center"><span aria-hidden="true" class="fa" ng-class="{'fa-check verde':aula.sonido == true, 'fa-close rojo':aula.sonido == false }"></span></td>
+        <td data-title="'Pizarra'" class="text-center"><span aria-hidden="true" class="fa" ng-class="{'fa-check verde':aula.pizarra == true, 'fa-close rojo':aula.pizarra == false }"></span></td>
+        <td data-title="'Capacidad'" class="text-center">{{aula.capacidad}}</td>
+        <td data-title="'Acciones'" class="text-center">
+         <button class="btn btn-success" type="button">
+           <span aria-hidden="true" class="fa fa-plus-circle"></span>
+         </button>
+          <button class="btn btn-warning" type="button">
+            <span aria-hidden="true" class="fa fa-pencil-square "></span>
+          </button>
+          <button class="btn btn-danger" type="button">
+            <span aria-hidden="true" class="fa fa-minus-circle"></span>
+          </button>
+        </td>
+      </tr>
+    </table>
+   </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="custom/pager">
+ <ul class="ng-cloak pager">
+     <li ng-class="{'disabled': !page.active}" ng-repeat="page in pages" ng-switch="page.type">
+         <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo;</a>
+         <a ng-switch-when="first" ng-click="params.page(page.number)" href=""><span ng-bind="page.number"></span></a>
+         <a ng-switch-when="page" ng-click="params.page(page.number)" href=""><span ng-bind="page.number"></span></a>
+         <a ng-switch-when="more" ng-click="params.page(page.number)" href="">&#8230;</a>
+         <a ng-switch-when="last" ng-click="params.page(page.number)" href=""><span ng-bind="page.number"></span></a>
+         <a ng-switch-when="next" ng-click="params.page(page.number)" href="">&raquo;</a>
+     </li>
+ </ul>
+    </script>

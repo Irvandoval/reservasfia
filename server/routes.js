@@ -24,6 +24,9 @@ module.exports = function(app) {
   app.use('/api/aulas', require('./api/aula'));
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
+app.use(express.static(__dirname + '/client'));
+//add this so the browser can GET the bower files
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
   app.use('/auth', require('./auth'));
 

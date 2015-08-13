@@ -107,7 +107,7 @@ User.find({}).remove(function() {
 
   });
 
-});
+});*/
 
 Aula.find({}).remove(function(){
     Aula.create({
@@ -217,4 +217,3 @@ Aula.find({}).remove(function(){
       }
     );
 });
-*/

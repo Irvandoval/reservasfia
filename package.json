@@ -27,7 +27,7 @@
     "socketio-jwt": "^2.0.2",
     "xlsx": "~0.8.0",
     "xlsx-json": "~0.1.0",
-    "bower": "0.6.x"
+    "bower": "~1.4.1"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

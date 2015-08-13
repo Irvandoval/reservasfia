@@ -14,7 +14,8 @@ angular.module('reservasApp')
       endParam: 'fin'
     };
 
-
+    $scope.esAdmin =  Auth.isAdmin;
+    $scope.esDocente = Auth.isDocente;
 
      /*Funciones*/
     // evento al dar clic a una reserva
@@ -204,6 +205,7 @@ $scope.items = ['item1', 'item2', 'item3'];
 	DetectaChoque.save(reservasComprobar).$promise//mandamos las reservas al WS para comprobar choque
        .then(function(data){
 	 // en el caso no haya alguna reserva que choque
+	 console.log(data);
 	var aulas = obtenerAulas();// obtenemos un array con los _ids de las aulas ingresadas
 	var nuevoTurno = {// se crea el turno para la actividad (solo se soporta 1 turno en esta version)
 	     inicio: new Date(dates.year,dates.mes,dates.dia,dates.hi,dates.mi),

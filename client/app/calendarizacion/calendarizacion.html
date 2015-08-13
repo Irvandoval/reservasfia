@@ -52,7 +52,7 @@
             </tags-input>
           </div>
         </tab>
-        <tab ng-click="irvan()">
+        <tab ng-click="irvan()" ng-if="esAdmin() || esDocente() ">
           <tab-heading>
             <i class="fa fa-list-alt"></i>
             Reservar

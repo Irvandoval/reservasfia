@@ -5,12 +5,63 @@ var Actividad = require('./actividad.model');
 
 // Get list of actividades
 exports.index = function(req, res) {
-  /*Actividad.find(function (err, actividades) {
-    if(err) { return handleError(res, err); }
-    return res.status(200).json(actividades);
-  });*/
   Actividad
   .find()
+  .populate('turnos')
+  .populate('aulas')
+  .exec(function (err, docs) {
+    if(err) { return handleError(res, err); }
+    Actividad.populate(docs, {
+      path: 'turnos.aulas',
+      model: 'Aula',
+      select: 'nombre'
+    }, function(err,actividades){
+      if(err) { return handleError(res, err); }
+      return res.status(200).json(actividades);  
+    });   
+  });
+};
+
+exports.indexAprobados = function(req, res) {
+  Actividad
+  .find({estado:'aprobado'})
+  .populate('turnos')
+  .populate('aulas')
+  .populate('materia','nombre')
+  .exec(function (err, docs) {
+    if(err) { return handleError(res, err); }
+    Actividad.populate(docs, {
+      path: 'turnos.aulas',
+      model: 'Aula',
+      select: 'nombre'
+    }, function(err,actividades){
+      if(err) { return handleError(res, err); }
+      return res.status(200).json(actividades);  
+    });   
+  });
+};
+
+exports.indexDesaprobados = function(req, res) {
+  Actividad
+  .find({estado:'desaprobado'})
+  .populate('turnos')
+  .populate('aulas')
+  .exec(function (err, docs) {
+    if(err) { return handleError(res, err); }
+    Actividad.populate(docs, {
+      path: 'turnos.aulas',
+      model: 'Aula',
+      select: 'nombre'
+    }, function(err,actividades){
+      if(err) { return handleError(res, err); }
+      return res.status(200).json(actividades);  
+    });   
+  });
+};
+
+exports.indexEspera = function(req, res) {
+  Actividad
+  .find({estado: 'en espera'})
   .populate('turnos')
   .populate('aulas')
   .exec(function (err, docs) {

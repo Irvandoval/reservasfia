@@ -16,10 +16,18 @@ var Ciclo = require('../api/ciclo/ciclo.model');
 Docente.find({}).remove(function(){
    Docente.create({
     nombre: 'Rosario Ortiz',
-    escuela: '55c2d4e7ae483d4546656964',
-    usuario: '55c2eb509bd96b7b4c245379',
+    escuela: '55c2dc510d677df947170280',
+    usuario: "55cd2d6c87d5ad543530fe50",
     materias:['55c2e6fbd9de2ffc4ae4af52','55c2e6fbd9de2ffc4ae4af53']
-    });
+    },
+     {
+    nombre: 'Jorge Iraheta',
+    escuela: '55c2dc510d677df947170280',
+    usuario: "55cd2d6c87d5ad543530fe51",
+    materias:['55c2e6fbd9de2ffc4ae4af54','55c2e6fbd9de2ffc4ae4af55']
+    }
+    
+  );
     });
 /*Escuela.find({}).remove(function(){
    Escuela.create({nombre: "Escuela de Ingenieria de Sistemas informaticos"});
@@ -87,9 +95,9 @@ User.find({}).remove(function() {
   },{
   provider: 'local',
     role: 'docente',
-    name: 'Juan Perez',
-    username: 'juan.perez',
-    password: 'juan.perez'
+    name: 'Jorge Iraheta',
+    username: 'jorge.iraheta',
+    password: 'jorge.iraheta'
   },
   function() {
       console.log('Se ha terminado de llenar usuarios de prueba.');

@@ -6,6 +6,9 @@ var controller = require('./actividad.controller');
 var router = express.Router();
 
 router.get('/', controller.index);
+router.get('/aprobados', controller.indexAprobados);
+router.get('/espera', controller.indexEspera);
+router.get('/desaprobados', controller.indexDesaprobados);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);

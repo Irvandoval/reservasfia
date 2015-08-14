@@ -6,7 +6,7 @@ angular.module('reservasApp')
     /******************************Calendario******************************/
    /*Variables*/
 
-
+    
     $scope.events = {//  carga los eventos del dia actual en el web service.
       url: '/api/reservas',
       className: 'Clases',
@@ -16,6 +16,7 @@ angular.module('reservasApp')
 
     $scope.esAdmin =  Auth.isAdmin;
     $scope.esDocente = Auth.isDocente;
+ 
 
      /*Funciones*/
     // evento al dar clic a una reserva
@@ -144,6 +145,13 @@ $scope.items = ['item1', 'item2', 'item3'];
         $scope.materias = docente.materias;
       });
     }
+    
+    if(Auth.isAdmin()){
+      $resource('/api/escuelas').query().$promise
+      .then(function(escuelas){
+	$scope.escuelas =  escuelas;
+      });
+    }
     /***********************************************************************/
     $scope.actividad = {// inicializamos la actividad para la reserva
       inicio: new Date(2011, 2, 12, 6, 20, 0),
@@ -183,8 +191,24 @@ $scope.items = ['item1', 'item2', 'item3'];
       return res.query().$promise
     };
     /****************************************************************************/
-
+     $scope.rellenarDocentes = function(idEscuela){
+       $resource('/api/docentes/escuela/:idEscuela',{idEscuela:'@id'})
+       .query({idEscuela: idEscuela},function(docentes){
+	  $scope.docentes = docentes;
+      });
+     }
+     $scope.rellenarMaterias = function(docenteId){
+       var docente =  JSON.parse($scope.actividad.docente);
+       var idDocente  = docente._id;
+       $resource('/api/docentes/:idDocente',{idDocente:'@id'})
+       .get({idDocente: idDocente},function(docente){
+	  $scope.materias = docente.materias;
+	  console.log(docente);
+      });
+     }
+    
     $scope.enviar = function() {
+     // console.log($scope.actividad.materia);
        var fecha =  new Date($scope.actividad.fecha);
        var fechaHi = new Date($scope.actividad.inicio);
        var fechaFi = new Date($scope.actividad.fin);
@@ -219,14 +243,15 @@ $scope.items = ['item1', 'item2', 'item3'];
 	       if(Auth.isDocente()) // si es docente
 	         encargado = Auth.getCurrentUser().name;// el encargado de la materia es el usuario actual
 	       else// si es admin o representante
-	         encargado = $scope.encargado;// el encargado estara definido en un campo especial
+	         encargado = JSON.parse($scope.actividad.docente)._nombre;// el encargado estara definido en un campo especial
 	         var nuevaActividad = {
 		    nombre: $scope.actividad.nombre,
 		    tipo: 1, //esto deberia cambiar en un futuro para soportar otro tipo de actividades
 		    encargado: encargado,
 		    estado: 'en espera',
 		    turnos: [turnoCreado._id], // el turno que se acaba de crear
-		    creadoPor: Auth.getCurrentUser()._id
+		    creadoPor: Auth.getCurrentUser()._id,
+		    materia: $scope.actividad.materia
 		  };
 
 		  var Actividades= $resource('/api/actividades')

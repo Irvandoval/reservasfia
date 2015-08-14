@@ -12,11 +12,6 @@ exports.index = function(req, res) {
 };
 //get a single docente by user id
 exports.byuser = function(req, res) {
- /* Docente.findOne({usuario: req.params.id},function (err, docente) {
-    if(err) { return handleError(res, err); }
-    return res.status(200).json(docente);
-  });*/
-
   Docente
   .findOne({usuario: req.params.id})
   .populate('materias')
@@ -25,9 +20,22 @@ exports.byuser = function(req, res) {
      return res.status(200).json(docente);
    })
 };
+//get a single docente by escuela id
+exports.byEscuela = function(req, res) {
+  Docente
+  .find({escuela: req.params.id})
+  .populate('materias')
+  .exec(function (err, docente) {
+     if(err) { return handleError(res, err); }
+     return res.status(200).json(docente);
+   })
+};
 // Get a single docente
 exports.show = function(req, res) {
-  Docente.findById(req.params.id, function (err, docente) {
+  Docente
+  .findById(req.params.id)
+  .populate('materias')
+  .exec(function (err, docente) {
     if(err) { return handleError(res, err); }
     if(!docente) { return res.status(404).send('Not Found'); }
     return res.json(docente);

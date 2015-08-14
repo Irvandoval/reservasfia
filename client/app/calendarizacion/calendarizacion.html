@@ -58,16 +58,28 @@
             Reservar
           </tab-heading>
           <div ng-if="mostrar">
-
+           
            <div class="form-group">
              <label>Nombre de la actividad</label>
              <input class="form-control" ng-model="actividad.nombre" placeholder="Ej: Evaluado 1"/>
            </div>
-
-           <div class="form-group" ng-if="esDocente()">
+	    <div class="form-group">
+             <label>Escuela</label>
+             <select class="form-control" ng-model="actividad.escuela" ng-repeat="escuela in escuelas" ng-change="rellenarDocentes(escuela._id)">
+             <option value="{{escuela._id}}">{{escuela.nombre}} </option>
+             </select>
+           </div>
+           
+           <div class="form-group">
+             <label>Docente</label>
+             <select class="form-control" ng-model="actividad.docente" ng-change="rellenarMaterias(docente._id)">
+             <option  ng-repeat="docente in docentes" value="{{docente}}">{{docente.nombre}} </option>
+             </select>
+           </div>
+           <div class="form-group">
              <label>Materia</label>
-              <select class="form-control" ng-model="materia">
-                 <option ng-repeat="materia in materias"  ng-if="materia.imparteEnCiclo == 2 || materia.imparteEnCiclo == 3" value="materia._id">
+              <select class="form-control" ng-model="actividad.materia">
+                 <option ng-repeat="materia in materias"  ng-if="materia.imparteEnCiclo == 2 || materia.imparteEnCiclo == 3" value="{{materia._id}}">
                     {{materia.nombre}}
                  </option>
               </select>

@@ -243,7 +243,7 @@ $scope.items = ['item1', 'item2', 'item3'];
 	       if(Auth.isDocente()) // si es docente
 	         encargado = Auth.getCurrentUser().name;// el encargado de la materia es el usuario actual
 	       else// si es admin o representante
-	         encargado = JSON.parse($scope.actividad.docente)._nombre;// el encargado estara definido en un campo especial
+	         encargado = JSON.parse($scope.actividad.docente).nombre;// el encargado estara definido en un campo especial
 	         var nuevaActividad = {
 		    nombre: $scope.actividad.nombre,
 		    tipo: 1, //esto deberia cambiar en un futuro para soportar otro tipo de actividades

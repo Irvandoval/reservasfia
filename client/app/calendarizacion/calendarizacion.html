@@ -63,28 +63,7 @@
              <label>Nombre de la actividad</label>
              <input class="form-control" ng-model="actividad.nombre" placeholder="Ej: Evaluado 1"/>
            </div>
-	    <div class="form-group">
-             <label>Escuela</label>
-             <select class="form-control" ng-model="actividad.escuela" ng-repeat="escuela in escuelas" ng-change="rellenarDocentes(escuela._id)">
-             <option value="{{escuela._id}}">{{escuela.nombre}} </option>
-             </select>
-           </div>
-           
-           <div class="form-group">
-             <label>Docente</label>
-             <select class="form-control" ng-model="actividad.docente" ng-change="rellenarMaterias(docente._id)">
-             <option  ng-repeat="docente in docentes" value="{{docente}}">{{docente.nombre}} </option>
-             </select>
-           </div>
-           <div class="form-group">
-             <label>Materia</label>
-              <select class="form-control" ng-model="actividad.materia">
-                 <option ng-repeat="materia in materias"  ng-if="materia.imparteEnCiclo == 2 || materia.imparteEnCiclo == 3" value="{{materia._id}}">
-                    {{materia.nombre}}
-                 </option>
-              </select>
-           </div>
-            <label>Fecha</label>
+           <label>Fecha</label>
             <p class="input-group">
               <input  class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'" min-date="'2015-01-01'" ng-model="actividad.fecha" type="text" date-disabled="disabled(date, mode)" readonly="true"/>
 
@@ -104,12 +83,38 @@
                 <timepicker hour-step="hstep" id="time" minute-step="mstep" ng-model="actividad.fin" show-meridian="false"></timepicker>
               </div>
             </div>
-            <div class="form-group">
+           <div class="form-group">
               <label>Aulas</label>
               <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" ng-model="actividad.aulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false">
                 <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarAulas($query)"></auto-complete>
               </tags-input>
             </div>
+           <div ng-if="esAdmin()">
+	    <div class="form-group">
+             <label>Escuela</label>
+             <select class="form-control" ng-model="actividad.escuela" ng-repeat="escuela in escuelas" ng-change="rellenarDocentes(escuela._id)">
+             <option value="{{escuela._id}}">{{escuela.nombre}} </option>
+             </select>
+           </div>
+           
+           
+           <div class="form-group">
+             <label>Docente</label>
+             <select class="form-control" ng-model="actividad.docente" ng-change="rellenarMaterias(docente._id)">
+             <option  ng-repeat="docente in docentes" value="{{docente}}">{{docente.nombre}} </option>
+             </select>
+           </div>
+           </div>
+           <div class="form-group">
+             <label>Materia</label>
+              <select class="form-control" ng-model="actividad.materia">
+                 <option ng-repeat="materia in materias"  ng-if="materia.imparteEnCiclo == 2 || materia.imparteEnCiclo == 3" value="{{materia._id}}">
+                    {{materia.nombre}}
+                 </option>
+              </select>
+           </div>
+            
+            
             <button class="btn btn-danger form-control" ng-click="enviar()">
               Enviar</button>
           </div>

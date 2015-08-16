@@ -13,8 +13,8 @@ var Docente = require('../api/docente/docente.model');
 var Ciclo = require('../api/ciclo/ciclo.model');
 
 
-Docente.find({}).remove(function(){
-   /*Docente.create({
+/*Docente.find({}).remove(function(){
+   Docente.create({
     nombre: 'Rosario Ortiz',
     escuela: '55c2dc510d677df947170280',
     usuario: "55cd2d6c87d5ad543530fe50",
@@ -115,7 +115,7 @@ User.find({}).remove(function() {
 
   });
 
-});*/
+});
 
 Aula.find({}).remove(function(){
     Aula.create({
@@ -224,4 +224,4 @@ Aula.find({}).remove(function(){
         console.log('Se ha terminado de llenar aulas de prueba.');
       }
     );
-});
+});*/

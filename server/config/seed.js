@@ -14,7 +14,7 @@ var Ciclo = require('../api/ciclo/ciclo.model');
 
 
 Docente.find({}).remove(function(){
-   Docente.create({
+   /*Docente.create({
     nombre: 'Rosario Ortiz',
     escuela: '55c2dc510d677df947170280',
     usuario: "55cd2d6c87d5ad543530fe50",

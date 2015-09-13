@@ -1,32 +1,12 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<script id="reserva-detalle.html" type="text/ng-template">
-  <div class="modal-header">
-    <h3 class="modal-title">Detalle de la Reserva</h3>
-  </div>
-  <div class="modal-body">
-    <ul>
-      <li ng-repeat="item in items">
-        <a ng-click="selected.item = item">
-          {{ item }}
-        </a>
-      </li>
-    </ul>
-    Selected:
-    <b>{{ selected.item }}</b>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" ng-click='ok()'>OK</button>
-    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-  </div>
-</script>
 <div class="content">
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-7">
       <div calendar="calendario" class="span8 calendar" ng-model="eventSources" ui-calendar="uiConfig.calendar" ></div>
        <div class="text-center">
-       <span aria-hidden="true" class="fa fa-square aprob"> Aprobados   </span>
-        <span aria-hidden="true" class="fa fa-square esper"> En espera</span>
+       <span aria-hidden="true" class="fa fa-square aprob"> <b>Aprobados</b></span>
+        <span aria-hidden="true" class="fa fa-square esper"> <b>En espera</b></span>
        </div>
     </div>
     <div class="col-md-3">
@@ -130,3 +110,23 @@
   </div>
   <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
 </div>
+<script id="reserva-detalle.html" type="text/ng-template">
+  <div class="modal-header">
+    <h3 class="modal-title">Detalle de la Reserva</h3>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <li ng-repeat="item in items">
+        <a ng-click="selected.item = item">
+          {{ item }}
+        </a>
+      </li>
+    </ul>
+    Selected:
+    <b>{{ selected.item }}</b>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click='ok()'>OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>

@@ -13,7 +13,7 @@ var TurnoSchema = new Schema({
    inicio: Date,
    fin: Date,
    materia: String, // nombre de la materia que pertenece el turno
-   actividad: {},
+   actividad: {type: Schema.Types.ObjectId, ref: 'Actividad'},
    aulas: [{ type: Schema.Types.ObjectId, ref: 'Aula'}]
 }, schemaOptions);
 
@@ -40,4 +40,12 @@ TurnoSchema
   return this.actividad.nombre + '\n' + this.materia+ '\n' + aulasStr;
 });
 
+/** metodos estaticos **/
+TurnoSchema.statics.eliminarTurnoNull = function(turnos){
+ var ret = [];
+ for(var i = 0; i < turnos.length; i++ )
+  if(turnos[i].actividad != null)
+       ret.push(turnos[i]);
+ return ret;
+}
 module.exports = mongoose.model('Turno', TurnoSchema);

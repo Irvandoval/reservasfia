@@ -6,8 +6,8 @@ var controller = require('./turno.controller');
 var router = express.Router();
 
 router.get('/', controller.index);
-router.get('/aprobados', controller.indexAprobados);
-router.get('/espera', controller.indexEnEspera);
+router.get('/estado/aprobados', controller.indexAprobados);
+router.get('/estado/espera', controller.indexEnEspera);
 router.get('/actividad/:id',controller.indexByActividad);
 router.get('/:id', controller.show);
 router.post('/', controller.create);

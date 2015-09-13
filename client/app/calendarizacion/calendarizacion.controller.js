@@ -8,13 +8,13 @@ angular.module('reservasApp')
 
 
     $scope.aprobadosEvt = { //  carga los eventos del dia actual en el web service.
-      url: '/api/turnos/aprobados',
+      url: '/api/turnos/estado/aprobados',
       className: 'aprobado',
       startParam: 'inicio',
       endParam: 'fin'
     };
     $scope.esperaEvt = { //  carga los eventos del dia actual en el web service.
-      url: '/api/turnos/espera',
+      url: '/api/turnos/estado/espera',
       className: 'espera',
       startParam: 'inicio',
       endParam: 'fin'
@@ -269,7 +269,7 @@ angular.module('reservasApp')
                   fin: new Date(dates.year, dates.mes, dates.dia, dates.hf, dates.mf),
                   aulas: aulas,
                   materia:actividadCreada.materia.nombre,
-                  actividad: actividadCreada
+                  actividad: actividadCreada._id
                 };
                 $resource('/api/turnos').save(nuevoTurno).$promise
                   .then(function(turnoCreado) {

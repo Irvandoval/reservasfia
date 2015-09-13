@@ -7,6 +7,7 @@ var Turno = require('./turno.model');
 exports.index = function(req, res) {
   Turno.find({})
   .populate('aulas')
+  .populate('actividad')
   .exec(function(err, turnos) {
     if (err) {
       return handleError(res, err);
@@ -17,8 +18,9 @@ exports.index = function(req, res) {
 };
 
 exports.indexByActividad = function(req,res){
- Turno.find({'actividad._id': req.params.id})
+ Turno.find({actividad: req.params.id})
  .populate('aulas')
+ .populate('actividad')
  .exec(function(err, turnos) {
    if (err) {
      return handleError(res, err);
@@ -37,14 +39,16 @@ exports.indexAprobados = function(req, res){
    fin: {
      $lte: new Date(req.query.fin)
    }
- }, {'actividad.estado': 'aprobado'}]
+ }]
 })
   .populate('aulas')
+  .populate({path: 'actividad', match: {estado: 'aprobado'}})
   .exec(function(err, turnos) {
     if (err) {
       return handleError(res, err);
     }
-    return res.status(200).json(turnos);
+    var turn = Turno.eliminarTurnoNull(turnos);
+    return res.status(200).json(turn);
   });
 }
 //envia los de tipo clases
@@ -57,15 +61,17 @@ exports.indexEnEspera = function(req, res){
    fin: {
      $lte: new Date(req.query.fin)
    }
- }, {'actividad.estado': 'en espera'}]
+ }]
 })
-  .populate('aulas')
-  .exec(function(err, turnos) {
-    if (err) {
-      return handleError(res, err);
-    }
-    return res.status(200).json(turnos);
-  });
+ .populate('aulas')
+ .populate({path: 'actividad', match: {estado: 'en espera'}})
+ .exec(function(err, turnos) {
+   if (err) {
+     return handleError(res, err);
+   }
+   var turn = Turno.eliminarTurnoNull(turnos);
+   return res.status(200).json(turn);
+ });
 }
 // Get a single turno
 exports.show = function(req, res) {

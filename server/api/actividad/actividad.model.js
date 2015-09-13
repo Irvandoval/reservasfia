@@ -20,7 +20,6 @@ var ActividadSchema = new Schema({
    //turnos: [{type: Schema.Types.ObjectId, ref: 'Turno'}],
    fechaCreacion: {type: Date},
    creadoPor: {type: Schema.Types.ObjectId, ref: 'User' },
-
 }, schemaOptions);
 
 module.exports = mongoose.model('Actividad', ActividadSchema);

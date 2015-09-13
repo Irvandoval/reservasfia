@@ -50,17 +50,7 @@
   background-color: #faada2;
 }
 
-.Clases{
-  background-color:#00838F;
-  border-color:#006064;
-  font-weight:bold;
-  text-decoration: none !important;
-  cursor: pointer;
-}
 
-.Clases:hover{
-   background-color: #0097A7 !important;
-}
 
 #time input{
   padding: 10px;

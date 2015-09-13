@@ -2,6 +2,7 @@
 
 var express = require('express');
 var controller = require('./horario.controller');
+var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 var multer  = require('multer');
@@ -21,7 +22,7 @@ var upload = multer({storage: storage});
 router.get('/', controller.index);
 router.post('/xlsjson',upload.single('excel'),controller.xlstojson);
 router.get('/:id', controller.show);
-router.post('/', controller.create);
+router.post('/', auth.hasRole('admin'),auth.hasRole('representante'),controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);

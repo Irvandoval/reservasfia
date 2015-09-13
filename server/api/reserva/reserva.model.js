@@ -19,7 +19,7 @@ var ReservaSchema = new Schema({
 
 /**
  * Virtuales
- */
+
 ReservaSchema
 .virtual('start')
 .get(function(){
@@ -36,7 +36,7 @@ ReservaSchema
 .virtual('title')
 .get(function(){
   return this.actividad.nombre + ' ' + this.aula.nombre;
-});
+});*/
 
 /**
  *  Metodos

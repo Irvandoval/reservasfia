@@ -35,6 +35,36 @@
   height: 40px;
   margin-top: -15px;
 }
+.fila{
+ cursor: pointer;
+}
+ .aprob{
+  color :#43A047;
+ }
+ .esper{
+  color: #E65100;
+ }
+.aprobado{
+  background-color:#43A047;
+  border-color:#388E3C;
+  font-weight:bold;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+.espera{
+  background-color:#EF6C00;
+  border-color:#E65100;
+  font-weight:bold;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+.aprobado:hover{
+   background-color: #4CAF50 !important;
+}
+.espera:hover{
+   background-color: #FFA726 !important;
+}
 
 .browsehappy {
     margin: 0.2em 0;

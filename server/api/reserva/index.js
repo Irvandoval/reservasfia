@@ -7,9 +7,8 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);
-//router.get('/porFecha',controller.showByFecha);
 router.post('/', controller.create);
-router.post('/choque',auth.isAuthenticated(),controller.choque);
+router.post('/choque/detectarChoque',auth.isAuthenticated(),controller.choque);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);

@@ -7,8 +7,7 @@ var Actividad = require('./actividad.model');
 exports.index = function(req, res) {
   Actividad
   .find()
-  .populate('turnos')
-  .populate('aulas')
+  .populate('materia')
   .exec(function (err, docs) {
     if(err) { return handleError(res, err); }
     Actividad.populate(docs, {
@@ -17,16 +16,14 @@ exports.index = function(req, res) {
       select: 'nombre'
     }, function(err,actividades){
       if(err) { return handleError(res, err); }
-      return res.status(200).json(actividades);  
-    });   
+      return res.status(200).json(actividades);
+    });
   });
 };
 
 exports.indexAprobados = function(req, res) {
   Actividad
   .find({estado:'aprobado'})
-  .populate('turnos')
-  .populate('aulas')
   .populate('materia','nombre')
   .exec(function (err, docs) {
     if(err) { return handleError(res, err); }
@@ -36,8 +33,8 @@ exports.indexAprobados = function(req, res) {
       select: 'nombre'
     }, function(err,actividades){
       if(err) { return handleError(res, err); }
-      return res.status(200).json(actividades);  
-    });   
+      return res.status(200).json(actividades);
+    });
   });
 };
 
@@ -54,8 +51,8 @@ exports.indexDesaprobados = function(req, res) {
       select: 'nombre'
     }, function(err,actividades){
       if(err) { return handleError(res, err); }
-      return res.status(200).json(actividades);  
-    });   
+      return res.status(200).json(actividades);
+    });
   });
 };
 
@@ -64,6 +61,7 @@ exports.indexEspera = function(req, res) {
   .find({estado: 'en espera'})
   .populate('turnos')
   .populate('aulas')
+  .populate('materia','nombre')
   .exec(function (err, docs) {
     if(err) { return handleError(res, err); }
     Actividad.populate(docs, {
@@ -72,14 +70,18 @@ exports.indexEspera = function(req, res) {
       select: 'nombre'
     }, function(err,actividades){
       if(err) { return handleError(res, err); }
-      return res.status(200).json(actividades);  
-    });   
+      return res.status(200).json(actividades);
+    });
   });
 };
 
 // Get a single actividad
 exports.show = function(req, res) {
-  Actividad.findById(req.params.id, function (err, actividad) {
+
+  Actividad
+  .findById(req.params.id)
+  .populate('materia','nombre')
+  .exec(function (err, actividad) {
     if(err) { return handleError(res, err); }
     if(!actividad) { return res.status(404).send('Not Found'); }
     return res.json(actividad);
@@ -90,8 +92,13 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   req.body.fechaCreacion = Date.now();
   Actividad.create(req.body, function(err, actividad) {
-    if(err) { return handleError(res, err); }
-    return res.status(201).json(actividad);
+
+    var opts = { path: 'materia',select:'nombre'};
+    Actividad.populate(actividad,opts, function(err,actividad){
+      if(err) { return handleError(res, err); }
+     return res.status(201).json(actividad);
+    })
+
   });
 };
 

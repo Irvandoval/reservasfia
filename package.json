@@ -29,7 +29,7 @@
     "xlsx-json": "~0.1.0"
   },
   "devDependencies": {
-  "bower": "~1.4.1",
+    "bower": "~1.4.1",
     "grunt": "~0.4.4",
     "grunt-autoprefixer": "~0.7.2",
     "grunt-wiredep": "~1.8.0",
@@ -91,7 +91,7 @@
     "start": "node server/app.js",
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
-     "postinstall": "node_modules/bower/bin/bower install"
+    "postinstall": "node_modules/bower/bin/bower install"
   },
   "private": true
 }

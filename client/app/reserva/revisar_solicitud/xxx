@@ -1,0 +1,58 @@
+ Turno.aggregate([ { $group: { _id:"$actividad", turnos:{ $push:"$$ROOT" } } } ], function (err, turno) {
+    if(err) { return handleError(res, err); }
+    if(!turno) { return res.status(404).send('Not Found'); }
+    return res.json(turno);
+  });
+
+/************************/
+ if(err) { return handleError(res, err); }
+      return res.status(200).json(actividades);  
+
+
+
+<table class="table table-striped" ng-table="enEspera" template-pagination="custom/pager">
+          <tbody ng-repeat="actividad in $data">
+            <tr>
+             <td class="text-center" data-title="'Fecha de solicitud'" rowspan="{{actividad.turnos.length}}" sortable="'fechaCreacion'">
+               {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
+             </td>
+              <td class="text-center" data-title="'Actividad'" rowspan="{{actividad.turnos.length}}">
+                <h4>{{actividad.nombre}}</h4>
+              <label>Solicitante:</label>
+              {{actividad.encargado}}
+            </br>
+            <span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':aula.estado == 'desaprobado', 'amarillo':actividad.estado == 'en espera' }"></span>
+            {{actividad.estado}}
+          </br>
+        </br>
+        <button class="btn btn-success" type="button">
+          <span aria-hidden="true" class="fa fa-check" ng-click="aprobarSolicitud(actividad, $index)">Aprobar</span>
+        </button>
+        <button class="btn btn-danger" type="button">
+          <span aria-hidden="true" class="fa fa-close">Rechazar</span>
+        </button>
+      </td>
+        <td class="text-center" data-title="'Materia'"  rowspan="{{actividad.turnos.length}}" >{{actividad.materia.nombre}}</td>
+      <td class="text-center" data-title="'# Turno'">1</td>
+      <td class="text-center" data-title="'Día'">{{actividad.turnos[0].inicio | date:'fullDate'}}</td>
+      <td class="text-center" data-title="'Inicio'">{{actividad.turnos[0].inicio | date:'shortTime'}}</td>
+      <td class="text-center" data-title="'Fin'">{{actividad.turnos[0].fin | date:'shortTime'}}</td>
+      <td class="text-center" data-title="'Aulas'">
+        <b ng-repeat="aula in actividad.turnos[0].aulas">
+          {{aula.nombre}}</b>
+      </td>
+
+    </tr>
+
+    <tr ng-repeat="turno in actividad.turnos.slice(1)">
+      <td class="text-center" data-title="'# Turno'">{{$index + 2}}</td>
+      <td class="text-center" data-title="'Día'">{{turno.inicio | date:'fullDate'}}</td>
+      <td class="text-center" data-title="'Inicio'">{{turno.inicio | date:'shortTime'}}</td>
+      <td class="text-center" data-title="'Fin'" ng-repeat-end>{{turno.fin | date:'shortTime'}}</td>
+      <td class="text-center" data-title="'Aulas'">
+        <b ng-repeat="aula in turno.aulas">
+          {{aula.nombre}}</b>
+      </td>
+    </tr>
+  </tbody>
+</table>

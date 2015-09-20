@@ -1,6 +1,8 @@
 'use strict';
 
 angular.module('reservasApp')
-  .service('turno', function () {
-    // AngularJS will instantiate a singleton by calling "new" on this function
+  .factory('Turno', function ($resource) {
+   return $resource('/api/turnos/:idTurno',{idTurno: '@id'},
+		    {'update': { method:'PUT' }}
+  );
   });

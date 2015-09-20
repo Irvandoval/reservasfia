@@ -224,5 +224,4 @@ Aula.find({}).remove(function(){
         console.log('Se ha terminado de llenar aulas de prueba.');
       }
     );
-});
-*/
+});*/

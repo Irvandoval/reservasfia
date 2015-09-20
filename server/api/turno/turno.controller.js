@@ -47,11 +47,11 @@ exports.indexAprobados = function(req, res){
     if (err) {
       return handleError(res, err);
     }
-    var turn = Turno.eliminarTurnoNull(turnos);
+    var turn = Turno.eliminarValoresNull(turnos);
     return res.status(200).json(turn);
   });
 }
-//envia los de tipo clases
+//envia los que no han sido aprobados
 exports.indexEnEspera = function(req, res){
  Turno.find({$and: [{
    inicio: {
@@ -69,9 +69,34 @@ exports.indexEnEspera = function(req, res){
    if (err) {
      return handleError(res, err);
    }
-   var turn = Turno.eliminarTurnoNull(turnos);
+   var turn = Turno.eliminarValoresNull(turnos);
    return res.status(200).json(turn);
  });
+}
+
+exports.indexByAula = function(req,res){
+   Turno.find({$and: [{
+     inicio: {
+       $gte: new Date(req.query.inicio)
+     }
+   }, {
+     fin: {
+       $lte: new Date(req.query.fin)
+     }
+   }]
+  })
+  .populate({path: 'aulas', match: {nombre: {$in: req.query._aulas}}})
+  .populate('actividad')
+  .exec(function(err, turnos) {
+    if (err) {
+      console.log(err);
+      return handleError(res, err);
+    }
+    console.log(turnos);
+    var turn = Turno.eliminarValoresNull(turnos);
+    return res.status(200).json(turn);
+  });
+
 }
 // Get a single turno
 exports.show = function(req, res) {

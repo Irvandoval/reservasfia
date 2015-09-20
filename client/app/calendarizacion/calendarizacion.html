@@ -31,7 +31,7 @@
             </tags-input>
           </div>
           <div ng-if="opcion2">
-            <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" ng-model="aulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false">
+            <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" ng-model="aulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false" on-tag-adding="true" on-tag-added="filtroPorAulas()">
               <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarAulas($query)"></auto-complete>
             </tags-input>
           </div>

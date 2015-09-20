@@ -41,10 +41,10 @@ TurnoSchema
 });
 
 /** metodos estaticos **/
-TurnoSchema.statics.eliminarTurnoNull = function(turnos){
+TurnoSchema.statics.eliminarValoresNull = function(turnos){
  var ret = [];
  for(var i = 0; i < turnos.length; i++ )
-  if(turnos[i].actividad != null)
+  if(turnos[i].actividad != null && turnos[i].aulas != null)
        ret.push(turnos[i]);
  return ret;
 }

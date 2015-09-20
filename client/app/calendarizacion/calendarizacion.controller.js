@@ -6,7 +6,7 @@ angular.module('reservasApp')
     /******************************Calendario******************************/
     /*Variables*/
 
-
+    var aulasEvt = [];
     $scope.aprobadosEvt = { //  carga los eventos del dia actual en el web service.
       url: '/api/turnos/estado/aprobados',
       className: 'aprobado',
@@ -19,6 +19,16 @@ angular.module('reservasApp')
       startParam: 'inicio',
       endParam: 'fin'
     };
+   $scope.porAulaEvt = {
+     url: '/api/turnos/aulas',
+     className: 'espera',
+     startParam: 'inicio',
+     endParam: 'fin',
+     data:{
+      _aulas: aulasEvt
+     }
+
+   }
 
     $scope.esAdmin = Auth.isAdmin;
     $scope.esDocente = Auth.isDocente;
@@ -50,6 +60,17 @@ angular.module('reservasApp')
     $scope.disabled = function(date, mode) {
       return (mode === 'day' && (date.getDay() === 0));
     };
+
+    $scope.filtroPorAulas = function(){
+     console.log($scope.aulas);
+     /* llenamos la variable aulasEvt con los nombres
+     de las aulas que queremos que nos filtre el sistema*/
+       for(var m = 0 ; m < $scope.aulas.length ; m++){
+          aulasEvt[m] = $scope.aulas[m].nombre;
+       }
+      $scope.eventSources.splice(0,2);//eliminamos las actuales resources de eventos
+      $scope.eventSources.push($scope.porAulaEvt);
+    }
     /*$scope.addRemoveEventSource = function(sources, source) {
       var canAdd = 0;
       angular.forEach(sources, function(value, key) {

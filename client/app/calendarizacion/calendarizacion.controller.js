@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, CalendarioEs) {
+  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig) {
 
     /******************************Calendario******************************/
     /*Variables*/
-
+     $scope.busqueda = {};
     var aulasEvt = [];
     $scope.aprobadosEvt = { //  carga los eventos del dia actual en el web service.
       url: '/api/turnos/estado/aprobados',
@@ -24,10 +24,12 @@ angular.module('reservasApp')
      className: 'espera',
      startParam: 'inicio',
      endParam: 'fin',
-     data:{
-      _aulas: aulasEvt
+     data:function(){
+      for(var m = 0 ; m < $scope.aulas.length ; m++){
+         aulasEvt[m] = $scope.aulas[m].nombre;
+      }
+      return { _aulas: aulasEvt};
      }
-
    }
 
     $scope.esAdmin = Auth.isAdmin;
@@ -60,17 +62,30 @@ angular.module('reservasApp')
     $scope.disabled = function(date, mode) {
       return (mode === 'day' && (date.getDay() === 0));
     };
-
-    $scope.filtroPorAulas = function(){
-     console.log($scope.aulas);
-     /* llenamos la variable aulasEvt con los nombres
-     de las aulas que queremos que nos filtre el sistema*/
-       for(var m = 0 ; m < $scope.aulas.length ; m++){
-          aulasEvt[m] = $scope.aulas[m].nombre;
-       }
-      $scope.eventSources.splice(0,2);//eliminamos las actuales resources de eventos
-      $scope.eventSources.push($scope.porAulaEvt);
+    $scope.porAulas =  function(){
+    // console.log("opcion: " + $scope.busqueda.opcion2);
+     if($scope.busqueda.opcion2 == true){
+       $scope.eventSources.splice(0,$scope.eventSources.length);//eliminamos las actuales resources de eventos
+        $scope.eventSources.push($scope.porAulaEvt);
+     }else{
+      if($scope.busqueda.opcion2 == false){
+         $scope.eventSources.splice(0,$scope.eventSources.length);
+         $scope.aulas.splice(0,$scope.aulas.length);
+         $scope.eventSources.push($scope.aprobadosEvt);
+         $scope.eventSources.push($scope.esperaEvt);
+         aulasEvt.splice(0,aulasEvt.length);
+      }
+     }
     }
+    $scope.filtroPorAulas = function(){
+     //console.log($scope.eventSources.length);
+     aulasEvt.splice(0,aulasEvt.length);
+    // $scope.eventSources.splice(0,$scope.eventSources.length);
+     //
+     //console.log($scope.eventSources);
+
+     uiCalendarConfig.calendars['calendario'].fullCalendar('refetchEvents');
+   }
     /*$scope.addRemoveEventSource = function(sources, source) {
       var canAdd = 0;
       angular.forEach(sources, function(value, key) {

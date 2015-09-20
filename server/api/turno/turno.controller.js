@@ -88,11 +88,12 @@ exports.indexByAula = function(req,res){
   .populate({path: 'aulas', match: {nombre: {$in: req.query._aulas}}})
   .populate('actividad')
   .exec(function(err, turnos) {
+   console.log(req.query._aulas);
     if (err) {
       console.log(err);
       return handleError(res, err);
     }
-    console.log(turnos);
+   // console.log(turnos);
     var turn = Turno.eliminarValoresNull(turnos);
     return res.status(200).json(turn);
   });

@@ -18,20 +18,21 @@
           </tab-heading>
           <h2>Criterios de búsqueda</h2>
           <label class="checkbox-inline">
-            <input id="opciones_2" name="opciones" ng-click="opcion2=false" ng-init="opcion1=true" ng-model="opcion1" type="checkbox">
+            <input id="opciones_2" name="opciones" ng-click="busqueda.opcion2=false" ng-init="opcion1=true" ng-model="busqueda.opcion1" type="checkbox">
             Búsqueda General
           </label>
           <label class="checkbox-inline">
-            <input id="opcion2" name="opciones" ng-click="opcion1=false" ng-model="opcion2" type="checkbox">
+            <input id="opcion2" name="opciones" ng-click="busqueda.opcion1=false;porAulas()" ng-model="busqueda.opcion2" type="checkbox">
             Aula específica
           </label>
-          <div ng-if="opcion1">
+          <div ng-if="busqueda.opcion1">
             <tags-input add-from-autocomplete-only="true" class="bootstrap" ng-model="etiquetas" placeholder="Agrega una etiqueta" replace-spaces-with-dashes="false">
               <auto-complete debounce-delay="0" max-results="10" min-length="0" source="loadTags($query)"></auto-complete>
             </tags-input>
           </div>
-          <div ng-if="opcion2">
-            <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" ng-model="aulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false" on-tag-adding="true" on-tag-added="filtroPorAulas()">
+          <div ng-if="busqueda.opcion2">
+            <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" ng-model="aulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false"
+            on-tag-adding="true" on-tag-added="filtroPorAulas()" on-tag-removing="true" on-tag-removed="filtroPorAulas()">
               <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarAulas($query)"></auto-complete>
             </tags-input>
           </div>
@@ -41,7 +42,7 @@
             <i class="fa fa-list-alt"></i>
             Reservar
           </tab-heading>
-          <div ng-if="mostrar">
+          <div ng-if="mostrar" id="reservaDiv">
 
            <div class="form-group">
              <label>Nombre de la actividad</label>
@@ -60,11 +61,11 @@
             <div class="row">
               <div class="col-md-5">
                 <label>Inicio</label>
-                <timepicker hour-step="hstep" id="time" minute-step="mstep" ng-change="changed()" ng-model="actividad.inicio" show-meridian="false"></timepicker>
+                <timepicker mousewheel="false" hour-step="hstep" id="time" minute-step="mstep" ng-change="changed()" ng-model="actividad.inicio" show-meridian="false"></timepicker>
               </div>
               <div class="col-md-5">
                 <label>Fin</label>
-                <timepicker hour-step="hstep" id="time" minute-step="mstep" ng-model="actividad.fin" show-meridian="false"></timepicker>
+                <timepicker mousewheel="false" hour-step="hstep" id="time" minute-step="mstep" ng-model="actividad.fin" show-meridian="false"></timepicker>
               </div>
             </div>
            <div class="form-group">

@@ -6,7 +6,7 @@ angular.module('reservasApp')
       i, j;
     $rootScope.enEspera = new ngTableParams({
       page: 1, // paginacion, primera en mostrar
-      count: 5, // cantidad de elementos a mostrar por pagina
+      count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
         fechaCreacion: 'asc'
       }
@@ -30,7 +30,7 @@ angular.module('reservasApp')
 
     $rootScope.aprobados = new ngTableParams({
       page: 1, // paginacion, primera en mostrar
-      count: 5, // cantidad de elementos a mostrar por pagina
+      count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
         fechaCreacion: 'asc'
       }
@@ -54,7 +54,7 @@ angular.module('reservasApp')
 
     $rootScope.desaprobados = new ngTableParams({
       page: 1, // paginacion, primera en mostrar
-      count: 5, // cantidad de elementos a mostrar por pagina
+      count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
         fechaCreacion: 'asc'
       }
@@ -107,7 +107,7 @@ angular.module('reservasApp')
 
 .controller('DetalleReservaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
-  $scope.aprobarSolicitud = function() {
+  $scope.responderSolicitud = function(respuesta) {
     $modalInstance.close(actividad);
     var reservas = {};
     reservas.data = [];
@@ -136,7 +136,7 @@ angular.module('reservasApp')
         for (var i = 0; i < cont; i++) {
           $resource('/api/reservas').save(reservas.data[i]);
         }
-        actividadEditada = nuevaActividad(actividad, turnos);
+        actividadEditada = nuevaActividad(actividad,respuesta);
         Actividad.update({
             idActividad: actividad._id
           }, actividadEditada).$promise
@@ -145,7 +145,7 @@ angular.module('reservasApp')
             $rootScope.enEspera.reload();
             $rootScope.aprobados.reload();
             $rootScope.desaprobados.reload();
-            actualizarTurnos(actividadEditada);
+            actualizarTurnos(actividadEditada,respuesta);
               toaster.pop('success', "Actividad aprobada", "Las reservas se han cargado en el sistema");
           }, function(err) {
             //error al actualizar
@@ -173,11 +173,10 @@ angular.module('reservasApp')
     $modalInstance.dismiss('cancel');
   };
 
-   function actualizarTurnos(actividad){
-    console.log("actividad");
+   function actualizarTurnos(actividad,respuesta){
     var aulaAux = [];
     for (var g = 0;  g < $scope.turnos.length; g++){
-    actividad.estado = 'aprobado';
+    actividad.estado = respuesta;
      console.log("entra al for g");
           for (var s in $scope.turnos[g].aulas){
              aulaAux[s] = $scope.turnos[g].aulas[s]._id;
@@ -197,10 +196,10 @@ angular.module('reservasApp')
 
     }
    }
-  function nuevaActividad(actividad) {
+  function nuevaActividad(actividad,respuesta) {
     var actividadEdit = {};
     actividadEdit._id = actividad._id;
-    actividadEdit.estado = 'aprobado';
+    actividadEdit.estado = respuesta;
    // actividadEdit.turnos = turnos;
     actividadEdit.tipo = actividad.tipo;
     actividadEdit.materia =  actividad.materia._id;

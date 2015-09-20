@@ -51,7 +51,9 @@
 }
 
 
-
+#reservaDiv{
+ overflow-y: scroll; height:500px;
+}
 #time input{
   padding: 10px;
 }

@@ -76,7 +76,7 @@ angular.module('reservasApp')
       }
     });
 
-    $scope.detalleReserva = function(idActividad) {
+    $scope.detalleReserva = function(idActividad, tipo) {
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'detalleReserva.html',
@@ -87,7 +87,8 @@ angular.module('reservasApp')
             return Actividad.get({
               idActividad: idActividad
             }).$promise
-          }
+          },
+          tipo: function(){return tipo}
         }
       });
 
@@ -105,9 +106,27 @@ angular.module('reservasApp')
 
 
 
-.controller('DetalleReservaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, Actividad, Turno, toaster) {
+.controller('DetalleReservaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
-  $scope.responderSolicitud = function(respuesta) {
+  $scope.tipo = tipo;
+  console.log($scope.tipo);
+  $scope.rechazarSolicitud = function(){
+    $modalInstance.close(actividad);
+    var actividadEditada = nuevaActividad(actividad,'desaprobado');
+    Actividad.update({
+        idActividad: actividad._id
+      }, actividadEditada).$promise
+      .then(function() {
+        $rootScope.enEspera.reload();
+        $rootScope.aprobados.reload();
+        $rootScope.desaprobados.reload();
+          toaster.pop('success', "Actividad rechazada", "La actividad ahora se ha movido a 'Rechazados'");
+      }, function(err) {
+        console.log("error");
+      });
+
+  };
+  $scope.aprobarSolicitud = function() {
     $modalInstance.close(actividad);
     var reservas = {};
     reservas.data = [];
@@ -136,7 +155,7 @@ angular.module('reservasApp')
         for (var i = 0; i < cont; i++) {
           $resource('/api/reservas').save(reservas.data[i]);
         }
-        actividadEditada = nuevaActividad(actividad,respuesta);
+        actividadEditada = nuevaActividad(actividad,'aprobado');
         Actividad.update({
             idActividad: actividad._id
           }, actividadEditada).$promise
@@ -145,7 +164,7 @@ angular.module('reservasApp')
             $rootScope.enEspera.reload();
             $rootScope.aprobados.reload();
             $rootScope.desaprobados.reload();
-            actualizarTurnos(actividadEditada,respuesta);
+            //actualizarTurnos(actividadEditada,respuesta);
               toaster.pop('success', "Actividad aprobada", "Las reservas se han cargado en el sistema");
           }, function(err) {
             //error al actualizar

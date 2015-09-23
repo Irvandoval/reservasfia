@@ -8,12 +8,19 @@ exports.index = function(req, res) {
   Turno.find({})
   .populate('aulas')
   .populate('actividad')
-  .exec(function(err, turnos) {
+  .exec(function(err, docs) {
+    var options = {
+      path: 'actividad.materia',
+      model: 'Materia'
+    }
     if (err) {
       return handleError(res, err);
     }
-    return res.status(200).json(turnos);
-  })
+    Turno.populate(docs, options, function(err, turnos){
+       if(err) return handleError(res, err);
+       return res.status(200).json(turnos);
+    });
+  });
 
 };
 
@@ -43,12 +50,20 @@ exports.indexAprobados = function(req, res){
 })
   .populate('aulas')
   .populate({path: 'actividad', match: {estado: 'aprobado'}})
-  .exec(function(err, turnos) {
+  .exec(function(err, docs) {
+    var options = {
+      path: 'actividad.materia',
+      model: 'Materia'
+    }
     if (err) {
+      console.log(err);
       return handleError(res, err);
     }
-    var turn = Turno.eliminarValoresNull(turnos);
-    return res.status(200).json(turn);
+    Turno.populate(docs, options, function(err, turnos){
+       if(err) return handleError(res, err);
+       var turn = Turno.eliminarValoresNull(turnos);
+       return res.status(200).json(turn);
+    });
   });
 }
 //envia los que no han sido aprobados
@@ -65,12 +80,19 @@ exports.indexEnEspera = function(req, res){
 })
  .populate('aulas')
  .populate({path: 'actividad', match: {estado: 'en espera'}})
- .exec(function(err, turnos) {
+ .exec(function(err, docs) {
+   var options = {
+     path: 'actividad.materia',
+     model: 'Materia'
+   }
    if (err) {
      return handleError(res, err);
    }
-   var turn = Turno.eliminarValoresNull(turnos);
-   return res.status(200).json(turn);
+   Turno.populate(docs, options, function(err, turnos){
+      if(err) return handleError(res, err);
+      var turn = Turno.eliminarValoresNull(turnos);
+      return res.status(200).json(turn);
+   });
  });
 }
 
@@ -87,15 +109,20 @@ exports.indexByAula = function(req,res){
   })
   .populate({path: 'aulas', match: {nombre: {$in: req.query._aulas}}})
   .populate('actividad')
-  .exec(function(err, turnos) {
-   console.log(req.query._aulas);
+  .exec(function(err, docs) {
+    var options = {
+      path: 'actividad.materia',
+      model: 'Materia'
+    }
     if (err) {
       console.log(err);
       return handleError(res, err);
     }
-   // console.log(turnos);
-    var turn = Turno.eliminarValoresNull(turnos);
-    return res.status(200).json(turn);
+    Turno.populate(docs, options, function(err, turnos){
+       if(err) return handleError(res, err);
+       var turn = Turno.eliminarValoresNull(turnos);
+       return res.status(200).json(turn);
+    });
   });
 
 }

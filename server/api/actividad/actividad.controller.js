@@ -70,13 +70,15 @@ exports.show = function(req, res) {
 
 // Creates a new actividad in the DB.
 exports.create = function(req, res) {
-  req.body.fechaCreacion = Date.now();
-  Actividad.create(req.body, function(err, actividad) {
-
+  req.body.actividad.fechaCreacion = Date.now();
+  Actividad.create(req.body.actividad, function(err, actividad) {
     var opts = { path: 'materia',select:'nombre'};
-    Actividad.populate(actividad,opts, function(err,actividad){
-      if(err) { return handleError(res, err); }
-     return res.status(201).json(actividad);
+    Actividad.populate(actividad, opts, function(err,actividadPop){
+      if(err) { return handleError(res, err);}
+      var nuevaActividad = new Actividad(actividadPop);
+      nuevaActividad.crearTurnos(req.body.turnos,function(){
+        return res.status(201).json(actividadPop);
+      });
     })
 
   });

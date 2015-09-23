@@ -37,7 +37,7 @@ TurnoSchema
   for(var i = 0; i < this.aulas.length; i++){
    aulasStr = aulasStr + this.aulas[i].nombre + ' ';
   }
-  return this.actividad.nombre + '\n' + this.materia+ '\n' + aulasStr;
+  return this.actividad.nombre + '\n' + this.actividad.materia.nombre + '\n' + aulasStr;
 });
 
 /** metodos estaticos **/

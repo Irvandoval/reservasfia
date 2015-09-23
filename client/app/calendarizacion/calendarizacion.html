@@ -18,7 +18,7 @@
           </tab-heading>
           <h2>Criterios de búsqueda</h2>
           <label class="checkbox-inline">
-            <input id="opciones_2" name="opciones" ng-click="busqueda.opcion2=false" ng-init="opcion1=true" ng-model="busqueda.opcion1" type="checkbox">
+            <input id="opciones_2" name="opciones" ng-click="busqueda.opcion2=false" ng-init="busqueda.opcion2=true" ng-model="busqueda.opcion1" type="checkbox">
             Búsqueda General
           </label>
           <label class="checkbox-inline">
@@ -92,7 +92,7 @@
            </div>
            <div class="form-group">
              <label>Materia</label>
-              <select class="form-control" ng-model="actividad.materia">
+              <select class="form-control" ng-model="actividad.materia" ng-change="materiaActual(materia.nombre)">
                  <option ng-repeat="materia in materias"  ng-if="materia.imparteEnCiclo == 2 || materia.imparteEnCiclo == 3" value="{{materia._id}}">
                     {{materia.nombre}}
                  </option>

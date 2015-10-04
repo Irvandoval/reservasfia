@@ -143,6 +143,12 @@ angular.module('reservasApp')
       isDocente: function() {
         return currentUser.role === 'docente';
       },
+      isRepresentante: function() {
+        return currentUser.role === 'representante';
+      },
+      isInvitado: function() {
+        return currentUser.role === 'invitado';
+      },
 
       /**
        * Get auth token

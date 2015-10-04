@@ -30,6 +30,16 @@ exports.indexAprobados = function(req, res) {
    return res.status(200).json(actividades);
   });
 };
+exports.indexMisAprobados = function(req, res) {
+ console.log(req.user);
+  Actividad
+  .find({estado:'aprobado', encargado: req.user.name})
+  .populate('materia','nombre')
+  .exec(function (err, actividades) {
+   if(err) { return handleError(res, err); }
+   return res.status(200).json(actividades);
+  });
+};
 
 exports.indexDesaprobados = function(req, res) {
   Actividad
@@ -42,7 +52,16 @@ exports.indexDesaprobados = function(req, res) {
     return res.status(200).json(actividades);
    });
 };
-
+exports.indexMisDesaprobados = function(req, res) {
+ console.log(req.user);
+  Actividad
+  .find({estado:'desaprobado', encargado: req.user.name})
+  .populate('materia','nombre')
+  .exec(function (err, actividades) {
+   if(err) { return handleError(res, err); }
+   return res.status(200).json(actividades);
+  });
+};
 exports.indexEspera = function(req, res) {
   Actividad
   .find({estado: 'en espera'})
@@ -54,7 +73,16 @@ exports.indexEspera = function(req, res) {
    return res.status(200).json(actividades);
   });
 };
-
+exports.indexMisEspera = function(req, res) {
+ console.log(req.user);
+  Actividad
+  .find({estado:'en espera', encargado: req.user.name})
+  .populate('materia','nombre')
+  .exec(function (err, actividades) {
+   if(err) { return handleError(res, err); }
+   return res.status(200).json(actividades);
+  });
+};
 // Get a single actividad
 exports.show = function(req, res) {
 

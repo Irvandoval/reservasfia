@@ -7,8 +7,11 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/aprobados', auth.isAuthenticated(), controller.indexAprobados);
-router.get('/espera', controller.indexEspera);
+router.get('/misaprobados', auth.isAuthenticated(), controller.indexMisAprobados);
+router.get('/espera',auth.isAuthenticated(), controller.indexEspera);
+router.get('/misespera', auth.isAuthenticated(),controller.indexEspera);
 router.get('/desaprobados', controller.indexDesaprobados);
+router.get('/misdesaprobados',auth.isAuthenticated(), controller.indexMisDesaprobados);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);

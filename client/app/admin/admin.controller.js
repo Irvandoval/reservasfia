@@ -2,7 +2,11 @@
 
 angular.module('reservasApp')
   .controller('AdminCtrl', function ($scope, $http, Auth, User) {
-
+         
+         $scope.isAdmin = Auth.isAdmin;
+         $scope.isDocente = Auth.isDocente;
+         $scope.isRepresentante = Auth.isRepresentante;
+         $scope.isInvitado = Auth.isInvitado;
     // Use the User $resource to fetch all users
     $scope.users = User.query();
 

@@ -12,6 +12,9 @@ angular.module('reservasApp')
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
+    $scope.isDocente = Auth.isDocente;
+    $scope.isRepresentante = Auth.isRepresentante;
+    $scope.isInvitado = Auth.isInvitado;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
     $scope.logout = function() {

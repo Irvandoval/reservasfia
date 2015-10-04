@@ -2,7 +2,8 @@
 
 <div class="container text-center">
   <ul class="list-group">
-   <li class="list-group-item"><a href="/solicitudes-reservas"><i class="fa fa-clock-o fa-2x"></i> Solicitudes de reservas</a></li>
+   <li ng-if="isAdmin()" class="list-group-item"><a href="/solicitudes-reservas"><i class="fa fa-clock-o fa-2x"></i> Solicitudes de reservas</a></li>
+   <li ng-if="isDocente() || isRepresentante()" class="list-group-item"><a href="/mis-solicitudes"><i class="fa fa-clock-o fa-2x"></i> Mis Solicitudes de reservas</a></li>
   <li class="list-group-item"><a href="/aula"><i class="fa fa-building fa-2x"></i> Aulas</a></li>
   <li class="list-group-item"><i class="fa fa-book fa-2x"></i> Materias</li>
   <li class="list-group-item"><i class="fa fa-users fa-2x"></i> Usuarios</li>

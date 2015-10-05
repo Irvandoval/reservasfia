@@ -5,7 +5,10 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://admin:reservas@ds031903.mongolab.com:31903/reservas-fia'
+    uri:    process.env.MONGOLAB_URI ||
+            process.env.MONGOHQ_URL ||
+            process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
+            'mongodb://localhost/reservas-dev'
   },
 
   seedDB: true

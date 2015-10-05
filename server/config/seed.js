@@ -26,7 +26,7 @@ var Ciclo = require('../api/ciclo/ciclo.model');
     usuario: "55cd2d6c87d5ad543530fe51",
     materias:['55c2e6fbd9de2ffc4ae4af54','55c2e6fbd9de2ffc4ae4af55']
     }
-    
+
   );
     });
 /*Escuela.find({}).remove(function(){

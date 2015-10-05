@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('AulaCtrl', function ($scope, $resource, ngTableParams, $filter, Aula) {
+  .controller('AulaCtrl', function ($scope, $resource, ngTableParams, $filter, Aula, $modal) {
    $scope.tableParams = new ngTableParams({
          page: 1,            // show first page
          count: 5          // count per page
@@ -19,5 +19,34 @@ angular.module('reservasApp')
 
          }
      });
+   $scope.nuevaAula = function(){
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'nueva-aula.html',
+      controller: 'NuevaAulaCtrl',
+      size: 'lg'
+    });
+   }
+   $scope.editarAula = function(aula){
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'editar-aula.html',
+      controller: 'EditarAulaCtrl',
+      size: 'lg',
+      resolve: {
+        aula: function() {
+          return aula;
+        }
+      }
+    });
+   }
+  })
 
-  });
+  .controller('NuevaAulaCtrl', function(){
+
+  })
+
+  .controller('EditarAulaCtrl',function(aula, $scope){
+    $scope.aula = aula;
+    console.log($scope.aula);
+  })

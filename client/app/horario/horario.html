@@ -1,0 +1,52 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+     <div class="page-header">
+<h1>Subir un nuevo horario <small>Agregue el archivo .xlsx</small></h1>
+</div>
+    </div>
+    <div class="col-sm-4">
+      <form class="form text-center" name="form" ng-submit="login(form)" novalidate>
+
+        <div class="form-group">
+          <div ngf-drop ngf-select ng-model="files" class="drop-box"
+       ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="true"
+       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">Arrastra el archivo <strong>.xlsx</strong> aquí o haz clic</div>
+    <div ngf-no-file-drop>El navegador actual no posee la caracteristica necesaria</div>
+<div class="btn btn-danger" ngf-select ng-model="files" ngf-multiple="multiple">Selecciona Archivo</div>
+        </div>
+
+
+      </form>
+    </div>
+    <div class="col-sm-7">
+         <table class="table table-striped">
+          <tr>
+           <th>Código</th>
+           <th>Tipo</th>
+           <th>Número</th>
+           <th>Cupo</th>
+           <th>Aula</th>
+           <th>Día 1</th>
+           <th>Día 2</th>
+           <th>Franja</th>
+          </tr>
+           <tr ng-repeat="grupo in grupos">
+           <td ng-if="grupo.codigoMateria != grupos[$index - 1].codigoMateria">{{grupo.codigoMateria}}</td>
+           <td ng-if="grupo.codigoMateria == grupos[$index - 1].codigoMateria"></td>
+           <td  ng-class="{'success': grupo.tipo == 'GT','danger': grupo.tipo == 'GD', 'info': grupo.tipo == 'GL'}">{{grupo.tipo}}</td>
+           <td>{{grupo.numero}}</td>
+           <td>{{grupo.cupo}}</td>
+           <td>{{grupo.aula}}</td>
+           <td>{{grupo.dia[0]}}</td>
+           <td ng-if="grupo.dia[1] !== undefined">{{grupo.dia[1]}}</td>
+           <td ng-if="grupo.dia[1] === undefined"></td>
+           <td>{{grupo.franja}}</td>
+          </tr>
+         </table>
+    </div>
+  </div>
+  <hr>
+</div>

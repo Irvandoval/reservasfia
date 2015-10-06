@@ -7,7 +7,7 @@ angular.module('reservasApp')
          $scope.isDocente = Auth.isDocente;
          $scope.isRepresentante = Auth.isRepresentante;
          $scope.isInvitado = Auth.isInvitado;
-    // Use the User $resource to fetch all users
+    // Use the User $resource to fetch all users and admin
     $scope.users = User.query();
 
     $scope.delete = function(user) {

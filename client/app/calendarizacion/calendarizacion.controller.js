@@ -39,14 +39,15 @@ angular.module('reservasApp')
     /*Funciones*/
     // evento al dar clic a una reserva
     $scope.alertOnEventClick = function(date, jsEvent, view) {
+        console.log(date);
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'reserva-detalle.html',
         controller: 'ModalInstanceCtrl',
         size: 'lg',
         resolve: {
-          items: function() {
-            return $scope.items;
+          actividad: function() {
+            return date.actividad;
           }
         }
       });
@@ -338,14 +339,14 @@ angular.module('reservasApp')
 
   })
 
-.controller('ModalInstanceCtrl', function($scope, $modalInstance, items) {
-  $scope.items = items;
+.controller('ModalInstanceCtrl', function($scope, $modalInstance, actividad) {
+  $scope.actividad = actividad;
   $scope.selected = {
-    item: $scope.items[0]
+    //item: $scope.items[0]
   };
 
   $scope.ok = function() {
-    $modalInstance.close($scope.selected.item);
+    $modalInstance.close();
   };
 
   $scope.cancel = function() {

@@ -126,10 +126,10 @@
    <p align="left">Fecha: {{actividad.inicio | date:'fullDate'}} </p>
    <p align="left">Hora de inicio: {{actividad.inicio | date:'shortTime'}} </p>
    <p align="left">Hora de fin: {{actividad.fin | date:'shortTime'}} </p>
-   <label>Aulas: </label>
-    <div ng-repeat="aula in actividad.aulas">
-         <b> {{aula.nombre}}</b>
-    </div>
+   <p align="left">Aulas:
+     <div ng-repeat="aula in actividad.aulas">
+       <b> {{aula.nombre}}</b>
+     </div> </p>
 
 
   </div>

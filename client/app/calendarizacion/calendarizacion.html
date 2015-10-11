@@ -121,11 +121,15 @@
   </div>
   <div class="modal-body">
    <p align="left">Nombre: {{actividad.actividad.nombre}} </p>
-   <p align="left">Asignatura: {{actividad.actividad.materia.nombre}}  </p>
+   <p align="left">Asignatura: {{actividad.materia}}  </p>
    <p align="left">Encargado: {{actividad.actividad.encargado}} </p>
    <p align="left">Fecha: {{actividad.inicio | date:'fullDate'}} </p>
    <p align="left">Hora de inicio: {{actividad.inicio | date:'shortTime'}} </p>
    <p align="left">Hora de fin: {{actividad.fin | date:'shortTime'}} </p>
+   <label>Aulas: </label>
+    <div ng-repeat="aula in actividad.aulas">
+         <b> {{aula.nombre}}</b>
+    </div>
 
 
   </div>

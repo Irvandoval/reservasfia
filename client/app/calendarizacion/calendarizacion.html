@@ -46,7 +46,11 @@
 
            <div class="form-group">
              <label>Nombre de la actividad</label>
-             <input class="form-control" ng-model="actividad.nombre" placeholder="Ej: Evaluado 1"/>
+             <input type="text" class="form-control" ng-model="actividad.nombre" placeholder="Ej: Evaluado 1"/>
+           </div>
+           <div class="form-group">
+             <label>Cantidad de Asistentes</label>
+             <input type="number" min="1"  class="form-control"  placeholder="Agrega la cantidad de asistentes"/>
            </div>
            <label>Fecha</label>
             <p class="input-group">

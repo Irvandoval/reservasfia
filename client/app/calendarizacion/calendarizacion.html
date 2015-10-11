@@ -127,7 +127,8 @@
    <p align="center">Hora de inicio: {{actividad.inicio | date:'shortTime'}} </p>
    <p align="center">Hora de fin: {{actividad.fin | date:'shortTime'}} </p>
    <p align="center">Aulas:
-    <div ng-repeat="aula in actividad.aulas"> <li> {{aula.nombre}} </li> <br/>
+    <div ng-repeat="aula in actividad.aulas">
+     <div style="text-align: center;"> <li> {{aula.nombre}} </li> </dir>
     </div> </p>
 
 

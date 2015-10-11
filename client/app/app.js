@@ -48,17 +48,17 @@ angular.module('reservasApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth, $state, $stateParams, ngProgressFactory ,$timeout ) {
+  .run(function ($rootScope, $location, Auth, $state, $stateParams,$timeout ) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next, toState, toStateParams) {
       $rootScope.toState = toState;
                 $rootScope.toStateParams = toStateParams;
-                $rootScope.progressbar = ngProgressFactory.createInstance();
-                $rootScope.progressbar.setColor("#E4F0F6");
-                $rootScope.progressbar.start();
-                $timeout(function(){
+               // $rootScope.progressbar = ngProgressFactory.createInstance();
+               // $rootScope.progressbar.setColor("#E4F0F6");
+             //   $rootScope.progressbar.start();
+                /*$timeout(function(){
                      $rootScope.progressbar.complete();
-                },600);
+                },600);*/
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
           $location.path('/login');

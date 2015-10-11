@@ -17,11 +17,11 @@
     <div class="table-responsive">
       <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="Materia in $data">
-          <td class="text-center" data-title="'Codigo'" filter="{ 'codigo': 'text' }">{{materia.codigo}}</td>
-          <td class="text-center" data-title="'Nombre'">{{materia.nombre}}</td>
-          <td class="text-center" data-title="'Tipo'">{{materia.tipo}}</td>
-          <td class="text-center" data-title="'Escuela'">{{materia.escuela.nombre}}</td>
-          <td class="text-center" data-title="'Ciclo'">{{materia.imparteEnCiclo}}
+          <td class="text-center" data-title="'Codigo'" filter="{ 'codigo': 'text' }">{{Materia.codigo}}</td>
+          <td class="text-center" data-title="'Nombre'">{{Materia.nombre}}</td>
+          <td class="text-center" data-title="'Tipo'">{{Materia.tipo}}</td>
+          <td class="text-center" data-title="'Escuela'">{{Materia.Escuela.nombre}}</td>
+          <td class="text-center" data-title="'Ciclo'">{{Materia.imparteEnCiclo}}
 
           </td>
           

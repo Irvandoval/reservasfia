@@ -122,13 +122,15 @@
   <div class="modal-body">
    <DIV ALIGN="center">Nombre: {{actividad.actividad.nombre}} </DIV>
    <DIV ALIGN="center">Asignatura: {{actividad.materia}}  </DIV>
-   <DIV ALIGN=left>Encargado: {{actividad.actividad.encargado}} </DIV>
-   <DIV ALIGN=left>Fecha: {{actividad.inicio | date:'fullDate'}} </DIV>
+   <DIV ALIGN="center">Encargado: {{actividad.actividad.encargado}} </DIV>
+   <DIV ALIGN="center">Fecha: {{actividad.inicio | date:'fullDate'}} </DIV>
    <DIV ALIGN="center">Hora de inicio: {{actividad.inicio | date:'shortTime'}} </DIV>
    <DIV ALIGN="center">Hora de fin: {{actividad.fin | date:'shortTime'}} </DIV>
-   <DIV ALIGN="center">Aulas: ng-repeat="aula in actividad.aulas"  <li> {{aula.nombre}} </li> </DIV>
+   <DIV ALIGN="center">Aulas:
+         <div> ng-repeat="aula in actividad.aulas"  <li> {{aula.nombre}} </li> </div>
+  </DIV>
 
-    
+
 
 
   </div>

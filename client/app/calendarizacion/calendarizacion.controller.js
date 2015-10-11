@@ -47,7 +47,7 @@ angular.module('reservasApp')
         size: 'lg',
         resolve: {
           actividad: function() {
-            return date.actividad;
+            return date;
           }
         }
       });

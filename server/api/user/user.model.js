@@ -11,7 +11,7 @@ var UserSchema = new Schema({
     type: String,
     default: 'docente'
   },
-  escuela: { type: Schema.Types.ObjectId, ref: 'Escuela', required: false },
+ // escuela: { type: Schema.Types.ObjectId, ref: 'Escuela', required: false },
   hashedPassword: String,
   provider: String,
   salt: String

@@ -63,29 +63,26 @@
    <h3 class="modal-title">Nueva Materia</h3>
  </div>
  <div class="container-fluid">
+ <div class="form-group">
+    <label>Codigo:</label>
+    <input name="codigo" type="text" value=""  class="form-control">
+  </div>
   <div class="form-group">
     <label>Nombre:</label>
     <input name="nombre" type="text" value=""  class="form-control">
-  </div>
+     </div>
   <div class="form-group">
-    <label>Descripción:</label>
-     <textarea name="descripcion" rows="5" cols="20" class="form-control"></textarea>
-  </div>
-  <div class="form-group">
-    <label>Estado:</label>
+    <label>Tipo:</label>
      <select class="form-control" name="estado">
-       <option value="true">Habilitado</option>
-       <option value="false">Deshabilitado</option>
+       <option value="true">Obligatoria</option>
+       <option value="false">Electiva</option>
      </select>
   </div>
   <div class="form-group">
-    <label>Capacidad:</label>
-    <input type="number" name="name"  min="0" class="form-control">
+    <label>Ciclo:</label>
+    <input type="number" name="name"  min="1" class="form-control">
   </div>
-    <label>Sonido:</label>
-     <input type="checkbox" name="name" value="false" class="">
-     <label>Pizarra:</label>
-      <input type="checkbox" name="name" value="false" class="">
+    
  </div>
 
   <div class="modal-footer">
@@ -97,34 +94,31 @@
   </div>
 
 </script>
-<script id="editar-aula.html" type="text/ng-template">
+<script id="editar-materia.html" type="text/ng-template">
  <div class="modal-header">
-   <h3 class="modal-title">Nueva Aula</h3>
+   <h3 class="modal-title">Editar Materia</h3>
  </div>
  <div class="container-fluid">
   <div class="form-group">
+    <label>Codigo:</label>
+    <input name="codigo" type="text"  class="form-control" ng-model="materia.codigo">
+  </div>
+  <div class="form-group">
     <label>Nombre:</label>
-    <input name="nombre" type="text"  class="form-control" ng-model="aula.nombre">
+    <input name="nombre" type="text"  class="form-control" ng-model="materia.nombre">
   </div>
   <div class="form-group">
-    <label>Descripción:</label>
-     <textarea name="descripcion" rows="5" cols="20" class="form-control" ng-model="aula.descripcion"></textarea>
-  </div>
-  <div class="form-group">
-    <label>Estado:</label>
-     <select class="form-control" name="estado">
-       <option value="true">Habilitado</option>
-       <option value="false">Deshabilitado</option>
+    <label>Tipo:</label>
+     <select class="form-control" name="tipo">
+       <option value="true">Obligatoria</option>
+       <option value="false">Electiva</option>
      </select>
   </div>
   <div class="form-group">
-    <label>Capacidad:</label>
-    <input type="number" name="name"  min="0" class="form-control" ng-model="aula.capacidad">
+    <label>Ciclo:</label>
+    <input type="number" name="name"  min="0" class="form-control" ng-model="materia.imparteEnCiclo">
   </div>
-    <label>Sonido:</label>
-     <input type="checkbox" name="name" ng-model="aula.sonido">
-     <label>Pizarra:</label>
-      <input type="checkbox" name="name" ng-model="aula.pizarra">
+    
  </div>
 
   <div class="modal-footer">

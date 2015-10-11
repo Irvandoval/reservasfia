@@ -18,10 +18,30 @@
 <div class="btn btn-danger" ngf-select ng-model="files" ngf-multiple="multiple">Selecciona Archivo</div>
         </div>
 
-
+      
       </form>
     </div>
     <div class="col-sm-7">
+    <label class="checkbox-inline">
+  <input type="checkbox" id="checkboxEnLinea1" value="opcion_1"> Ciclo I
+</label>
+<label class="checkbox-inline">
+  <input type="checkbox" id="checkboxEnLinea2" value="opcion_2"> Ciclo II
+</label> <br> 
+ <label>año:</label>
+    <select class="form-control">
+  <option>2016</option>
+  <option>2015</option>
+</select>
+    <label>Escuela:</label>
+    <select class="form-control">
+  <option>Ingenieria de Sistemas Informaticos</option>
+  <option>Ingenieria Industrial</option>
+  <option>Ciencias Básicas</option>
+  <option>Ingenieria Civil</option>
+  <option>Ingenieria Quimica</option>
+</select>
+
          <table class="table table-striped">
           <tr>
            <th>Código</th>
@@ -46,7 +66,8 @@
            <td>{{grupo.franja}}</td>
           </tr>
          </table>
+         <button class="btn btn-danger">Enviar</button>
     </div>
-  </div>
+      </div>
   <hr>
 </div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('HorarioCtrl', function (Auth, $scope, Upload, $http, $location) {
+  .controller('SubirHorarioCtrl', function (Auth, $scope, Upload, $http, $location) {
    
     $scope.grupos = {};
 

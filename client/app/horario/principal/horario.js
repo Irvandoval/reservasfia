@@ -5,7 +5,7 @@ angular.module('reservasApp')
     $stateProvider
       .state('horario', {
         url: '/horario',
-        templateUrl: 'app/horario/horario.html',
+        templateUrl: 'app/horario/principal/horario.html',
         controller: 'HorarioCtrl'
       });
   });

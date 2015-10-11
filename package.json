@@ -51,6 +51,7 @@
     "grunt-usemin": "~2.1.1",
     "grunt-env": "~0.4.1",
     "grunt-nodemon": "~0.2.0",
+     "grunt-node-inspector": "~0.1.5",
     "grunt-angular-templates": "^0.5.4",
     "grunt-dom-munger": "^3.4.0",
     "grunt-protractor-runner": "^1.1.0",
@@ -84,7 +85,7 @@
     "tmp":"~0.0.23"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": "0.12.7"
   },
   "scripts": {
     "start": "node server/app.js",

@@ -21,6 +21,7 @@
       <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
       <link rel="stylesheet" href="bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
       <link rel="stylesheet" href="bower_components/angularjs-toaster/toaster.css" />
+      <link rel="stylesheet" href="bower_components/ngprogress/ngProgress.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -31,11 +32,13 @@
       <link rel="stylesheet" href="app/app.css">
       <link rel="stylesheet" href="app/aula/aula.css">
       <link rel="stylesheet" href="app/calendarizacion/calendarizacion.css">
+      <link rel="stylesheet" href="app/horario/principal/horario.css">
+      <link rel="stylesheet" href="app/horario/subir_horario/subir_horario.css">
       <link rel="stylesheet" href="app/main/main.css">
       <link rel="stylesheet" href="app/materia/materia.css">
       <link rel="stylesheet" href="app/reserva/mi_solicitud/reserva_mi_solicitud.css">
       <link rel="stylesheet" href="app/reserva/revisar_solicitud/revisar_solicitud.css">
-      <link rel="stylesheet" href="app/turno/horario/horario.css">
+      <link rel="stylesheet" href="app/usuario/usuario.css">
       <link rel="stylesheet" href="components/modal/modal.css">
       <!-- endinjector -->
     <!-- endbuild -->
@@ -76,6 +79,7 @@
       <script src="bower_components/angular-momentjs/angular-momentjs.js"></script>
       <script src="bower_components/angular-animate/angular-animate.js"></script>
       <script src="bower_components/angularjs-toaster/toaster.js"></script>
+      <script src="bower_components/ngprogress/build/ngprogress.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
       <script src="/bower_components/angular-i18n/angular-locale_es-es.js"></script>
@@ -97,6 +101,10 @@
           <script src="app/calendarizacion/calendarizacion.constant.js"></script>
           <script src="app/calendarizacion/calendarizacion.controller.js"></script>
           <script src="app/calendarizacion/calendarizacion.js"></script>
+          <script src="app/horario/principal/horario.controller.js"></script>
+          <script src="app/horario/principal/horario.js"></script>
+          <script src="app/horario/subir_horario/subir_horario.controller.js"></script>
+          <script src="app/horario/subir_horario/subir_horario.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
           <script src="app/materia/materia.controller.js"></script>
@@ -105,9 +113,9 @@
           <script src="app/reserva/mi_solicitud/reserva_mi_solicitud.js"></script>
           <script src="app/reserva/revisar_solicitud/revisar_solicitud.controller.js"></script>
           <script src="app/reserva/revisar_solicitud/revisar_solicitud.js"></script>
-          <script src="app/turno/horario/horario.controller.js"></script>
-          <script src="app/turno/horario/horario.js"></script>
           <script src="app/turno/turno.service.js"></script>
+          <script src="app/usuario/usuario.controller.js"></script>
+          <script src="app/usuario/usuario.js"></script>
           <script src="components/auth/auth.service.js"></script>
           <script src="components/auth/user.service.js"></script>
           <script src="components/modal/modal.service.js"></script>

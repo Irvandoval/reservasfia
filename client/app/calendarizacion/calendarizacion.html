@@ -123,10 +123,10 @@
    <p align="left">Nombre: {{actividad.actividad.nombre}} </p>
    <p align="left">Asignatura: {{actividad.actividad.materia.nombre}}  </p>
    <p align="left">Encargado: {{actividad.actividad.encargado}} </p>
-   <p align="left">Hora de inicio: {{actividad.inicio}} </p>
-   <p align="left">Hora de fin: {{actividad.fin}} </p>
-   {{actividad.inicio | date:'fullDate'}}
-   {{actividad.inicio | date:'shortTime'}}
+   <p align="left">Fecha: {{actividad.inicio | date:'fullDate'}} </p>
+   <p align="left">Hora de inicio: {{actividad.inicio | date:'shortTime'}} </p>
+   <p align="left">Hora de fin: {{actividad.fin | date:'shortTime'}} </p>
+
 
   </div>
   <div class="modal-footer">

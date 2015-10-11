@@ -2,5 +2,13 @@
 
 angular.module('reservasApp')
   .controller('AyudaCtrl', function ($scope) {
-    $scope.message = 'Hello';
+   $scope.groups = [
+   {
+     title: 'Encabezado1'
+   },
+   {
+     title: 'Encabezado 2'
+
+   }
+ ];
   });

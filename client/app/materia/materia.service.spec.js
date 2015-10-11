@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: turno', function () {
+describe('Service: Materia', function () {
 
   // load the service's module
   beforeEach(module('reservasApp'));
 
   // instantiate service
-  var turno;
-  beforeEach(inject(function (_turno_) {
-    turno = _turno_;
+  var materia;
+  beforeEach(inject(function (_materia_) {
+    materia= _materia_;
   }));
 
   it('should do something', function () {
-    expect(!!turno).toBe(true);
+    expect(!!Materia).toBe(true);
   });
 
 });

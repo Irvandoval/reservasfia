@@ -8,7 +8,7 @@ angular.module('reservasApp')
      }, {
          total:0,
          getData: function ($defer, params) {
-        Materia.query().$promise
+         Materia.query().$promise
          .then(function(materias){
           var orderedRecentActivity = params.filter() ?
                         $filter('filter')(materias, params.filter()) :

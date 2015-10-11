@@ -12,8 +12,7 @@ angular.module('reservasApp', [
   'ngTable',
   'ngFileUpload',
   'angular-momentjs',
-  'toaster',
-  'ngProgress'
+  'toaster'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

@@ -1,0 +1,14 @@
+.drop-box {
+    background: rgb(171, 201, 221);
+    border: 5px dashed #1597cf;
+    width: 250px;
+    height: 250px;
+    text-align: center;
+    padding-top: 25px;
+    margin: 10px;
+}
+
+.dragover {
+    border: 5px dashed rgb(40, 27, 167);
+    background: rgb(81, 144, 238);
+}

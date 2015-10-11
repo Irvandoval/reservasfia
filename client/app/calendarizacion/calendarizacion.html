@@ -124,8 +124,9 @@
    <p align="left">Asignatura: {{actividad.actividad.materia.nombre}}  </p>
    <p align="left">Encargado: {{actividad.actividad.encargado}} </p>
    <p align="left">Hora de inicio: {{actividad.inicio}} </p>
-   <p align="left">Hora de fin: {{actividad.fin}} </p> 
-
+   <p align="left">Hora de fin: {{actividad.fin}} </p>
+   {{actividad.inicio | date:'fullDate'}}
+   {{actividad.inicio | date:'shortTime'}}
 
   </div>
   <div class="modal-footer">

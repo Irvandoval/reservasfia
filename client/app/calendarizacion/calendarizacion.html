@@ -120,15 +120,15 @@
     <h3 class="modal-title">Detalle de la Reserva</h3>
   </div>
   <div class="modal-body">
-   <p align="left">Nombre: {{actividad.actividad.nombre}} </p>
-   <p align="left">Asignatura: {{actividad.materia}}  </p>
-   <p align="left">Encargado: {{actividad.actividad.encargado}} </p>
-   <p align="left">Fecha: {{actividad.inicio | date:'fullDate'}} </p>
-   <p align="left">Hora de inicio: {{actividad.inicio | date:'shortTime'}} </p>
-   <p align="left">Hora de fin: {{actividad.fin | date:'shortTime'}} </p>
-   <p align="left">Aulas:
+   <p align="center">Nombre: {{actividad.actividad.nombre}} </p>
+   <p align="center">Asignatura: {{actividad.materia}}  </p>
+   <p align="center">Encargado: {{actividad.actividad.encargado}} </p>
+   <p align="center">Fecha: {{actividad.inicio | date:'fullDate'}} </p>
+   <p align="center">Hora de inicio: {{actividad.inicio | date:'shortTime'}} </p>
+   <p align="center">Hora de fin: {{actividad.fin | date:'shortTime'}} </p>
+   <p align="center">Aulas:
      <div ng-repeat="aula in actividad.aulas">
-     <dir> <li> {{aula.nombre}} </li> </dir>
+    <li> {{aula.nombre}} </li> <br/>
      </div> </p>
 
 

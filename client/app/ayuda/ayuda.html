@@ -3,12 +3,12 @@
 <div class="content">
   <h1>Ayuda de usuario</h1>
   <accordion>
-    <accordion-group heading="Encabezado1">
+    <accordion-group heading="Calendarización">
       <div class="list-group">
-        <a class="list-group-item" href="#enc1sub1">Dapibus ac facilisis in</a>
-        <a class="list-group-item" href="#enc1sub2">Morbi leo risus</a>
-        <a class="list-group-item" href="#enc1sub3">Porta ac consectetur ac</a>
-        <a class="list-group-item" href="#">Vestibulum at eros</a>
+        <a class="list-group-item" href="#enc1sub1">Vista General</a>
+        <a class="list-group-item" href="#enc1sub2">Búsqueda</a>
+        <a class="list-group-item" href="#enc1sub3">Reservar</a>
+        <a class="list-group-item" href="#">otro campo</a>
       </div>
     </accordion-group>
     <accordion-group heading="Encabezado2">
@@ -29,14 +29,73 @@
     </accordion-group>
   </accordion>
   <div>
+    <h2>CALENDARIZACIÓN</h2>
+        Alguna Descripción.
         <div id="enc1sub1">
-            ccontenido
+            <h3>Vista General</h3>
+            Es la primer vista que aparece al seleccionar la opción calendarización,
+            consta de los siguientes componentes:
+              <h4>Actividad</h4>
+              Actividad es el principal componente de calendarización; ya que el sistema gira entorno a ella,
+              dentro de actividad se encuentra:
+                <h5>Estado</h5>
+                Una actividad puede tener un estado, el cual se encuentra diferenciado ademas de su nombre, por un color:
+              Aprobado
+              En Espera
+              Rechazado
+                <h5>Detalle</h5>
+                En detalle se puede observar toda la información de una actividad especifica
+                para poder acceder a esta opción, basta con seleccionar la actividad deseada dentro del calendario.
+              <h4>Calendario<h4>
+                El calendario es donde se pueden observar las diferentes actividades programadas (o solicitadas)
+                cuenta con los siguientes filtros:
+                  <h5>Día.</h5> Muestra la calendarización de actividades para un día especifico, para las horas permitidas para actividades.
+                  Por defecto el calendario se muestra por día en la fecha actual. Para navegar en los diferentes días
+                  basta con presionar los botones de los cursores hacia adelante o hacia atras.
+                  <h5>Semana.</h5>Muestra la calendarización de actividades por semana, iniciando lunes y finalizando Domingo y mostrando las horas.
+                  Para navegar en la calendarización por semanas:
+                  Debe dar clic al boton "semana" que se encuentra en la parte superior izquierda del calendario.
+                  Para cambiar de la semana que muestra la opción, debe dar clic en los botones de los cursores hacia adelante o hacia atras.
+                  <h5>Mes.</h5>Muestra la calendarización de actividades por mes.
+                  Para navegar en la calendarización por mes:
+                  Debe dar clic al boton "mes" que se encuentra en la parte superior izquierda del calendario.
+                  Para cambiar de mes que muestra la opción, debe dar clic en los botones de los cursores hacia adelante o hacia atras.
+
         </div>
         <div id="enc1sub2">
-               contenido
+          <h3>Busqueda</h3>
+            En esta opción se encuentran dos filtros de busqueda, para facilitar la visualización de la/s actividad/es que se desean observar.
+            Dichos filtros estan en la parte lateral derecha del calendario. y son:
+            <h4>Busqueda General</h4>
+            alguna descripción
+            <h4>Aula especifica</h4>
+            alguna descripción.
         </div>
         <div id="enc1sub3">
-            contenido
+          <h3>Reservar</h3>
+          Esta opción se encuentra en la parte lateral derecha del calendario, contiguo a la opción busqueda, dentro de la ventana calendarización
+          <h4>IMPORTANTE</h4>
+          <b>Antes de realizar una reserva se recomienda revisar la calendarización en la fecha que desea programar la actividad a realizar, con el fin de verificar que hay disponibilidad de horario.</b>
+          Para realizar una reserva, se deben seguir los siguientes pasos:
+          1. Dar clic en la pestaña Reservar. que se encuentra dentro de la ventana de calendarización.
+          2. Llenar los campos segun la información requerida.
+            2.1. Nombre de la actividad: debe digitar el nombre de dicha actividad (ej. evaluado 1, corto 2, ponencia, etc,)
+            2.2. Cantidad de asistentes: ingresar la cantidad en numeros de los asistentes previstos para dicha actividad.
+            2.3. Fecha:
+                2.3.1. Dar clic en el icono de calendario (color verde) que aparece en este campo. se desplegara un calendario.
+                2.3.2. Navegar por el calendario y escoger la fecha deseada para la actividad.
+            2.4. Seleccionar la hora de inicio y fin de la actividad, en el bloque correspondiente.
+                 Puede utilizar los cursores hacia arriba (aumentar) o hacia abajo (disminuir) en ambos horarios para cambiar la hora o minutos (estos ultimos varían en 5 minutos)
+            2.5. Ingresar aulas. puede ingresar una o mas aulas, digitando cada una de ellas, en dicho espacio.
+            2.6. Seleccionar Escuela. se desplegara una lista con las escuelas de la FIA-UES. Seleccione la escuela a la que pertenece la materia de la actividad a realizar.
+            2.7. Seleccionar Docente. una vez realizado el paso anterior, en esta opción le mostrara el listado de los docentes de dicha escuela.
+            2.8. Seleccionar Materia. Se desplegara un listado de las materias impartidas por el docente seleccionado en el paso anterior. Escoger la materia al que pertenece la actividad.
+            2.9. Dar clic en enviar.
+            <h4>IMPORTANTE</h4>
+            <b>Sí realiza una reserva en un horario que tenga choque con otra actividad previamente aprobada el sistema le enviará un mensaje notificando dicho choque y no permitirá realizar la reserva. Por lo que debe buscar otro horario para su actividad.
+            Sí la reserva a enviar choca con otra actividad en espera, su reserva también será aceptado y su estado será el de espera.
+            Sí la reserva no tiene ningun choque su estado será en espera.
+            Para los dos ultimos casos deberá estar pendiente del cambio de estado de su reserva el cual será proporcionado por el administrador</b>
         </div>
   </div>
 

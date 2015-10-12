@@ -5,7 +5,10 @@ var Docente = require('./docente.model');
 
 // Get list of docentes
 exports.index = function(req, res) {
-  Docente.find(function (err, docentes) {
+  Docente.find()
+  .populate('materias')
+  .populate('escuela')
+  .exec(function (err, docentes) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(docentes);
   });

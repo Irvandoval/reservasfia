@@ -1,5 +1,5 @@
 
-// Para que Don Invin no me diga que soy tacaña con las palabras xD
+
 'use strict';
 
 angular.module('reservasApp')

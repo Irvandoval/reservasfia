@@ -1,0 +1,3 @@
+.lista OL { counter-reset: item }
+.lista OL LI { display: block }
+.lista OL LI:before { content: counters(item, ".") " "; counter-increment: item }

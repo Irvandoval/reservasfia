@@ -304,10 +304,10 @@ angular.module('reservasApp')
                   toaster.pop('success', "Éxito", "La reserva se ha enviado a aprobación");
                   $scope.actividad = {};
               },function(err){
-                toaster.pop('error', "Error", "Ha ocurrido un error al enviar");
+                toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
               });
        }, function(err){
-         toaster.pop('error', "Error", err);
+          toaster.pop('error', "Error", "Se ha detectado choque de horarios");
        });
 
     };

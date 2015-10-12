@@ -117,10 +117,23 @@
 </div>
 <script id="reserva-detalle.html" type="text/ng-template">
   <div class="modal-header">
-    <h3 class="modal-title">Detalle de la Reserva</h3>
+    <h3 class="modal-title">Detalle de la actividad</h3>
   </div>
   <div class="modal-body">
-    {{actividad.nombre}}
+   <DIV ALIGN="center">Nombre: {{actividad.actividad.nombre}} </DIV>
+   <DIV ALIGN="center">Asignatura: {{actividad.materia}}  </DIV>
+   <DIV ALIGN="center">Encargado: {{actividad.actividad.encargado}} </DIV>
+   <DIV ALIGN="center">Fecha: {{actividad.inicio | date:'fullDate'}} </DIV>
+   <DIV ALIGN="center">Hora de inicio: {{actividad.inicio | date:'shortTime'}} </DIV>
+   <DIV ALIGN="center">Hora de fin: {{actividad.fin | date:'shortTime'}} </DIV>
+   <DIV ALIGN="center">Aulas:
+         <div ng-repeat="aula in actividad.aulas">
+         <li> {{aula.nombre}} </li>
+         </div>
+  </DIV>
+
+
+
 
   </div>
   <div class="modal-footer">

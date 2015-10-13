@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('reservasApp')
-  .factory('Aula', function ($resource) {
+  .factory('Carrera', function ($resource) {
     return $resource('/api/carreras');
   });

@@ -25,6 +25,12 @@
             <td class="text-center" data-title="'Estado'">
               <span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':aula.estado == 'desaprobado', 'amarillo':actividad.estado == 'en espera' }"></span>
             </td>
+	    <td class="text-center" data-title="'Acciones'">
+                 <div ng-if="actividad.estado=='aprobado">
+                 <button class="btn btn-success">Mostrar Comprobante </button>
+                 </div>
+                   <button class="btn btn-danger">Eliminar </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -53,6 +59,12 @@
            <td class="text-center" data-title="'Estado'">
              <span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':aula.estado == 'desaprobado', 'amarillo':actividad.estado == 'en espera' }"></span>
            </td>
+            <td class="text-center" data-title="'Acciones'">
+                
+                
+		     <button class="btn btn-success">Mostrar Comprobante </button>
+                  
+            </td>
           </tr>
           <tbody>
           </table>
@@ -80,6 +92,12 @@
                <td class="text-center" data-title="'Estado'">
                  <span aria-hidden="true" class="fa fa-circle rojo" ></span>
                </td>
+               <td class="text-center" data-title="'Acciones'">
+                
+                
+               
+                   <button class="btn btn-danger">Eliminar </button>
+            </td>
               </tr>
               <tbody>
               </table>

@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CarrerasCtrl', function ($scope, $resource, ngTableParams, $filter, Carrera, $modal) {
+  .controller('CarreraCtrl', function ($scope, $resource, ngTableParams, $filter, Carrera, $modal) {
    $scope.tableParams = new ngTableParams({
          page: 1,            // show first page
          count: 5          // count per page

@@ -14,7 +14,7 @@ angular.module('reservasApp')
          .then(function(carreras){
           var orderedRecentActivity = params.filter() ?
                         $filter('filter')(carreras, params.filter()) :
-                        aulas;
+                        carreras;
              params.total(orderedRecentActivity.length);
              $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
          })

@@ -4,33 +4,25 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-md-10">
-          <h4>Aulas</h4>
+          <h4>Carreras</h4>
         </div>
         <div class="col-md-2">
-          <button class="btn btn-success" ng-click="nuevaAula()" type="button">
+          <button class="btn btn-success" ng-click="nuevaCarrera()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
-            Nueva Aula
+            Nueva Carrera
           </button>
         </div>
       </div>
     </div>
     <div class="table-responsive">
       <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
-        <tr ng-repeat="aula in $data">
-          <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{aula.nombre}}</td>
-          <td class="text-center" data-title="'Descripción'">{{aula.descripcion}}</td>
-          <td class="text-center" data-title="'Estado'">
-            <span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':aula.estado == true, 'fa-close rojo':aula.estado == false }"></span>
+        <tr ng-repeat="carrera in $data">
+          <td class="text-center" data-title="'Codigo'" filter="{ 'codigo': 'text' }">{{carrera.codigo}}</td>
+          <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{carrera.nombre}}</td>
+          <td class="text-center" data-title="'Escuela'">
           </td>
-          <td class="text-center" data-title="'Sonido'">
-            <span aria-hidden="true" class="fa" ng-class="{'fa-check verde':aula.sonido == true, 'fa-close rojo':aula.sonido == false }"></span>
-          </td>
-          <td class="text-center" data-title="'Pizarra'">
-            <span aria-hidden="true" class="fa" ng-class="{'fa-check verde':aula.pizarra == true, 'fa-close rojo':aula.pizarra == false }"></span>
-          </td>
-          <td class="text-center" data-title="'Capacidad'">{{aula.capacidad}}</td>
           <td class="text-center" data-title="'Acciones'">
-            <button class="btn btn-warning" type="button" ng-click="editarAula(aula)">
+            <button class="btn btn-warning" type="button" ng-click="editarCarrera(carrera)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
             </button>
             <button class="btn btn-danger" type="button">
@@ -62,35 +54,30 @@
   </ul>
 </script>
 
-<script id="nueva-aula.html" type="text/ng-template">
+<script id="nueva-carrera.html" type="text/ng-template">
  <div class="modal-header">
-   <h3 class="modal-title">Nueva Aula</h3>
+   <h3 class="modal-title">Nueva Carrera</h3>
  </div>
  <div class="container-fluid">
   <div class="form-group">
+    <label>Codigo:</label>
+    <input name="codigo" type="text" value=""  class="form-control">
+  </div>
+  <div class="form-group">
     <label>Nombre:</label>
-    <input name="nombre" type="text" value=""  class="form-control">
+     <input name="nombre" type="text" value=""  class="form-control">
   </div>
   <div class="form-group">
-    <label>Descripción:</label>
-     <textarea name="descripcion" rows="5" cols="20" class="form-control"></textarea>
+  <label>Escuela:</label>
+  <SELECT NAME="tescuela" SIZE=1 onChange=" " class= "form-control">
+  <OPTION VALUE=" ">Escuela de Ingenieria de Sistemas informaticos</OPTION>
+  <OPTION VALUE=" ">Escuela de Ingenieria Industrial</OPTION>
+  <OPTION VALUE=" ">Escuela de Ingenieria Electica</OPTION>
+  <OPTION VALUE=" ">Escuela de Ingenieria Mecanica</OPTION>
+  <OPTION VALUE=" ">Escuela de Ingenieria Alimentos</OPTION>
+  <OPTION VALUE=" ">Escuela de Ingenieria Civil</OPTION>
+  </SELECT>
   </div>
-  <div class="form-group">
-    <label>Estado:</label>
-     <select class="form-control" name="estado">
-       <option value="true">Habilitado</option>
-       <option value="false">Deshabilitado</option>
-     </select>
-  </div>
-  <div class="form-group">
-    <label>Capacidad:</label>
-    <input type="number" name="name"  min="0" class="form-control">
-  </div>
-    <label>Sonido:</label>
-     <input type="checkbox" name="name" value="false" class="">
-     <label>Pizarra:</label>
-      <input type="checkbox" name="name" value="false" class="">
- </div>
 
   <div class="modal-footer">
   <button class="btn btn-success" ng-click="" type="button">

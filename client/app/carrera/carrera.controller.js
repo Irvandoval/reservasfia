@@ -3,52 +3,52 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('AulaCtrl', function ($scope, $resource, ngTableParams, $filter, Aula, $modal) {
+  .controller('CarreraCtrl', function ($scope, $resource, ngTableParams, $filter, Carrera, $modal) {
    $scope.tableParams = new ngTableParams({
          page: 1,            // show first page
          count: 5          // count per page
      }, {
          total:0,
          getData: function ($defer, params) {
-         Aula.query().$promise
-         .then(function(aulas){
+         Carrera.query().$promise
+         .then(function(carreras){
           var orderedRecentActivity = params.filter() ?
-                        $filter('filter')(aulas, params.filter()) :
-                        aulas;
+                        $filter('filter')(carreras, params.filter()) :
+                        carreras;
              params.total(orderedRecentActivity.length);
              $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
          })
 
          }
      });
-   $scope.nuevaAula = function(){
+   $scope.nuevaCarrera = function(){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
-      templateUrl: 'nueva-aula.html',
-      controller: 'NuevaAulaCtrl',
+      templateUrl: 'nueva-carrera.html',
+      controller: 'NuevaCarreraCtrl',
       size: 'lg'
     });
    }
-   $scope.editarAula = function(aula){
+   $scope.editarCarrera = function(carrera){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
-      templateUrl: 'editar-aula.html',
-      controller: 'EditarAulaCtrl',
+      templateUrl: 'editar-carrera.html',
+      controller: 'EditarCarreraCtrl',
       size: 'lg',
       resolve: {
         aula: function() {
-          return aula;
+          return carrera;
         }
       }
     });
    }
   })
 
-  .controller('NuevaAulaCtrl', function(){
+  .controller('NuevaCarreraCtrl', function(){
 
   })
 
-  .controller('EditarAulaCtrl',function(aula, $scope){
-    $scope.aula = aula;
-    console.log($scope.aula);
+  .controller('EditarCarreraCtrl',function(carrera, $scope){
+    $scope.carrera = carrera;
+    console.log($scope.carrera);
   })

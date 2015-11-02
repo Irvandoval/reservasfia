@@ -23,6 +23,7 @@ angular.module('reservasApp')
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'nuevo-ciclo.html',
+      controller: 'NuevoCicloCtrl',
       size: 'lg'
     });
    };
@@ -41,6 +42,10 @@ angular.module('reservasApp')
      }
    });
   }
+
+  .controller('NuevoCicloCtrl', function(){
+
+  })
 
   .controller('EditarCicloCtrl',function(ciclo, $scope){
     $scope.ciclo = ciclo;

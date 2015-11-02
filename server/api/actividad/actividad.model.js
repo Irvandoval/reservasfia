@@ -16,6 +16,7 @@ var ActividadSchema = new Schema({
    tipo: Number, // clase, evaluacion
    encargado: String,
    materia: {type: Schema.Types.ObjectId, ref: 'Materia'},
+   escuela: {type: Schema.Types.ObjectId, ref: 'Escuela'},
    estado: String, // aprobado, desaprobado o en espera
    //turnos: [{type: Schema.Types.ObjectId, ref: 'Turno'}],
    fechaCreacion: {type: Date},

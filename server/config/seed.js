@@ -11,8 +11,17 @@ var Actividad = require('../api/actividad/actividad.model');
 var Materia = require('../api/materia/materia.model');
 var Docente = require('../api/docente/docente.model');
 var Ciclo = require('../api/ciclo/ciclo.model');
+var Representante = require('../api/representante/representante.model');
 
 
+Representante.find({}).remove(function(){
+   Representante.create({
+    nombre: 'Representante Sistemas',
+    escuela: '55c2dc510d677df947170280',
+    usuario: "5636d26e6d9fb5074c0fadc0"
+    }
+  );
+    });
 /*Docente.find({}).remove(function(){
    Docente.create({
     nombre: 'Rosario Ortiz',
@@ -98,6 +107,12 @@ User.find({}).remove(function() {
     name: 'Jorge Iraheta',
     username: 'jorge.iraheta',
     password: 'jorge.iraheta'
+  },{
+  provider: 'local',
+    role: 'representante',
+    name: 'Representante Sistemas',
+    username: 'representante_sistemas',
+    password: 'representante_sistemas'
   },
   function() {
       console.log('Se ha terminado de llenar usuarios de prueba.');

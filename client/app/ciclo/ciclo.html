@@ -15,12 +15,19 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
+      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">=
 
         <tr ng-repeat='ciclo in $data'>
          <td class='text-center' data-title="'Numero de ciclo'"> {{ciclo.numero}}</td>
-
-                <td class="text-center" data-title="'Acciones'">
+         <td class='text-center' data-title="'Año del ciclo'" > {{ciclo.anio}} </td>
+         <td class='text-center' data-title="'Inicio de clases'" > {{ciclo.inicioClases | date:'MMM d'}} </td>
+         <td class='text-center' data-title="'Fin de clases'" > {{ciclo.finClases | date:'MMM d'}} </td>
+         <td class='text-center' data-title="'Inicio de ciclo'" > {{ciclo.inicioCiclo | date:'MMM d'}}</td>
+         <td class='text-center' data-title="'Fin de ciclo'"> {{ciclo.finCiclo | date:'MMM d'}} </td>
+         <td class='text-center' data-title="'Inicio de subida de horario'"> {{ciclo.inicioSubidaHorario | date:'MMM d'}}</td>
+         <td class='text-center' data-title="'Fin de subida de horario'"> {{ciclo.finSubidaHorario| date:'MMM d'}} </td>                                  
+                                                                                     
+              <td class="text-center" data-title="'Acciones'">
                   <button class="btn btn-warning" ng-click="" type="button">
                     <span aria-hidden="true" class="fa fa-pencil "></span>
                   </button>

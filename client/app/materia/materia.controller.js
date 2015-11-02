@@ -18,6 +18,39 @@ angular.module('reservasApp')
          })
 
          }
-    
   });
-})
+    
+    $scope.nuevoMateria = function(){
+     var modalInstance = $modal.open({
+       animation: $scope.animationsEnabled,
+       templateUrl: 'nueva-materia.html',
+       controller: 'NuevoMateriaCtrl',
+       size: 'lg'
+     });
+    }
+
+  $scope.editarMateria = function(materia){
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'editar-materia.html',
+      controller: 'EditarMateriaCtrl',
+      size: 'lg',
+      resolve: {
+        materia: function() {
+          return materia;
+        }
+      }
+    });
+   } 
+  
+
+  })
+
+.controller('NuevoMateriaCtrl', function(){
+
+  })
+
+  .controller('EditarMateriaCtrl',function(materia, $scope){
+    $scope.materia = materia;
+    console.log($scope.materia);
+  })

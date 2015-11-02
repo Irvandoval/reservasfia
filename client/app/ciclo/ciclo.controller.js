@@ -16,7 +16,6 @@ angular.module('reservasApp')
                params.total(orderedRecentActivity.length);
                $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
            })
-
            }
        });
 

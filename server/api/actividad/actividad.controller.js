@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var Actividad = require('./actividad.model');
-
+var Representante = require('../representante/representante.model')
 // Get list of actividades
 exports.index = function(req, res) {
   Actividad
@@ -73,6 +73,26 @@ exports.indexEspera = function(req, res) {
    return res.status(200).json(actividades);
   });
 };
+
+exports.indexEsperaEscuela = function(req, res) {
+  /*Actividad
+  .find({estado: 'espera_escuela'})
+  .populate('materia','nombre')
+  .exec(function (err, actividades) {
+   if(err) { return handleError(res, err); }
+   return res.status(200).json(actividades);
+  });*/
+
+  Representante
+  .findOne({usuario: req.user._id}, function(err, representante){
+     Actividad
+     .find({estado: 'espera_escuela', escuela: representante.escuela}, function(err, actividades){
+        if(err) { return handleError(res, err); }
+         return res.status(200).json(actividades);
+     })
+
+  })
+};
 exports.indexMisEspera = function(req, res) {
  console.log(req.user);
   Actividad
@@ -83,6 +103,10 @@ exports.indexMisEspera = function(req, res) {
    return res.status(200).json(actividades);
   });
 };
+
+exports.comprobante = function(req, res){
+   res.render('comprobante', { title: 'ejs' });
+}
 // Get a single actividad
 exports.show = function(req, res) {
 

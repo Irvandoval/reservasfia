@@ -21,6 +21,8 @@
     "multer": "^1.0.1",
     "passport": "~0.2.0",
     "passport-local": "~0.1.6",
+    "phantomjs":"~1.9.18",
+    "phantom-html-to-pdf":"~0.3.3",
     "serve-favicon": "~2.0.1",
     "socket.io": "^1.0.6",
     "socket.io-client": "^1.0.6",

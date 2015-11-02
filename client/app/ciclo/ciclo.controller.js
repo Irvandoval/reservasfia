@@ -8,7 +8,7 @@ angular.module('reservasApp')
      }, {
          total:0,
          getData: function ($defer, params) {
-         Aula.query().$promise
+         Ciclo.query().$promise
          .then(function(ciclos){
           var orderedRecentActivity = params.filter() ?
                         $filter('filter')(ciclos, params.filter()) :
@@ -36,7 +36,7 @@ angular.module('reservasApp')
       size: 'lg',
       resolve: {
         aula: function() {
-          return aula;
+          return ciclo;
         }
       }
     });

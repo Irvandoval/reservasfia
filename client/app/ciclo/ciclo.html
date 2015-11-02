@@ -15,37 +15,11 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" >
-        <tr>
-          <td class="text-center" data-title="'Número'"> II</td>
-          <td class="text-center" data-title="'Año'">2015</td>
-          <td class="text-center" data-title="'Inicio de clases'">8 de agosto de 2015</td>
-           <td class="text-center" data-title="'Fin de clases'">30 de noviembre de 2015</td>
-             <td class="text-center" data-title="'Inicio de ciclo'">29 de julio 2015</td>
-               <td class="text-center" data-title="'Fin de ciclo'">28 de febrero 2016</td>
-                <td class="text-center" data-title="'Inicio Periodo Subida de Horarios'"> 3 de febrero 2016</td>
-                <td class="text-center" data-title="'Fin Periodo Subida de Horarios'">26 de febrero de 2016</td>
-                <td class="text-center" data-title="'Acciones'">
-     
-                  <button class="btn btn-warning" ng-click="" type="button">
-                    <span aria-hidden="true" class="fa fa-pencil "></span>
-                  </button>
-                  <button class="btn btn-danger" type="button">
-                    <span aria-hidden="true" class="fa fa-minus-circle"></span>
-                  </button>
-                </td>
+      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
 
-        </tr>
-        <tr>
-          <td class="text-center" data-title="'Número'"> I</td>
-          <td class="text-center" data-title="'Año'">2015</td>
-          <td class="text-center" data-title="'Inicio de ciclo'">1 de marzo de 2015</td>
-            <td class="text-center" data-title="'Fin de ciclo'">15 de julio de 2015</td>
-          <td class="text-center" data-title="'Inicio de clases'">3 de marzo de 2015</td>
-           <td class="text-center" data-title="'Fin de clases'">2 de julio de 2015</td>
+        <tr ng-repeat='ciclo in $data'>
+         <td class='text-center' data-title="'Numero de ciclo'"> {{ciclo.numero}}</td>
 
-                <td class="text-center" data-title="'Inicio Periodo Subida de Horarios'">16 de julio de 2015</td>
-                <td class="text-center" data-title="'Fin Periodo Subida de Horarios'">30 de julio de 2015</td>
                 <td class="text-center" data-title="'Acciones'">
                   <button class="btn btn-warning" ng-click="" type="button">
                     <span aria-hidden="true" class="fa fa-pencil "></span>
@@ -59,9 +33,123 @@
     </div>
   </div>
 </div>
+
+<script id="custom/pager" type="text/ng-template">
+  <ul class="ng-cloak pager">
+    <li ng-class="{'disabled': !page.active}" ng-repeat="page in pages" ng-switch="page.type">
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="prev">&laquo;</a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="first">
+        <span ng-bind="page.number"></span>
+      </a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="page">
+        <span ng-bind="page.number"></span>
+      </a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="more">&#8230;</a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="last">
+        <span ng-bind="page.number"></span>
+      </a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="next">&raquo;</a>
+    </li>
+  </ul>
+</script>
+
 <script id="nuevo-ciclo.html" type="text/ng-template">
   <div class="modal-header">
     <h3 class="modal-title">Nuevo Ciclo</h3>
+  </div>
+
+  <div class="container-fluid">
+
+   <div class="form-group">
+           <label>Ciclo</label>
+           <select class="form-control">
+           <option value="1">I</option>
+           <option value="1">II</option>
+           </select>
+         </div>
+         <div class="form-group">
+                 <label>Año</label>
+                 <select class="form-control">
+                 <option value="1">2016</option>
+                 <option value="1">2015</option>
+                 </select>
+               </div>
+         <label>Inicio de Ciclo</label>
+          <p class="input-group">
+            <input  class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'" min-date="'2015-01-01'" ng-model="actividad.fecha" type="text" date-disabled="disabled(date, mode)" readonly="true"/>
+
+            <span class="input-group-btn">
+              <button class="btn btn-success" ng-click="open($event)" type="button">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
+          </p>
+          <label>Fin de Ciclo</label>
+           <p class="input-group">
+             <input  class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'" min-date="'2015-01-01'" ng-model="actividad.fecha" type="text" date-disabled="disabled(date, mode)" readonly="true"/>
+
+             <span class="input-group-btn">
+               <button class="btn btn-success" ng-click="open($event)" type="button">
+                 <i class="glyphicon glyphicon-calendar"></i>
+               </button>
+             </span>
+           </p>
+           <label>Inicio de Clases</label>
+            <p class="input-group">
+              <input  class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'" min-date="'2015-01-01'" ng-model="actividad.fecha" type="text" date-disabled="disabled(date, mode)" readonly="true"/>
+
+              <span class="input-group-btn">
+                <button class="btn btn-success" ng-click="open($event)" type="button">
+                  <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+            </p>
+            <label>Fin de clases</label>
+             <p class="input-group">
+               <input  class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'" min-date="'2015-01-01'" ng-model="actividad.fecha" type="text" date-disabled="disabled(date, mode)" readonly="true"/>
+
+               <span class="input-group-btn">
+                 <button class="btn btn-success" ng-click="open($event)" type="button">
+                   <i class="glyphicon glyphicon-calendar"></i>
+                 </button>
+               </span>
+             </p>
+             <label>Inicio periodo de subida horarios</label>
+              <p class="input-group">
+                <input  class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'" min-date="'2015-01-01'" ng-model="actividad.fecha" type="text" date-disabled="disabled(date, mode)" readonly="true"/>
+
+                <span class="input-group-btn">
+                  <button class="btn btn-success" ng-click="open($event)" type="button">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </button>
+                </span>
+              </p>
+              <label>Fin periodo de subida de horarios</label>
+               <p class="input-group">
+                 <input  class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'" min-date="'2015-01-01'" ng-model="actividad.fecha" type="text" date-disabled="disabled(date, mode)" readonly="true"/>
+
+                 <span class="input-group-btn">
+                   <button class="btn btn-success" ng-click="open($event)" type="button">
+                     <i class="glyphicon glyphicon-calendar"></i>
+                   </button>
+                 </span>
+               </p>
+
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-success" ng-click="" type="button">
+      Agregar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
+  </div>
+
+</script>
+
+<script id="editar-ciclo.html" type="text/ng-template">
+  <div class="modal-header">
+    <h3 class="modal-title">Editar Ciclo</h3>
   </div>
 
   <div class="container-fluid">

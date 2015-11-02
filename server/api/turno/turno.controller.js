@@ -79,7 +79,7 @@ exports.indexEnEspera = function(req, res){
  }]
 })
  .populate('aulas')
- .populate({path: 'actividad', match: {estado: 'en espera'}})
+ .populate({path: 'actividad', match: {estado: 'espera_admin'}})
  .exec(function(err, docs) {
    var options = {
      path: 'actividad.materia',
@@ -95,7 +95,34 @@ exports.indexEnEspera = function(req, res){
    });
  });
 }
-
+exports.indexEsperaEscuela = function(req, res) {
+ Turno.find({$and: [{
+   inicio: {
+     $gte: new Date(req.query.inicio)
+   }
+ }, {
+   fin: {
+     $lte: new Date(req.query.fin)
+   }
+ }]
+})
+ .populate('aulas')
+ .populate({path: 'actividad', match: {estado: 'espera_escuela'}})
+ .exec(function(err, docs) {
+   var options = {
+     path: 'actividad.materia',
+     model: 'Materia'
+   }
+   if (err) {
+     return handleError(res, err);
+   }
+   Turno.populate(docs, options, function(err, turnos){
+      if(err) return handleError(res, err);
+      var turn = Turno.eliminarValoresNull(turnos);
+      return res.status(200).json(turn);
+   });
+ });
+};
 exports.indexByAula = function(req,res){
    Turno.find({$and: [{
      inicio: {

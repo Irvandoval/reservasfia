@@ -19,14 +19,17 @@ angular.module('reservasApp')
 
          }
      });
-   $scope.nuevaCiclo = function(){
+
+
+   $scope.nuevoCiclo = function(){
+
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'nuevo-ciclo.html',
       controller: 'NuevoCicloCtrl',
       size: 'lg'
     });
-   }
+
 
    $scope.editarCiclo = function(ciclo){
     var modalInstance = $modal.open({
@@ -35,7 +38,9 @@ angular.module('reservasApp')
       controller: 'EditarCicloCtrl',
       size: 'lg',
       resolve: {
-        aula: function() {
+
+        ciclo: function() {
+
           return ciclo;
         }
       }

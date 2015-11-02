@@ -19,6 +19,7 @@ angular.module('reservasApp')
 
          }
      });
+
    $scope.nuevaAula = function(){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,

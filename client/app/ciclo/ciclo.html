@@ -15,8 +15,8 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" >
-        <tr>
+      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
+        <tr ng-repeat="aula in $data">
           <td class="text-center" data-title="'Número'"> II</td>
           <td class="text-center" data-title="'Año'">2015</td>
           <td class="text-center" data-title="'Inicio de clases'">8 de agosto de 2015</td>
@@ -59,6 +59,27 @@
     </div>
   </div>
 </div>
+
+<script id="custom/pager" type="text/ng-template">
+  <ul class="ng-cloak pager">
+    <li ng-class="{'disabled': !page.active}" ng-repeat="page in pages" ng-switch="page.type">
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="prev">&laquo;</a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="first">
+        <span ng-bind="page.number"></span>
+      </a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="page">
+        <span ng-bind="page.number"></span>
+      </a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="more">&#8230;</a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="last">
+        <span ng-bind="page.number"></span>
+      </a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="next">&raquo;</a>
+    </li>
+  </ul>
+</script>
+
+
 <script id="nuevo-ciclo.html" type="text/ng-template">
   <div class="modal-header">
     <h3 class="modal-title">Nuevo Usuario</h3>

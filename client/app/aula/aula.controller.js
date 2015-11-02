@@ -1,5 +1,3 @@
-
-
 'use strict';
 
 angular.module('reservasApp')
@@ -42,7 +40,7 @@ angular.module('reservasApp')
       }
     });
    }
-  })
+
 
   .controller('NuevaAulaCtrl', function(){
 

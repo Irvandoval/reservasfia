@@ -13,7 +13,19 @@ var Docente = require('../api/docente/docente.model');
 var Ciclo = require('../api/ciclo/ciclo.model');
 var Representante = require('../api/representante/representante.model');
 
+Ciclo.find({}).remove(function(){
+Ciclo.create({
+ numero: 1,
+ anio: 2015,
+ inicioClases: new Date(),
+ finClases: new Date(),
+ inicioCiclo: new Date(),
+ finCiclo: new Date(),
+ inicioSubidaHorario: new Date(),
+ finSubidaHorario: new Date()
+})
 
+})
 Representante.find({}).remove(function(){
    Representante.create({
     nombre: 'Representante Sistemas',

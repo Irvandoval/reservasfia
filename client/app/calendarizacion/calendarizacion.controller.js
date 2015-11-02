@@ -239,7 +239,7 @@ angular.module('reservasApp')
     /************************************************************************/
 
     /* event sources array*/
-    $scope.eventSources = [$scope.aprobadosEvt, $scope.esperaEvt];
+    $scope.eventSources = [$scope.aprobadosEvt, $scope.esperaEvt,  $scope.esperaEscuelaEvt];
     $scope.animationsEnabled = true;
 
     /**************************************************************************/

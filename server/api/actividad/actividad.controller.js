@@ -74,7 +74,27 @@ exports.indexEspera = function(req, res) {
   });
 };
 
-exports.indexEsperaEscuela = function(req, res) {
+exports.indexEsperaEscuelaA= function(req, res) {
+  /*Actividad
+  .find({estado: 'espera_escuela'})
+  .populate('materia','nombre')
+  .exec(function (err, actividades) {
+   if(err) { return handleError(res, err); }
+   return res.status(200).json(actividades);
+  });*/
+
+  Representante
+  .findOne({usuario: req.user._id}, function(err, representante){
+     Actividad
+     .find({estado: 'espera_escuela', escuela: representante.escuela}, function(err, actividades){
+        if(err) { return handleError(res, err); }
+         return res.status(200).json(actividades);
+     })
+
+  })
+};
+
+exports.indexEsperaEscuelaB = function(req, res) {
   /*Actividad
   .find({estado: 'espera_escuela'})
   .populate('materia','nombre')

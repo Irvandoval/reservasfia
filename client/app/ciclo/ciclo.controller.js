@@ -48,9 +48,8 @@ angular.module('reservasApp')
 
    })
 
-  .controller('NuevoCicloCtrl', function($modalInstance){
-    $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+  .controller('NuevoCicloCtrl', function(){
+
   };
   })
 

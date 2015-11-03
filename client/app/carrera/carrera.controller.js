@@ -48,7 +48,11 @@ angular.module('reservasApp')
 
   })
 
-  .controller('EditarCarreraCtrl',function(carrera, $scope){
+  .controller('EditarCarreraCtrl',function(carrera, $scope, $modalInstance){
     $scope.carrera = carrera;
     console.log($scope.carrera);
+
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
   })

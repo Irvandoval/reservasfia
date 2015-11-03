@@ -19,7 +19,7 @@ angular.module('reservasApp')
 
          }
   });
-    
+
     $scope.nuevoMateria = function(){
      var modalInstance = $modal.open({
        animation: $scope.animationsEnabled,
@@ -41,8 +41,8 @@ angular.module('reservasApp')
         }
       }
     });
-   } 
-  
+   }
+
 
   })
 
@@ -50,7 +50,10 @@ angular.module('reservasApp')
 
   })
 
-  .controller('EditarMateriaCtrl',function(materia, $scope){
+  .controller('EditarMateriaCtrl',function(materia, $scope, $modalInstance){
     $scope.materia = materia;
     console.log($scope.materia);
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
   })

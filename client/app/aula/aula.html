@@ -1,11 +1,14 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
+ <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
+
   <div class="panel panel-danger">
     <div class="panel-heading">
       <div class="row">
         <div class="col-md-10">
           <h4>Aulas</h4>
         </div>
+
         <div class="col-md-2">
           <button class="btn btn-success" ng-click="nuevaAula()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>

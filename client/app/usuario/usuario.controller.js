@@ -24,7 +24,35 @@ angular.module('reservasApp')
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'nuevo-usuario.html',
+        controller: 'NuevoUsuarioCtrl',
         size: 'lg'
       });
-     };
-  });
+     }
+
+      $scope.editarUsuario = function(usuario){
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'editar-usuario.html',
+      controller: 'EditarUsuarioCtrl',
+      size: 'lg',
+      resolve: {
+        usuario: function() {
+          return usuario;
+        }
+      }
+    });
+   }
+
+  })
+
+.controller('NuevoUsuarioCtrl', function(){
+
+  })
+
+  .controller('EditarUsuarioCtrl',function(usuario, $scope, $modalInstance){
+    $scope.usuario = usuario;
+    console.log($scope.usuario);
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
+  })

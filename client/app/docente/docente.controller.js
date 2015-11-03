@@ -40,16 +40,20 @@ angular.module('reservasApp')
         }
       }
     });
-   }    
-    
+   }
+
   })
 
 .controller('NuevoDocenteCtrl', function(){
 
   })
 
-  .controller('EditarDocenteCtrl',function(docente, $scope){
+  .controller('EditarDocenteCtrl',function(docente, $scope, $modalInstance){
     $scope.docente = docente;
     console.log($scope.docente);
-  })
 
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+    };
+
+  })

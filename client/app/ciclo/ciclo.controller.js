@@ -20,15 +20,17 @@ angular.module('reservasApp')
          }
      });
 
+
    $scope.nuevoCiclo = function(){
+
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'nuevo-ciclo.html',
       controller: 'NuevoCicloCtrl',
       size: 'lg'
     });
-   };
 
+   }
    $scope.editarCiclo = function(ciclo){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
@@ -36,20 +38,25 @@ angular.module('reservasApp')
       controller: 'EditarCicloCtrl',
       size: 'lg',
       resolve: {
-        ciclo: function() {
+     ciclo: function() {
+
           return ciclo;
         }
       }
     });
    }
 
-  })
+   })
 
   .controller('NuevoCicloCtrl', function(){
 
   })
 
-  .controller('EditarCicloCtrl',function(ciclo, $scope){
+  .controller('EditarCicloCtrl',function(ciclo, $scope, $modalInstance){
     $scope.ciclo = ciclo;
     console.log($scope.ciclo);
+
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
   })

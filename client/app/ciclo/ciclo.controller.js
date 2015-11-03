@@ -30,7 +30,7 @@ angular.module('reservasApp')
       size: 'lg'
     });
 
-
+   }
    $scope.editarCiclo = function(ciclo){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
@@ -47,7 +47,7 @@ angular.module('reservasApp')
     });
    }
 
-
+   })
 
   .controller('NuevoCicloCtrl', function(){
 

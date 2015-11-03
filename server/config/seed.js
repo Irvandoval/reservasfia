@@ -49,10 +49,10 @@ Representante.find({}).remove(function(){
     }
 
   );
-    });
-/*Escuela.find({}).remove(function(){
+ });
+Escuela.find({}).remove(function(){
    Escuela.create({nombre: "Escuela de Ingenieria de Sistemas informaticos"});
-});
+});*/
 Ciclo.find({}).remove(function(){
  Ciclo.create({
   numero: 1,
@@ -67,13 +67,13 @@ Ciclo.find({}).remove(function(){
 });
 
 
-Materia.find({}).remove(function(){
+Materia.find({},function(){
    Materia.create({
-    codigo: 'DSI115',
-    nombre: 'Diseño de Sistemas I',
+    codigo: 'Prueba',
+    nombre: 'Prueba',
     tipo: 'obligatoria',
     escuela: '55c2d4e7ae483d4546656964',
-   },
+   }/*,
    {
     codigo: 'DSI215',
     nombre: 'Diseño de Sistemas II',
@@ -91,17 +91,17 @@ Materia.find({}).remove(function(){
     nombre: 'Sistemas Operativos',
     tipo: 'obligatoria',
     escuela: '55c2d4e7ae483d4546656964'
-   });
+   }*/);
 });
 
-User.find({}).remove(function() {
+User.find({},function() {
   User.create({
     provider: 'local',
     role:'invitado',
     name: 'Invitado',
     username: 'invitado',
     password: 'invitado',
-  }, {
+  }/*, {
     provider: 'local',
     role: 'admin',
     name: 'Admin',
@@ -128,7 +128,7 @@ User.find({}).remove(function() {
   },
   function() {
       console.log('Se ha terminado de llenar usuarios de prueba.');
-    }
+    }*/
   );
 });
 
@@ -143,17 +143,17 @@ User.find({}).remove(function() {
   });
 
 });
-
-Aula.find({}).remove(function(){
+*/
+Aula.find({},function(){
     Aula.create({
-      nombre: 'B11',
-      descripcion: 'Aula del edificio B, primera planta',
+      nombre: 'Prueba',
+      descripcion: 'Aula de prueba, primera planta',
       estado: true,
       sonido: true,
       pizarra: true,
       capacidad: 100,
       etiquetas: ['Edificio B']
-    },
+    }/*,
     {
       nombre: 'B21',
       descripcion: 'Aula del edificio B, segunda planta',
@@ -250,5 +250,5 @@ Aula.find({}).remove(function(){
     function() {
         console.log('Se ha terminado de llenar aulas de prueba.');
       }
-    );
-});*/
+    */);
+});

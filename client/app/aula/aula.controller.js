@@ -29,7 +29,7 @@ angular.module('reservasApp')
     });
    }
 
- 
+
 
    $scope.editarAula = function(aula){
     var modalInstance = $modal.open({
@@ -46,16 +46,17 @@ angular.module('reservasApp')
    }
   })
 
-  .controller('NuevaAulaCtrl', function(){
+  .controller('NuevaAulaCtrl', function($modalInstance){
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
 
   })
 
   .controller('EditarAulaCtrl',function(aula, $scope, $modalInstance){
     $scope.aula = aula;
     console.log($scope.aula);
-    
+
       $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
   };
   })
-

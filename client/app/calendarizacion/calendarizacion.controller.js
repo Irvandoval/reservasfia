@@ -216,7 +216,6 @@ angular.module('reservasApp')
       }
 
       if (Auth.isRepresentante()) {
-       console.log("entra");
         var Representante = $resource('/api/representantes/user/:representanteId', {
           representanteId: '@id'
         });
@@ -224,8 +223,7 @@ angular.module('reservasApp')
         var representante = Representante.get({
           representanteId: usuario._id
         }, function() {
-          $scope.escuela = representante.escuela;
-          console.log(representante.escuela);
+          $scope.actividad.escuela = representante.escuela;
          // $scope.rellenarMaterias(representante.escuela);
          var docentesPorEscuela = $resource('/api/docentes/escuela/:escuelaId', {
            escuelaId: '@id'
@@ -277,7 +275,6 @@ angular.module('reservasApp')
         });
     }
     $scope.rellenarMaterias = function(docenteId) {
-     console.log("entra");
       var docente = JSON.parse($scope.actividad.docente);
       var idDocente = docente._id;
       $resource('/api/docentes/:idDocente', {

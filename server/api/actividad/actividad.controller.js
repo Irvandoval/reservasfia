@@ -2,7 +2,9 @@
 
 var _ = require('lodash');
 var Actividad = require('./actividad.model');
-var Representante = require('../representante/representante.model')
+var Representante = require('../representante/representante.model');
+var Reserva = require('../reserva/reserva.model');
+var Turno = require('../turno/turno.model')
 // Get list of actividades
 exports.index = function(req, res) {
   Actividad
@@ -112,10 +114,23 @@ exports.indexDesaprobadosByEscuela = function(req, res) {
   Representante
   .findOne({usuario: req.user._id}, function(err, representante){
      Actividad
-     .find({estado: 'desaprobado', escuela: representante.escuela})
+     .find({estado: 'desaprobado_escuela', escuela: representante.escuela})
      .populate('materia','nombre')
      .exec(function(err, actividades){
-      console.log(actividades);
+        if(err) { return handleError(res, err); }
+         return res.status(200).json(actividades);
+     });
+
+  })
+};
+
+exports.indexByEscuela = function(req, res) {
+  Representante
+  .findOne({usuario: req.user._id}, function(err, representante){
+     Actividad
+     .find({$and: [{ $or: [{estado:'espera_admin'},{estado:'aprobado'},{estado: 'desaprobado'}] },{ escuela: representante.escuela}]})
+     .populate('materia','nombre')
+     .exec(function(err, actividades){
         if(err) { return handleError(res, err); }
          return res.status(200).json(actividades);
      });
@@ -181,14 +196,21 @@ exports.update = function(req, res) {
 
 // Deletes a actividad from the DB.
 exports.destroy = function(req, res) {
-  Actividad.findById(req.params.id, function (err, actividad) {
-    if(err) { return handleError(res, err); }
-    if(!actividad) { return res.status(404).send('Not Found'); }
-    actividad.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.status(204).send('No Content');
-    });
-  });
+
+   Reserva.find({actividad:req.params.id}).remove(function(){
+       Turno.find({actividad:req.params.id}).remove(function(){
+        Actividad.findById(req.params.id, function (err, actividad) {
+          if(err) { return handleError(res, err); }
+          if(!actividad) { return res.status(404).send('Not Found'); }
+          actividad.remove(function(err) {
+            if(err) { return handleError(res, err); }
+            return res.status(204).send('No Content');
+          });
+        });
+
+       })
+   });
+
 };
 
 function handleError(res, err) {

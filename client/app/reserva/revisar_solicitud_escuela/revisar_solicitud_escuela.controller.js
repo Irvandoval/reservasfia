@@ -28,7 +28,54 @@ angular.module('reservasApp')
 
       }
     });
+    $rootScope.desaprobados = new ngTableParams({
+      page: 1, // paginacion, primera en mostrar
+      count: 15, // cantidad de elementos a mostrar por pagina
+      sorting: {
+        fechaCreacion: 'asc'
+      }
+    }, {
+      total: 0,
+      getData: function($defer, params) {
+        Actividad.query({
+            idActividad: 'desaprobados_escuela'
+          }).$promise
+          .then(function(actividadesProm) {
+           console.log(actividadesProm);
+            actividades = actividadesProm;
+            var orderedRecentActivity = params.filter() ?
+              $filter('orderBy')(actividades, params.orderBy()) :
+              actividades;
+            params.total(orderedRecentActivity.length);
+            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+          })
 
+      }
+    });
+    $rootScope.aprobados = new ngTableParams({
+      page: 1, // paginacion, primera en mostrar
+      count: 15, // cantidad de elementos a mostrar por pagina
+      sorting: {
+        fechaCreacion: 'asc'
+      }
+    }, {
+      total: 0,
+      getData: function($defer, params) {
+        Actividad.query({
+            idActividad: 'aprobados_escuela'
+          }).$promise
+          .then(function(actividadesProm) {
+           console.log(actividadesProm);
+            actividades = actividadesProm;
+            var orderedRecentActivity = params.filter() ?
+              $filter('orderBy')(actividades, params.orderBy()) :
+              actividades;
+            params.total(orderedRecentActivity.length);
+            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+          })
+
+      }
+    });
 
     $rootScope.desaprobados = new ngTableParams({
       page: 1, // paginacion, primera en mostrar
@@ -87,17 +134,19 @@ angular.module('reservasApp')
 .controller('DetalleReservaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
   $scope.tipo = tipo;
-  console.log($scope.tipo);
+ // diferencia entre ahora y la fecha de creacion de la actividadEditada
+  $scope.diferenciaMinutos = Math.round(((new Date() - new Date(actividad.fechaCreacion)) / 1000 )/60); // minutes
+  console.log($scope.diferenciaMinutos);
   $scope.rechazarSolicitud = function(){
     $modalInstance.close(actividad);
-    var actividadEditada = nuevaActividad(actividad,'desaprobado');
+    var actividadEditada = nuevaActividad(actividad,'desaprobado_escuela');
     Actividad.update({
         idActividad: actividad._id
       }, actividadEditada).$promise
       .then(function() {
        console.log("mieyda");
         $rootScope.enEspera.reload();
-        //$rootScope.aprobados.reload();
+        $rootScope.aprobados.reload();
         $rootScope.desaprobados.reload();
           toaster.pop('success', "Actividad rechazada", "La actividad ahora se ha movido a 'Rechazados'");
       }, function(err) {
@@ -105,6 +154,13 @@ angular.module('reservasApp')
       });
 
   };
+
+  $scope.eliminarSolicitud = function(){
+    var Actividad = $resource('/api/actividades/:actividadId', {actividadId:'@id'});
+   Actividad.delete({actividadId: actividad._id},function(){
+     toaster.pop('success', "Actividad eliminada", "La actividad se ha eliminado del sistema'");
+   },function(err){})
+  }
   $scope.aprobarSolicitud = function() {
     $modalInstance.close(actividad);
     var reservas = {};
@@ -141,7 +197,7 @@ angular.module('reservasApp')
           .then(function() {
            // actividad.estado = 'aprobado';
             $rootScope.enEspera.reload();
-
+               $rootScope.aprobados.reload();
             $rootScope.desaprobados.reload();
             //actualizarTurnos(actividadEditada,respuesta);
               toaster.pop('success', "Actividad aprobada", "La solicitud ha sido enviada la Administración Académica para su aprobación");
@@ -175,7 +231,6 @@ angular.module('reservasApp')
     var aulaAux = [];
     for (var g = 0;  g < $scope.turnos.length; g++){
     actividad.estado = respuesta;
-     console.log("entra al for g");
           for (var s in $scope.turnos[g].aulas){
              aulaAux[s] = $scope.turnos[g].aulas[s]._id;
           }

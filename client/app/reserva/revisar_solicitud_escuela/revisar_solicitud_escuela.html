@@ -31,33 +31,63 @@
 
     </tab>
 
-        <tab>
-          <tab-heading>
-            <i class="fa fa-circle rojo"></i>
-            Rechazados
-          </tab-heading>
-          <table class="table table-striped" ng-table="desaprobados" template-pagination="custom/pager">
-            <tbody ng-repeat="actividad in $data">
-              <tr class="fila" ng-click="detalleReserva(actividad._id, 3)">
-               <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
-                 {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
-               </td>
-               <td class="text-center" data-title="'Solicitante'">
-                 {{actividad.encargado}}
-               </td>
-               <td class="text-center" data-title="'Actividad'">
-                 {{actividad.nombre}}
-               </td>
-               <td class="text-center" data-title="'Materia'">
-                 {{actividad.materia.nombre}}
-               </td>
-               <td class="text-center" data-title="'Estado'">
-                 <span aria-hidden="true" class="fa fa-circle rojo" ></span>
-               </td>
-              </tr>
-              <tbody>
-              </table>
-  </tab>
+    <tab>
+      <tab-heading>
+        <i class="fa fa-circle aprob"></i>
+        Aprobados por mi
+      </tab-heading>
+      <table class="table table-striped table-hover" ng-table="aprobados" template-pagination="custom/pager">
+        <tbody ng-repeat="actividad in $data">
+          <tr class="fila" ng-click="detalleReserva(actividad._id, 2)">
+            <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
+              {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
+            </td>
+
+            <td class="text-center" data-title="'Solicitante'">
+              {{actividad.encargado}}
+            </td>
+            <td class="text-center" data-title="'Actividad'">
+              {{actividad.nombre}}
+            </td>
+            <td class="text-center" data-title="'Materia'">
+              {{actividad.materia.nombre}}
+            </td>
+            <td class="text-center" data-title="'Estado'" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':actividad.estado == 'desaprobado', 'amarillo':actividad.estado == 'espera_admin' }">
+              <span aria-hidden="true" class="fa fa-circle"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</tab>
+<tab>
+  <tab-heading>
+    <i class="fa fa-circle rojo"></i>
+    Rechazados por Escuela
+  </tab-heading>
+  <table class="table table-striped table-hover" ng-table="desaprobados" template-pagination="custom/pager">
+    <tbody ng-repeat="actividad in $data">
+      <tr class="fila" ng-click="detalleReserva(actividad._id, 3)">
+        <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
+          {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
+        </td>
+
+        <td class="text-center" data-title="'Solicitante'">
+          {{actividad.encargado}}
+        </td>
+        <td class="text-center" data-title="'Actividad'">
+          {{actividad.nombre}}
+        </td>
+        <td class="text-center" data-title="'Materia'">
+          {{actividad.materia.nombre}}
+        </td>
+        <td class="text-center rojo" data-title="'Estado'">
+          <span aria-hidden="true" class="fa fa-circle"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</tab>
 </tabset>
 </div>
 <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
@@ -85,6 +115,8 @@
   <h3 class="modal-title">Detalles de la actividad</h3>
 </div>
 <div class="modal-body text-center">
+
+{{}}
   <h3>
     {{actividad.nombre}}</h3>
   <label>Encargado:</label>
@@ -134,9 +166,11 @@ Rechazar</button>
 Cerrar</button>
 </div>
 <div class="modal-footer" ng-if="tipo == 2">
-<button class="btn btn-success" ng-click="" type="button">
+
+
+<button ng-disabled="actividad.estado != 'aprobado'" class="btn btn-success" ng-click="" type="button">
 imprimir comprobante</button>
-<button class="btn btn-success" ng-click="" type="button">
+<button  ng-disabled="diferenciaMinutos  > 30" class="btn btn-success" ng-click="" type="button">
 Mover Actividad</button>
 <button class="btn btn-danger" ng-click="" type="button">
 Cancelar Actividad</button>
@@ -147,7 +181,7 @@ Cerrar</button>
 <button class="btn btn-success" ng-click="" type="button">
 Mover a En Espera</button>
 
-<button class="btn btn-danger" ng-click="" type="button">
+<button class="btn btn-danger" ng-click="eliminarSolicitud()" type="button">
  Eliminar registro
 </button>
 

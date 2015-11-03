@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('AulaCtrl', function ($scope, $resource, ngTableParams, $filter, Aula, $modal) {
+  .controller('AulaCtrl', function ($scope, $resource, ngTableParams, $filter, Aula, $modal,toaster) {
    $scope.tableParams = new ngTableParams({
          page: 1,            // show first page
          count: 5          // count per page
@@ -30,7 +30,12 @@ angular.module('reservasApp')
    }
 
 
-
+  $scope.eliminarAula = function(idAula){
+   Aula.delete({aulaId: idAula},function(){
+       $scope.tableParams.reload();
+       toaster.pop('success', "Aula eliminada", "El aula se ha eliminado del sistema'");
+     },function(err){});
+  };
    $scope.editarAula = function(aula){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,

@@ -49,7 +49,7 @@ angular.module('reservasApp')
   .controller('NuevaAulaCtrl', function($modalInstance){
     $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
-
+ };
   })
 
   .controller('EditarAulaCtrl',function(aula, $scope, $modalInstance){

@@ -46,10 +46,8 @@ angular.module('reservasApp')
    }
   })
 
-  .controller('NuevaAulaCtrl', function($modalInstance){
-    $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
- };
+  .controller('NuevaAulaCtrl', function(){
+
   })
 
   .controller('EditarAulaCtrl',function(aula, $scope, $modalInstance){

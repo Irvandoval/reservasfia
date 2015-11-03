@@ -52,9 +52,10 @@ angular.module('reservasApp')
 
   })
 
-  .controller('EditarCicloCtrl',function(ciclo, $scope){
+  .controller('EditarCicloCtrl',function(ciclo, $scope, $modalInstance){
     $scope.ciclo = ciclo;
     console.log($scope.ciclo);
+
     $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };

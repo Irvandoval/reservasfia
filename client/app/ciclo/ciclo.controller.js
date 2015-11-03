@@ -38,8 +38,7 @@ angular.module('reservasApp')
       controller: 'EditarCicloCtrl',
       size: 'lg',
       resolve: {
-
-        ciclo: function() {
+     ciclo: function() {
 
           return ciclo;
         }

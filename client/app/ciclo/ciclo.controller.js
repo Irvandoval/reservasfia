@@ -57,4 +57,5 @@ angular.module('reservasApp')
     console.log($scope.ciclo);
     $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
+  };
   })

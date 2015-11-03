@@ -29,6 +29,8 @@ angular.module('reservasApp')
     });
    }
 
+ 
+
    $scope.editarAula = function(aula){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
@@ -48,7 +50,12 @@ angular.module('reservasApp')
 
   })
 
-  .controller('EditarAulaCtrl',function(aula, $scope){
+  .controller('EditarAulaCtrl',function(aula, $scope, $modalInstance){
     $scope.aula = aula;
     console.log($scope.aula);
+    
+      $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+  };
   })
+

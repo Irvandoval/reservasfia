@@ -23,8 +23,33 @@ angular.module('reservasApp')
      var modalInstance = $modal.open({
        animation: $scope.animationsEnabled,
        templateUrl: 'nuevo-docente.html',
+       controller: 'NuevoDocenteCtrl',
        size: 'lg'
      });
     }
 
-  });
+  $scope.editarDocente = function(docente){
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'editar-docente.html',
+      controller: 'EditarDocenteCtrl',
+      size: 'lg',
+      resolve: {
+        docente: function() {
+          return docente;
+        }
+      }
+    });
+   }    
+    
+  })
+
+.controller('NuevoDocenteCtrl', function(){
+
+  })
+
+  .controller('EditarDocenteCtrl',function(docente, $scope){
+    $scope.docente = docente;
+    console.log($scope.docente);
+  })
+

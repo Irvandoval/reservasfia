@@ -50,7 +50,6 @@ angular.module('reservasApp')
 
   .controller('NuevoCicloCtrl', function(){
 
-  };
   })
 
   .controller('EditarCicloCtrl',function(ciclo, $scope, $modalInstance){

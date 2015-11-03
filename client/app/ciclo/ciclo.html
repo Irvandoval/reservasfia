@@ -16,16 +16,9 @@
     </div>
     <div class="table-responsive">
       <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
-
-
-
+      <td class="text-center" data-title="'Acciones'">
         <tr ng-repeat='ciclo in $data'>
-         <td class='text-center' data-title="'Numero de ciclo'"> {{ciclo.numero}}</td>
-
-
-
-                <td class="text-center" data-title="'Acciones'">
-
+        <td class='text-center' data-title="'Numero de ciclo'"> {{ciclo.numero}}</td>
          <td class='text-center' data-title="'Año del ciclo'" > {{ciclo.anio}} </td>
          <td class='text-center' data-title="'Inicio de clases'" > {{ciclo.inicioClases | date:'MMM d'}} </td>
          <td class='text-center' data-title="'Fin de clases'" > {{ciclo.finClases | date:'MMM d'}} </td>

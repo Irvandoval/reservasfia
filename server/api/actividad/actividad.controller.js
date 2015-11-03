@@ -85,6 +85,7 @@ exports.indexEsperaEscuelaA= function(req, res) {
 
   Representante
   .findOne({usuario: req.user._id}, function(err, representante){
+   console.log(req.user._id);
      Actividad
      .find({estado: 'espera_escuela', escuela: representante.escuela}, function(err, actividades){
         if(err) { return handleError(res, err); }
@@ -95,21 +96,29 @@ exports.indexEsperaEscuelaA= function(req, res) {
 };
 
 exports.indexEsperaEscuelaB = function(req, res) {
-  /*Actividad
-  .find({estado: 'espera_escuela'})
-  .populate('materia','nombre')
-  .exec(function (err, actividades) {
-   if(err) { return handleError(res, err); }
-   return res.status(200).json(actividades);
-  });*/
-
   Representante
   .findOne({usuario: req.user._id}, function(err, representante){
      Actividad
-     .find({estado: 'espera_escuela', escuela: representante.escuela}, function(err, actividades){
+     .find({estado: 'espera_escuela', escuela: representante.escuela})
+     .populate('materia','nombre')
+     .exec(function(err, actividades){
         if(err) { return handleError(res, err); }
          return res.status(200).json(actividades);
-     })
+     });
+  })
+};
+
+exports.indexDesaprobadosByEscuela = function(req, res) {
+  Representante
+  .findOne({usuario: req.user._id}, function(err, representante){
+     Actividad
+     .find({estado: 'desaprobado', escuela: representante.escuela})
+     .populate('materia','nombre')
+     .exec(function(err, actividades){
+      console.log(actividades);
+        if(err) { return handleError(res, err); }
+         return res.status(200).json(actividades);
+     });
 
   })
 };

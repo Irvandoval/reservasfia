@@ -3,6 +3,9 @@
 angular.module('reservasApp')
   .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig) {
 
+   var Docente = $resource('/api/docentes/user/:docenteId', {
+     docenteId: '@id'
+   });
     /******************************Calendario******************************/
     /*Variables*/
     $scope.busqueda = {};
@@ -182,39 +185,6 @@ angular.module('reservasApp')
     /**********************************************************************/
     $scope.esDocente = Auth.isDocente;
 
-    if (Auth.isDocente()) {
-      var Docente = $resource('/api/docentes/user/:docenteId', {
-        docenteId: '@id'
-      });
-      var usuario = Auth.getCurrentUser();
-      var docente = Docente.get({
-        docenteId: usuario._id
-      }, function() {
-        $scope.materias = docente.materias;
-      });
-    }
-
-    if (Auth.isAdmin()) {
-      $resource('/api/escuelas').query().$promise
-        .then(function(escuelas) {
-          $scope.escuelas = escuelas;
-        });
-    }
-
-    if (Auth.isRepresentante()) {
-      var Representante = $resource('/api/representantes/user/:representanteId', {
-        representanteId: '@id'
-      });
-      var usuario = Auth.getCurrentUser();
-
-      var representante = Representante.get({
-        representanteId: usuario._id
-      }, function() {
-        $scope.escuela = representante.escuela;
-        $scope.rellenarMaterias(representante.escuela);
-
-      });
-    }
     /***********************************************************************/
     $scope.actividad = { // inicializamos la actividad para la reserva
       inicio: new Date(2011, 2, 12, 6, 20, 0),
@@ -228,6 +198,48 @@ angular.module('reservasApp')
     };
     $scope.irvan = function() {
       $scope.mostrar = true;
+      if (Auth.isDocente()) {
+        var usuario = Auth.getCurrentUser();
+        var docente = Docente.get({
+          docenteId: usuario._id
+        }, function() {
+         console.log(docente);
+          $scope.materias = docente.materias;
+        });
+      }
+
+      if (Auth.isAdmin()) {
+        $resource('/api/escuelas').query().$promise
+          .then(function(escuelas) {
+            $scope.escuelas = escuelas;
+          });
+      }
+
+      if (Auth.isRepresentante()) {
+       console.log("entra");
+        var Representante = $resource('/api/representantes/user/:representanteId', {
+          representanteId: '@id'
+        });
+        var usuario = Auth.getCurrentUser();
+        var representante = Representante.get({
+          representanteId: usuario._id
+        }, function() {
+          $scope.escuela = representante.escuela;
+          console.log(representante.escuela);
+         // $scope.rellenarMaterias(representante.escuela);
+         var docentesPorEscuela = $resource('/api/docentes/escuela/:escuelaId', {
+           escuelaId: '@id'
+         });
+
+         var docentes =  docentesPorEscuela.query({
+            escuelaId: representante.escuela
+          }, function() {
+           console.log(docente);
+            $scope.docentes = docentes;
+          });
+        });
+      }
+
     }
     $scope.datePicker = {};
     $scope.open = function($event) {
@@ -265,6 +277,7 @@ angular.module('reservasApp')
         });
     }
     $scope.rellenarMaterias = function(docenteId) {
+     console.log("entra");
       var docente = JSON.parse($scope.actividad.docente);
       var idDocente = docente._id;
       $resource('/api/docentes/:idDocente', {

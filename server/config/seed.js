@@ -30,7 +30,7 @@ Representante.find({}).remove(function(){
    Representante.create({
     nombre: 'Representante Sistemas',
     escuela: '55c2dc510d677df947170280',
-    usuario: "5636d26e6d9fb5074c0fadc0"
+    usuario: '5637d2a39e8b466a257b3c5c'
     }
   );
     });

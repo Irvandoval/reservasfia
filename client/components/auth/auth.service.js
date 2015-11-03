@@ -141,10 +141,11 @@ angular.module('reservasApp')
        * @return {Boolean}
        */
       isDocente: function() {
+
         return currentUser.role === 'docente';
       },
       isRepresentante: function() {
-        return currentUser.role === 'representante';
+        return currentUser.role == 'representante';
       },
       isInvitado: function() {
         return currentUser.role === 'invitado';

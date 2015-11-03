@@ -43,6 +43,7 @@ angular.module('reservasApp')
       }
     });
    }
+
   })
 
   .controller('NuevaAulaCtrl', function(){

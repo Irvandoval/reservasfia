@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('RevisarSolicitudCtrl', function($rootScope, $scope, $modal, $resource, ngTableParams, $filter, Actividad) {
+  .controller('RevisarSolicitudEscuelaCtrl', function($rootScope, $scope, $modal, $resource, ngTableParams, $filter, Actividad) {
     var actividades = [],
       i, j;
     $rootScope.enEspera = new ngTableParams({
@@ -14,33 +14,11 @@ angular.module('reservasApp')
       total: 0,
       getData: function($defer, params) {
         Actividad.query({
-            idActividad: 'espera'
+            idActividad: 'espera_escuela_b'
           }).$promise
           .then(function(actividadesProm) {
+           console.log(actividadesProm);
             actividades = actividadesProm;
-            var orderedRecentActivity = params.filter() ?
-              $filter('orderBy')(actividades, params.orderBy()) :
-              actividades;
-            params.total(orderedRecentActivity.length);
-            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
-
-      }
-    });
-
-    $rootScope.aprobados = new ngTableParams({
-      page: 1, // paginacion, primera en mostrar
-      count: 15, // cantidad de elementos a mostrar por pagina
-      sorting: {
-        fechaCreacion: 'asc'
-      }
-    }, {
-      total: 0,
-      getData: function($defer, params) {
-        Actividad.query({
-            idActividad: 'aprobados'
-          }).$promise
-          .then(function(actividades) {
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -62,7 +40,7 @@ angular.module('reservasApp')
       total: 0,
       getData: function($defer, params) {
         Actividad.query({
-            idActividad: 'desaprobados'
+            idActividad: 'desaprobados_escuela'
           }).$promise
           .then(function(actividades) {
 
@@ -117,8 +95,9 @@ angular.module('reservasApp')
         idActividad: actividad._id
       }, actividadEditada).$promise
       .then(function() {
+       console.log("mieyda");
         $rootScope.enEspera.reload();
-        $rootScope.aprobados.reload();
+        //$rootScope.aprobados.reload();
         $rootScope.desaprobados.reload();
           toaster.pop('success', "Actividad rechazada", "La actividad ahora se ha movido a 'Rechazados'");
       }, function(err) {
@@ -152,26 +131,26 @@ angular.module('reservasApp')
     $resource('/api/reservas/choque/detectarChoque').save(reservas).$promise // comprobamos que no haya choque
       .then(function() { // contexto que no detecto choque del array de objetos reserva
         //console.log(reservas);
-        for (var i = 0; i < cont; i++) {
+        /*for (var i = 0; i < cont; i++) {
           $resource('/api/reservas').save(reservas.data[i]);
-        }
-        actividadEditada = nuevaActividad(actividad,'aprobado');
+        }*/
+        actividadEditada = nuevaActividad(actividad,'espera_admin');
         Actividad.update({
             idActividad: actividad._id
           }, actividadEditada).$promise
           .then(function() {
            // actividad.estado = 'aprobado';
             $rootScope.enEspera.reload();
-            $rootScope.aprobados.reload();
+
             $rootScope.desaprobados.reload();
             //actualizarTurnos(actividadEditada,respuesta);
-              toaster.pop('success', "Actividad aprobada", "Las reservas se han cargado en el sistema");
+              toaster.pop('success', "Actividad aprobada", "La solicitud ha sido enviada la Administración Académica para su aprobación");
           }, function(err) {
             //error al actualizar
           });
       }, function(err) {
         console.log("ERROR");
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar array");
+        toaster.pop('error', "Error", "Ha ocurrido un error al enviar");
       });
   };
   $resource('/api/turnos/actividad/:idActividad', {

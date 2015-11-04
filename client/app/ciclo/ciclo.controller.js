@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CicloCtrl', function ($scope, $resource, ngTableParams, $filter, Ciclo, $modal) {
+  .controller('CicloCtrl', function ($scope, $resource, ngTableParams, $filter, Ciclo, $modal, Auth) {
+   $scope.esAdmin = Auth.isAdmin;
    $scope.tableParams = new ngTableParams({
          page: 1,            // show first page
          count: 5          // count per page

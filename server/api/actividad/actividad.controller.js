@@ -66,7 +66,7 @@ exports.indexMisDesaprobados = function(req, res) {
 };
 exports.indexEspera = function(req, res) {
   Actividad
-  .find({estado: 'en espera'})
+  .find({estado: 'espera_admin'})
  // .populate('turnos')
  // .populate('aulas')
   .populate('materia','nombre')

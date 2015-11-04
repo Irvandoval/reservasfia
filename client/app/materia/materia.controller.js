@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('MateriaCtrl', function ($scope, $resource, ngTableParams, $filter, Materia, $modal) {
+  .controller('MateriaCtrl', function ($scope, $resource, ngTableParams, $filter, Materia, $modal,Auth) {
+   $scope.esAdmin = Auth.isAdmin;
       $scope.tableParams = new ngTableParams({
          page: 1,            // show first page
          count: 5          // count per page

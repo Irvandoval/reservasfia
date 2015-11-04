@@ -9,7 +9,7 @@
           <h4>Aulas</h4>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-2" ng-if="esAdmin()">
           <button class="btn btn-success" ng-click="nuevaAula()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nueva Aula
@@ -32,7 +32,7 @@
             <span aria-hidden="true" class="fa" ng-class="{'fa-check verde':aula.pizarra == true, 'fa-close rojo':aula.pizarra == false }"></span>
           </td>
           <td class="text-center" data-title="'Capacidad'">{{aula.capacidad}}</td>
-          <td class="text-center" data-title="'Acciones'">
+          <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning" type="button" ng-click="editarAula(aula)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
             </button>

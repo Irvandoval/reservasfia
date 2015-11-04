@@ -105,7 +105,7 @@ angular.module('reservasApp')
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'detalleReserva.html',
-        controller: 'DetalleReservaCtrl',
+        controller: 'DetalleReservaEscuelaCtrl',
         size: 'lg',
         resolve: {
           actividad: function() {
@@ -131,7 +131,7 @@ angular.module('reservasApp')
 
 
 
-.controller('DetalleReservaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
+.controller('DetalleReservaEscuelaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
   $scope.tipo = tipo;
  // diferencia entre ahora y la fecha de creacion de la actividadEditada

@@ -26,7 +26,7 @@ Ciclo.create({
 })
 
 })
-Representante.find({}).remove(function(){
+/*Representante.find({}).remove(function(){
    Representante.create({
     nombre: 'Representante Sistemas',
     escuela: '55c2dc510d677df947170280',

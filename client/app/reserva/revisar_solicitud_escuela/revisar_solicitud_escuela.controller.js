@@ -132,6 +132,7 @@ angular.module('reservasApp')
 
 
 .controller('DetalleReservaEscuelaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
+console.log("entra al ctrl");
   $scope.actividad = actividad;
   $scope.tipo = tipo;
  // diferencia entre ahora y la fecha de creacion de la actividadEditada
@@ -158,6 +159,11 @@ angular.module('reservasApp')
   $scope.eliminarSolicitud = function(){
     var Actividad = $resource('/api/actividades/:actividadId', {actividadId:'@id'});
    Actividad.delete({actividadId: actividad._id},function(){
+    $rootScope.enEspera.reload();
+    $rootScope.aprobados.reload();
+    $rootScope.desaprobados.reload();
+     $modalInstance.dismiss('cancel');
+     $modalInstance.dismiss('cancel');
      toaster.pop('success', "Actividad eliminada", "La actividad se ha eliminado del sistema'");
    },function(err){})
   }

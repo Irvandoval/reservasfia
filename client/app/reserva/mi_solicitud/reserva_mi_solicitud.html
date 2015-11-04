@@ -60,12 +60,6 @@
            <td class="text-center" data-title="'Estado'">
              <span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':aula.estado == 'desaprobado', 'amarillo':actividad.estado == 'en espera' }"></span>
            </td>
-            <td class="text-center" data-title="'Acciones'">
-
-
-		     <button class="btn btn-success">Mostrar Comprobante </button>
-
-            </td>
           </tr>
           <tbody>
           </table>
@@ -94,9 +88,6 @@
                  <span aria-hidden="true" class="fa fa-circle rojo" ></span>
                </td>
                <td class="text-center" data-title="'Acciones'">
-
-
-
                    <button class="btn btn-danger">Eliminar </button>
             </td>
               </tr>
@@ -177,14 +168,14 @@ Fecha de creación</label>
 Cerrar</button>
 </div>
 <div class="modal-footer" ng-if="tipo == 2">
-<button class="btn btn-success" ng-click="" type="button">
-Mostrar Comprobante</button>
+<a  href="/api/actividades/comprobante/{{actividad._id}}" target="_blank" class="btn btn-success" ng-click="" type="button">
+Mostrar Comprobante</a>
 
 <button class="btn btn-warning" ng-click="cancel()" type="button">
 Cerrar</button>
 </div>
 <div class="modal-footer" ng-if="tipo == 3">
-<button class="btn btn-danger" ng-click="" type="button">
+<button class="btn btn-danger" ng-click="eliminarSolicitud()" type="button">
  Eliminar registro
 </button>
 <button class="btn btn-warning" ng-click="cancel()" type="button">

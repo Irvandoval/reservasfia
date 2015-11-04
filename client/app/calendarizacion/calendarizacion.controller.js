@@ -205,6 +205,7 @@ angular.module('reservasApp')
         }, function() {
          console.log(docente);
           $scope.materias = docente.materias;
+          $scope.actividad.escuela = docente.escuela;
         });
       }
 

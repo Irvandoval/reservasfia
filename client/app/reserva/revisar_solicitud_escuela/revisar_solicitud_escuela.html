@@ -168,8 +168,8 @@ Cerrar</button>
 <div class="modal-footer" ng-if="tipo == 2">
 
 
-<button ng-disabled="actividad.estado != 'aprobado'" class="btn btn-success" ng-click="" type="button">
-imprimir comprobante</button>
+ <a  href="/api/actividades/comprobante/{{actividad._id}}" target="_blank" class="btn btn-success" ng-click="" type="button">
+ Mostrar Comprobante</a>
 <button  ng-disabled="diferenciaMinutos  > 30" class="btn btn-success" ng-click="" type="button">
 Editar Actividad</button>
 <button class="btn btn-danger" ng-click="" type="button">

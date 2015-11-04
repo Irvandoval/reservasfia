@@ -20,6 +20,7 @@ var ActividadSchema = new Schema({
    estado: String, // aprobado, desaprobado o en espera
    //turnos: [{type: Schema.Types.ObjectId, ref: 'Turno'}],
    fechaCreacion: {type: Date},
+   fechaAprobacion:{type:Date},
    creadoPor: {type: Schema.Types.ObjectId, ref: 'User' },
 }, schemaOptions);
 

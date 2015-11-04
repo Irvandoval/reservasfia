@@ -36,6 +36,7 @@ angular.module('reservasApp')
        toaster.pop('success', "Aula eliminada", "El aula se ha eliminado del sistema'");
      },function(err){});
   };
+    
    $scope.editarAula = function(aula){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
@@ -52,7 +53,11 @@ angular.module('reservasApp')
 
   })
 
-  .controller('NuevaAulaCtrl', function(){
+  .controller('NuevaAulaCtrl', function($scope, $modalInstance){
+   
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
 
   })
 
@@ -60,7 +65,7 @@ angular.module('reservasApp')
     $scope.aula = aula;
     console.log($scope.aula);
 
-      $scope.cancel = function() {
-      $modalInstance.dismiss('cancel');
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
   };
   })

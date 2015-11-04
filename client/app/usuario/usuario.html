@@ -1,5 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
+  <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
+
   <div class="panel panel-danger">
     <div class="panel-heading">
       <div class="row">
@@ -158,7 +160,7 @@
                                               'has-error': form.name.$invalid && submitted }">
             <label>Nombre</label>
 
-            <input class="form-control" name="name" ng-model="user.name" required type="text"/>
+            <input class="form-control" name="name" ng-model="usuario.name" required type="text"/>
             <p class="help-block" ng-show="form.name.$error.required && submitted">
               El nombre es requerido
             </p>
@@ -194,7 +196,7 @@
           </div>
           <div class="form-group">
             <label>Rol</label>
-            <select class="form-control" name="role" ng-model="user.role">
+            <select class="form-control" name="role" ng-model="usuario.role">
               <option value="docente">Docente</option>
               <option value="representante">Representante</option>
               <option value="admin">Administrador</option>

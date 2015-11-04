@@ -54,7 +54,12 @@ angular.module('reservasApp')
 
   })
 
-  .controller('NuevaAulaCtrl', function(){
+  .controller('NuevaAulaCtrl', function(Aula){
+
+   $scope.enviar = function(){
+   Aula.save($scope.)
+
+   }
 
   })
 

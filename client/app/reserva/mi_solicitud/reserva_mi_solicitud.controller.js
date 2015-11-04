@@ -14,7 +14,7 @@ angular.module('reservasApp')
      total: 0,
      getData: function($defer, params) {
        Actividad.query({
-           idActividad: 'espera'
+           idActividad: 'misespera'
          }).$promise
          .then(function(actividadesProm) {
            actividades = actividadesProm;

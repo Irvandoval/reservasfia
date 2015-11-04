@@ -5,7 +5,9 @@ var Materia = require('./materia.model');
 
 // Get list of materias
 exports.index = function(req, res) {
-  Materia.find(function (err, materias) {
+  Materia.find()
+  .populate('escuela')
+  .exec(function (err, materias) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(materias);
   });

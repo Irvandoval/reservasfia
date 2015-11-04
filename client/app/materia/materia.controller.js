@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('MateriaCtrl', function ($scope, $resource, ngTableParams, $filter, Materia, $modal,Auth) {
+
+  .controller('MateriaCtrl', function ($scope, $resource, ngTableParams, $filter, Materia, $modal,Auth, toaster) {
    $scope.esAdmin = Auth.isAdmin;
+
+
       $scope.tableParams = new ngTableParams({
          page: 1,            // show first page
          count: 5          // count per page
@@ -22,7 +25,7 @@ angular.module('reservasApp')
          }
   });
 
-    $scope.nuevoMateria = function(){
+    $scope.nuevaMateria = function(){
      var modalInstance = $modal.open({
        animation: $scope.animationsEnabled,
        templateUrl: 'nueva-materia.html',
@@ -30,6 +33,13 @@ angular.module('reservasApp')
        size: 'lg'
      });
     }
+
+$scope.eliminarMateria= function(materiaId){
+Materia.delete({materiaId:materiaId},function(){
+       $scope.tableParams.reload();
+       toaster.pop('success', "materia eliminada", "la materia se ha eliminado del sistema'");
+     },function(err){});
+  };
 
   $scope.editarMateria = function(materia){
     var modalInstance = $modal.open({
@@ -48,7 +58,11 @@ angular.module('reservasApp')
 
   })
 
-.controller('NuevoMateriaCtrl', function(){
+.controller('NuevoMateriaCtrl', function($scope, $modalInstance){
+
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
 
   })
 
@@ -58,4 +72,6 @@ angular.module('reservasApp')
     $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
+
+
   })

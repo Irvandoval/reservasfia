@@ -45,8 +45,11 @@ angular.module('reservasApp')
 
   })
 
-.controller('NuevoUsuarioCtrl', function(){
-
+.controller('NuevoUsuarioCtrl', function($scope, $modalInstance){
+    
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
   })
 
   .controller('EditarUsuarioCtrl',function(usuario, $scope, $modalInstance){

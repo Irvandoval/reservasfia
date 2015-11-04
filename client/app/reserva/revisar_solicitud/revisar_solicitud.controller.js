@@ -106,10 +106,11 @@ angular.module('reservasApp')
 
 
 
-.controller('DetalleReservaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
+.controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
   $scope.tipo = tipo;
-  console.log($scope.tipo);
+  $scope.diferenciaMinutos = Math.round(((new Date() - new Date(actividad.fechaCreacion)) / 1000 )/60); // minutes
+  console.log($scope.diferenciaMinutos);
   $scope.rechazarSolicitud = function(){
     $modalInstance.close(actividad);
     var actividadEditada = nuevaActividad(actividad,'desaprobado');
@@ -183,7 +184,9 @@ angular.module('reservasApp')
       $scope.turnos = turnos;
     });
 
-
+   $scope.comprobante = function(){
+       $location.path('/api/actividades/comprobante' + actividad._id)
+   }
   $scope.ok = function() {
     $modalInstance.close();
   };

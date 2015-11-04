@@ -1,5 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
+
  <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
 
   <div class="panel panel-danger">
@@ -38,6 +39,7 @@
             </button>
             <button class="btn btn-danger" type="button" ng-click="eliminarAula(aula._id)">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
+
             </button>
           </td>
         </tr>
@@ -92,11 +94,11 @@
     <label>Sonido:</label>
      <input type="checkbox" name="name" value="false" class="" ng-model="aula.sonido">
      <label>Pizarra:</label>
-      <input type="checkbox" name="name" value="false" class="" ng-model="aula.pizarra">  
+      <input type="checkbox" name="name" value="false" class="" ng-model="aula.pizarra">
  </div>
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
+  <button class="btn btn-success" ng-click="enviar()" type="button">
    Agregar
   </button>
   <button class="btn btn-warning" ng-click="cancel()" type="button">
@@ -119,9 +121,10 @@
   </div>
   <div class="form-group">
     <label>Estado:</label>
-     <select class="form-control" name="estado">
+     <select class="form-control" name="estado" ng-model="aula.estado">
        <option value="true">Habilitado</option>
        <option value="false">Deshabilitado</option>
+
      </select>
   </div>
   <div class="form-group">
@@ -135,7 +138,7 @@
  </div>
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
+  <button class="btn btn-success" ng-click="actualizar()" type="button">
    Actualizar
   </button>
   <button class="btn btn-warning" ng-click="cancel()" type="button">

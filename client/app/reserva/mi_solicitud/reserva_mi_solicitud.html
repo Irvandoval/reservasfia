@@ -8,7 +8,7 @@
       </tab-heading>
       <table class="table table-striped table-hover" ng-table="enEspera" template-pagination="custom/pager">
         <tbody ng-repeat="actividad in $data">
-          <tr class="fila" ng-click="detalleReserva(actividad._id, 1)" ng-if="actividad.estado == 'en espera'">
+          <tr class="fila" ng-click="detalleReserva(actividad._id, 1)">
             <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
               {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
             </td>
@@ -23,10 +23,11 @@
               {{actividad.materia.nombre}}
             </td>
             <td class="text-center" data-title="'Estado'">
-              <span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':aula.estado == 'desaprobado', 'amarillo':actividad.estado == 'en espera' }"></span>
+              <span aria-hidden="true" class="fa fa-circle" ng-class="{'esperEscuela':actividad.estado == 'espera_escuela', 'amarillo':actividad.estado == 'espera_admin' }"></span>
+              {{actividad.estado}}
             </td>
 	    <td class="text-center" data-title="'Acciones'">
-                 <div ng-if="actividad.estado=='aprobado">
+                 <div ng-if="actividad.estado=='aprobado'">
                  <button class="btn btn-success">Mostrar Comprobante </button>
                  </div>
                    <button class="btn btn-danger">Eliminar </button>
@@ -60,10 +61,10 @@
              <span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':aula.estado == 'desaprobado', 'amarillo':actividad.estado == 'en espera' }"></span>
            </td>
             <td class="text-center" data-title="'Acciones'">
-                
-                
+
+
 		     <button class="btn btn-success">Mostrar Comprobante </button>
-                  
+
             </td>
           </tr>
           <tbody>
@@ -93,9 +94,9 @@
                  <span aria-hidden="true" class="fa fa-circle rojo" ></span>
                </td>
                <td class="text-center" data-title="'Acciones'">
-                
-                
-               
+
+
+
                    <button class="btn btn-danger">Eliminar </button>
             </td>
               </tr>
@@ -170,10 +171,8 @@ Fecha de creación</label>
 
 </div>
 <div class="modal-footer" ng-if="tipo == 1">
-<button class="btn btn-success" ng-click="aprobarSolicitud()" type="button">
-Aprobar</button>
-<button class="btn btn-danger" ng-click="rechazarSolicitud()" type="button">
-Rechazar</button>
+ <button  ng-disabled="diferenciaMinutos  > 30" class="btn btn-success" ng-click="" type="button">
+ Editar Actividad</button>
 <button class="btn btn-warning" ng-click="cancel()" type="button">
 Cerrar</button>
 </div>

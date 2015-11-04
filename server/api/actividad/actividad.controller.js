@@ -76,6 +76,8 @@ exports.indexEspera = function(req, res) {
   });
 };
 
+
+
 exports.indexEsperaEscuelaA= function(req, res) {
   /*Actividad
   .find({estado: 'espera_escuela'})
@@ -140,7 +142,7 @@ exports.indexByEscuela = function(req, res) {
 exports.indexMisEspera = function(req, res) {
  console.log(req.user);
   Actividad
-  .find({estado:'en espera', encargado: req.user.name})
+  .find({$or:[{estado:'espera_escuela'},{estado:'espera_admin'}], encargado: req.user.name})
   .populate('materia','nombre')
   .exec(function (err, actividades) {
    if(err) { return handleError(res, err); }

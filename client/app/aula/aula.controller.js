@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('AulaCtrl', function ($scope, $resource, ngTableParams, $filter, Aula, $modal,toaster, Auth) {
+  .controller('AulaCtrl', function ($rootScope, $scope, $resource, ngTableParams, $filter, Aula, $modal,toaster, Auth) {
     $scope.esAdmin = Auth.isAdmin;
 
-   $scope.tableParams = new ngTableParams({
+   $rootScope.tableParams = new ngTableParams({
          page: 1,            // show first page
          count: 5          // count per page
      }, {
@@ -38,6 +38,7 @@ angular.module('reservasApp')
        toaster.pop('success', "Aula eliminada", "El aula se ha eliminado del sistema'");
      },function(err){});
   };
+
    $scope.editarAula = function(aula){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
@@ -54,20 +55,34 @@ angular.module('reservasApp')
 
   })
 
-  .controller('NuevaAulaCtrl', function(Aula){
+
+  .controller('NuevaAulaCtrl', function($scope, $modalInstance, toaster, Aula,$window){
+    $scope.aula = {};
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
 
    $scope.enviar = function(){
-   Aula.save($scope.)
-
+    Aula.save($scope.aula,function(){
+       console.log("enviado");
+        $modalInstance.dismiss('cancel');
+         toaster.pop('success', "Aula Ingresada", "El aula se ha ingresado en el sistema'");
+    },function(){console.log("error");})
    }
 
   })
 
-  .controller('EditarAulaCtrl',function(aula, $scope, $modalInstance){
+  .controller('EditarAulaCtrl',function(aula, $scope, $rootScope, $modalInstance, Aula, toaster){
     $scope.aula = aula;
     console.log($scope.aula);
-
-      $scope.cancel = function() {
-      $modalInstance.dismiss('cancel');
+    $scope.actualizar = function(){
+     Aula.update({aulaId: $scope.aula._id},$scope.aula,function(){
+        $rootScope.tableParams.reload();
+         $modalInstance.dismiss('cancel');
+         toaster.pop('success', "Aula Editada", "El aula se ha editado en el sistema'");
+     },function(){console.log("error");})
+    }
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
   };
   })

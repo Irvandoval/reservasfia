@@ -44,7 +44,11 @@ angular.module('reservasApp')
 
   })
 
-.controller('NuevoDocenteCtrl', function(){
+.controller('NuevoDocenteCtrl', function($scope, $modalInstance){
+    
+     $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+    };
 
   })
 

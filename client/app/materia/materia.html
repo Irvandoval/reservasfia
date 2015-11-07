@@ -34,7 +34,7 @@
             </button>
             <button class="btn btn-danger" type="button" ng-click="eliminarMateria(materia._id)">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
-              
+
             </button>
           </td>
         </tr>
@@ -75,6 +75,16 @@
     <label>Nombre:</label>
     <input name="nombre" type="text" value=""  class="form-control">
      </div>
+     <div class="form-group">
+       <label>Escuela:</label>
+        <select class="form-control" name="estado" ng-repeat="escuela in escuelas">
+
+          <option value="{{escuela._id}}">{{escuela.nombre}}</option>
+         
+
+
+        </select>
+     </div>
   <div class="form-group">
     <label>Tipo:</label>
      <select class="form-control" name="estado">
@@ -82,6 +92,7 @@
        <option value="false">Electiva</option>
      </select>
   </div>
+
   <div class="form-group">
     <label>Ciclo:</label>
     <input type="number" name="name"  min="1" class="form-control">

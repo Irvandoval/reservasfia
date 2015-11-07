@@ -162,15 +162,15 @@ Cerrar</button>
 <div class="modal-footer" ng-if="tipo == 2">
  <a  href="/api/actividades/comprobante/{{actividad._id}}" target="_blank" class="btn btn-success" ng-click="" type="button">
  Mostrar Comprobante</a>
-<button class="btn btn-success" ng-click="" type="button">
+<button ng-if="false" class="btn btn-success" ng-click="" type="button">
 Mover Actividad</button>
-<button class="btn btn-danger" ng-click="" type="button">
+<button  ng-if="false" class="btn btn-danger" ng-click="" type="button">
 Cancelar Actividad</button>
 <button class="btn btn-warning" ng-click="cancel()" type="button">
 Cerrar</button>
 </div>
 <div class="modal-footer" ng-if="tipo == 3">
-<button class="btn btn-success" ng-click="" type="button">
+<button ng-if="false" class="btn btn-success" ng-click="" type="button">
 Mover a En Espera</button>
 
 <button class="btn btn-danger" ng-click="eliminarSolicitud()" type="button">

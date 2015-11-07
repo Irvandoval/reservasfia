@@ -52,8 +52,10 @@
             <td class="text-center" data-title="'Materia'">
               {{actividad.materia.nombre}}
             </td>
-            <td class="text-center" data-title="'Estado'" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':actividad.estado == 'desaprobado', 'amarillo':actividad.estado == 'espera_admin' }">
-              <span aria-hidden="true" class="fa fa-circle"></span>
+            <td class="text-center" data-title="'Estado'" >
+              <span aria-hidden="true" class="fa fa-circle" ng-class="{'verde':actividad.estado == 'aprobado', 'rojo':actividad.estado == 'desaprobado', 'amarillo':actividad.estado == 'espera_admin' }">
+              </span>
+              {{actividad.estado}}
             </td>
           </tr>
         </tbody>
@@ -168,17 +170,17 @@ Cerrar</button>
 <div class="modal-footer" ng-if="tipo == 2">
 
 
- <a  href="/api/actividades/comprobante/{{actividad._id}}" target="_blank" class="btn btn-success" ng-click="" type="button">
+ <a ng-if="actividad.estado==='aprobado'" href="/api/actividades/comprobante/{{actividad._id}}" target="_blank" class="btn btn-success" ng-click="" type="button">
  Mostrar Comprobante</a>
-<button  ng-disabled="diferenciaMinutos  > 30" class="btn btn-success" ng-click="" type="button">
+<button  ng-if= "false" ng-disabled="diferenciaMinutos  > 30" class="btn btn-success" ng-click="" type="button">
 Editar Actividad</button>
-<button class="btn btn-danger" ng-click="" type="button">
+<button  class="btn btn-danger" ng-click="eliminarSolicitud()" type="button">
 Cancelar Actividad</button>
 <button class="btn btn-warning" ng-click="cancel()" type="button">
 Cerrar</button>
 </div>
 <div class="modal-footer" ng-if="tipo == 3">
-<button class="btn btn-success" ng-click="" type="button">
+<button ng-if="false" class="btn btn-success" ng-click="" type="button">
 Mover a En Espera</button>
 
 <button class="btn btn-danger" ng-click="eliminarSolicitud()" type="button">

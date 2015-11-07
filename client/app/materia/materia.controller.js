@@ -58,8 +58,16 @@ Materia.delete({materiaId:materiaId},function(){
 
   })
 
-.controller('NuevoMateriaCtrl', function($scope, $modalInstance){
+.controller('NuevoMateriaCtrl', function($scope, $modalInstance, $resource){
+   var Escuela = $resource('/api/escuelas');
+   Escuela.query(function(escuela){
 
+    $scope.escuelas = escuela;
+    console.log(escuela);
+   });
+    $scope.nuevaMateria = function (){
+
+    }
     $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };

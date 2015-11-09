@@ -1,15 +1,12 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
-
  <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
-
   <div class="panel panel-danger">
     <div class="panel-heading">
       <div class="row">
         <div class="col-md-10">
           <h4>Aulas</h4>
         </div>
-
         <div class="col-md-2" ng-if="esAdmin()">
           <button class="btn btn-success" ng-click="nuevaAula()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
@@ -19,7 +16,7 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
+      <table class="table table-striped" ng-table="tablaAulas" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="aula in $data">
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{aula.nombre}}</td>
           <td class="text-center" data-title="'Descripción'">{{aula.descripcion}}</td>
@@ -30,16 +27,21 @@
             <span aria-hidden="true" class="fa" ng-class="{'fa-check verde':aula.sonido == true, 'fa-close rojo':aula.sonido == false }"></span>
           </td>
           <td class="text-center" data-title="'Pizarra'">
-            <span aria-hidden="true" class="fa" ng-class="{'fa-check verde':aula.pizarra == true, 'fa-close rojo':aula.pizarra == false }"></span>
+            <span aria-hidden="true" class="fa" ng-class="{'fa-check verde':aula.pizarra.pizarra == true, 'fa-close rojo':aula.pizarra.pizarra == false }"></span>
+              <div ng-if="aula.pizarra.pizarra === true && aula.pizarra.tipo == 1">
+                  Madera
+              </div>
+              <div ng-if="aula.pizarra.pizarra === true && aula.pizarra.tipo == 2">
+                  Acrílico
+              </div>
           </td>
           <td class="text-center" data-title="'Capacidad'">{{aula.capacidad}}</td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning" type="button" ng-click="editarAula(aula)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
             </button>
-            <button class="btn btn-danger" type="button" ng-click="eliminarAula(aula._id)">
+            <button class="btn btn-danger" type="button" ng-click="eliminarAula(aula._id)" confirm="¿Estas seguro de eliminar el aula {{aula.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
-
             </button>
           </td>
         </tr>
@@ -93,8 +95,18 @@
   </div>
     <label>Sonido:</label>
      <input type="checkbox" name="name" value="false" class="" ng-model="aula.sonido">
-     <label>Pizarra:</label>
-      <input type="checkbox" name="name" value="false" class="" ng-model="aula.pizarra">
+     <div class="form-group">
+      <label>Pizarra:</label>
+       <input type="checkbox" name="name" value="false" class="" ng-model="aula.pizarra.pizarra">
+       <div ng-if="aula.pizarra.pizarra" >
+        <label>Tipo de Pizarra:</label>
+         <select class="form-control" name="estado" ng-model="aula.pizarra.tipo">
+           <option value="1">Madera</option>
+           <option value="2">Acrílico</option>
+         </select>
+       </div>
+     </div>
+
  </div>
 
   <div class="modal-footer">
@@ -132,9 +144,18 @@
     <input type="number" name="name"  min="0" class="form-control" ng-model="aula.capacidad">
   </div>
     <label>Sonido:</label>
-     <input type="checkbox" name="name" ng-model="aula.sonido">
-     <label>Pizarra:</label>
-      <input type="checkbox" name="name" ng-model="aula.pizarra">
+     <input type="checkbox" name="name" ng-model="aula.sonido" >
+     <div class="form-group">
+      <label>Pizarra:</label>
+       <input type="checkbox" name="name" value="false" class="" ng-model="aula.pizarra.pizarra">
+       <div ng-if="aula.pizarra.pizarra" >
+        <label>Tipo de Pizarra:</label>
+         <select class="form-control" name="estado" ng-model="aula.pizarra.tipo">
+           <option value="1">Madera</option>
+           <option value="2">Acrílico</option>
+         </select>
+       </div>
+     </div>
  </div>
 
   <div class="modal-footer">

@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('UsuarioCtrl', function ($scope, ngTableParams, $filter, Usuario, $modal) {
-   $scope.tableParams = new ngTableParams({
+  .controller('UsuarioCtrl', function ($scope, $rootScope, ngTableParams, $filter, Usuario, $modal) {
+
+
+   $rootScope.tablaUsuarios = new ngTableParams({
          page: 1,            // show first page
-         count: 5          // count per page
+         count: 7         // count per page
      }, {
          total:0,
          getData: function ($defer, params) {
@@ -30,7 +32,7 @@ angular.module('reservasApp')
      }
 
       $scope.editarUsuario = function(usuario){
-    var modalInstance = $modal.open({
+      var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'editar-usuario.html',
       controller: 'EditarUsuarioCtrl',
@@ -43,19 +45,98 @@ angular.module('reservasApp')
     });
    }
 
+
   })
 
-.controller('NuevoUsuarioCtrl', function($scope, $modalInstance){
-    
+.controller('NuevoUsuarioCtrl', function($scope, $rootScope, $resource, $modalInstance, Auth, Docente,Representante, toaster){
+    $scope.usuario = {};
+    $scope.user = {};
+    $resource('/api/escuelas').query(function(escuelas){
+     $scope.escuelas = escuelas;
+    });
     $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
+
+     $scope.crearUsuario = function(form){
+        $scope.submitted = true;
+        if(form.$valid){
+          Auth.createUser($scope.user)
+          .then( function() {
+            // creamos docente o representante
+            if($scope.user.role == 'docente'){
+            $scope.usuario.materias = obtenerMaterias();
+            $scope.usuario.nombre = $scope.user.name;
+                 Docente.save($scope.usuario, function(usuario){
+                  $rootScope.tablaUsuarios.reload();
+                  $modalInstance.dismiss('cancel');
+                  toaster.pop('success', "Docente creado", "El docente se ha creado'");
+                 }, function(err){
+                    toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+                 });
+            }
+            if($scope.user.role == 'representante'){
+             $scope.usuario.nombre = $scope.user.name;
+             Representante.save($scope.usuario, function(usuario){
+              $rootScope.tablaUsuarios.reload();
+              $modalInstance.dismiss('cancel');
+              toaster.pop('success', "Usuario creado", "El usuario se ha creado'");
+             }, function(err){
+                toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+             });
+            }
+
+            $rootScope.tablaUsuarios.reload();
+            $modalInstance.dismiss('cancel');
+            toaster.pop('success', "Usuario creado", "El usuario se ha creado'");
+          })
+          .catch( function(err) {
+            err = err.data;
+            $scope.errors = {};
+             console.log(err);
+            // Update validity of form fields that match the mongoose errors
+            angular.forEach(err.errors, function(error, field) {
+              form[field].$setValidity('mongoose', false);
+              $scope.errors[field] = error.message;
+            });
+          });
+
+        }
+     }
+     $scope.cargarMaterias = function(query) {
+       var res = $resource('/api/materias/nombre/' + query);
+       return res.query().$promise
+     };
+
+     function obtenerMaterias(){
+      var materiasAux = [];
+      for(var i = 0; i < $scope.usuario.materias.length; i++ ){
+       materiasAux.push($scope.usuario.materias[i]._id);
+      }
+      return materiasAux;
+     }
   })
 
-  .controller('EditarUsuarioCtrl',function(usuario, $scope, $modalInstance){
-    $scope.usuario = usuario;
+  .controller('EditarUsuarioCtrl',function(usuario,Usuario , $scope, $rootScope, $modalInstance, toaster){
+
+    $scope.usuario = {
+     _id: usuario._id,
+     name: usuario.name,
+     username: usuario.username
+    };
     console.log($scope.usuario);
     $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
+  };
+
+  $scope.actualizar = function(){
+    console.log($scope.usuario);
+    Usuario.update({userId: usuario._id},$scope.usuario,function(){
+     $rootScope.tablaUsuarios.reload();
+     $modalInstance.dismiss('cancel');
+     toaster.pop('success', "Usuario editado", "El usuario se ha editado");
+    },function(){
+       toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+    })
   };
   })

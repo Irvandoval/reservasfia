@@ -8,6 +8,7 @@ var MateriaSchema = new Schema({
   nombre: String, // Matematica I , Fundamentos de Economia
   tipo: String, // obligatoria o electiva
   escuela: { type: Schema.Types.ObjectId, ref: 'Escuela' },
+  carrera: { type: Schema.Types.ObjectId, ref: 'Carrera' },
   imparteEnCiclo: Number// 1: impar, 2: par, 3: par e impar
 });
 

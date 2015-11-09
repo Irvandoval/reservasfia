@@ -32,7 +32,7 @@ angular.module('reservasApp')
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
-        fechaCreacion: 'asc'
+        fechaCreacion: 'desc'
       }
     }, {
       total: 0,

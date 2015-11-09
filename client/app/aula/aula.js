@@ -7,6 +7,6 @@ angular.module('reservasApp')
         url: '/aula',
         templateUrl: 'app/aula/aula.html',
         controller: 'AulaCtrl',
-	    authenticate: true
+	       authenticate: true
       });
   });

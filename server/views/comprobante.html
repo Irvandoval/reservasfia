@@ -1,2 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    <title>Comprobante de Aprobacion</title>
+  </head>
+  <body>
+    <div class="row">
 
-<h1>Bienvenido a <%= title %>!</h1>
+      <div class="col-md-4">
+        <h5>UNIVERSIDAD DE EL SALVADOR</h5>
+        <h5>FACULTAD DE INGENIERÌA Y ARQUITECTURA</h5>
+        <h5>UNIDAD DE PLANIFICACIÓN</h5>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="text-center">
+        <h2>COMPROBANTE DE SOLICITUD APROBADA</h2>
+        <br>
+        <br>
+      </div>
+    </div>
+    <div class="row">
+      <div class="text-center">
+        <label>Fecha de Solicitud:
+        </label>
+        <%= moment(actividad.fechaCreacion).locale('es').format('D MMMM YYYY, h:mm:ss a')%>
+     <br>
+        <label>Fecha de Aprobacion:
+        </label>
+        <%= moment(actividad.fechaAprobacion).locale('es').format('D MMMM YYYY, h:mm:ss a')%>
+        <br>
+        <label>Solicitante:
+        </label>
+        <%= actividad.creadoPor.name %>
+        <br>
+        <label>Materia:
+        </label>
+        <%= actividad.materia.nombre %><br>
+        <label>Nombre Actividad:
+        </label>
+        <b><%= actividad.nombre %></b><br>
+        <label>Encargado:
+        </label>
+        <%= actividad.encargado %><br><br>
+
+      </div>
+
+    </div>
+   <h3 class="text-center">Turnos</h3>
+    <table class="table table-bordered" style="width:100%">
+      <tr>
+        <th>#</th>
+        <th>Fecha</th>
+        <th>Inicio</th>
+        <th>Fin</th>
+        <th>Aulas</th>
+      </tr>
+      <tr>
+        <% for(var i=0; i<turnos.length; i++) {%>
+   <td><%= i + 1%></td>
+   <td>
+    <%= moment(turnos[i].inicio).locale('es').format('D MMMM YYYY')%>
+   </td>
+   <td>
+     <%= moment(turnos[i].inicio).locale('es').format('h:mm a')%>
+   </td>
+
+   <td>
+     <%= moment(turnos[i].fin).locale('es').format('h:mm a')%>
+   </td>
+
+      <td>
+       <% for(var j=0; j < turnos[i].aulas.length; j++) {%>
+          <b><%= turnos[0].aulas[j].nombre %></b>
+        <% } %>
+      </td>
+
+
+<% } %>
+
+  </tr>
+
+ </table >
+ <br>
+ <h3 class="text-center"> Capacidades de las aulas solicitadas</h3>
+<table class="table table-bordered">
+ <tr>
+     <th>
+        #
+     </th>
+     <th>
+       Aula
+     </th>
+     <th>
+       Capacidad
+     </th>
+ </tr>
+ <% for(var i=0; i<turnos.length; i++) {%>
+
+           <% for(var j=0; j<turnos[i].aulas.length; j++) {%>
+            <tr>
+                <td>
+                      <%= j + 1 %>
+                </td>
+                <td>
+                       <%=  turnos[i].aulas[j].nombre %>
+                </td>
+                <td>
+                       <%=  turnos[i].aulas[j].capacidad %>
+                </td>
+               </tr>
+            <% } %>
+
+<% } %>
+
+</table>
+<br>
+<br>
+<div class="text-center">
+      <label> F. ___________________________</label>
+       <p>
+        Administrador de Reservas
+       </p>
+</div>
+
+
+    <script type="text/javascript">
+       window.print();
+    </script>
+ </body>
+</html>

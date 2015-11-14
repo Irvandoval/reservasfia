@@ -32,7 +32,7 @@ angular.module('reservasApp')
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
-        fechaCreacion: 'asc'
+        fechaCreacion: 'desc'
       }
     }, {
       total: 0,
@@ -108,6 +108,7 @@ angular.module('reservasApp')
 
 .controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
+  console.log("entra al ctrl");
   $scope.tipo = tipo;
   $scope.diferenciaMinutos = Math.round(((new Date() - new Date(actividad.fechaCreacion)) / 1000 )/60); // minutes
   console.log($scope.diferenciaMinutos);
@@ -157,6 +158,7 @@ angular.module('reservasApp')
           $resource('/api/reservas').save(reservas.data[i]);
         }
         actividadEditada = nuevaActividad(actividad,'aprobado');
+        actividadEditada.fechaAprobacion = new Date();
         Actividad.update({
             idActividad: actividad._id
           }, actividadEditada).$promise
@@ -184,6 +186,17 @@ angular.module('reservasApp')
       $scope.turnos = turnos;
     });
 
+    $scope.eliminarSolicitud = function(){
+     console.log("entra");
+      var Actividad = $resource('/api/actividades/:actividadId', {actividadId:'@id'});
+     Actividad.delete({actividadId: actividad._id},function(){
+      $rootScope.enEspera.reload();
+      $rootScope.aprobados.reload();
+      $rootScope.desaprobados.reload();
+       $modalInstance.dismiss('cancel');
+       toaster.pop('success', "Actividad eliminada", "La actividad se ha eliminado del sistema'");
+     },function(err){})
+    }
    $scope.comprobante = function(){
        $location.path('/api/actividades/comprobante' + actividad._id)
    }

@@ -5,17 +5,17 @@
     <div class="col-md-7">
       <div calendar="calendario" class="span8 calendar" ng-model="eventSources" ui-calendar="uiConfig.calendar"></div>
       <div class="text-center">
-       <span aria-hidden="true" class="fa fa-square esperEscuela">
-         <b> En espera escuela</b>
-       </span>
-       <span aria-hidden="true" class="fa fa-square esper">
-         <b> En espera académica</b>
-       </span>
+        <span aria-hidden="true" class="fa fa-square esperEscuela">
+          <b>
+            En espera escuela</b>
+        </span>
+        <span aria-hidden="true" class="fa fa-square esper">
+          <b>
+            En espera académica</b>
+        </span>
         <span aria-hidden="true" class="fa fa-square aprob">
           <b>Aprobados</b>
         </span>
-
-
       </div>
     </div>
     <div class="col-md-3">
@@ -26,10 +26,7 @@
             Búsqueda
           </tab-heading>
           <h2>Criterios de búsqueda</h2>
-          <label class="checkbox-inline">
-            <input id="opciones_2" name="opciones" ng-click="busqueda.opcion2=false" ng-init="" ng-model="busqueda.opcion1" type="checkbox">
-            Búsqueda General
-          </label>
+
           <label class="checkbox-inline">
             <input id="opcion2" name="opciones" ng-click="busqueda.opcion1=false;porAulas()" ng-model="busqueda.opcion2" type="checkbox">
             Aula específica
@@ -51,72 +48,91 @@
             Reservar
           </tab-heading>
           <div id="reservaDiv" ng-if="mostrar">
-
-            <div class="form-group">
-              <label>Nombre de la actividad</label>
-              <input class="form-control" ng-model="actividad.nombre" placeholder="Ej: Evaluado 1" type="text"/>
-            </div>
-            <div class="form-group">
-              <label>Cantidad de Asistentes</label>
-              <input class="form-control" min="1" placeholder="Agrega la cantidad de asistentes" type="number"/>
-            </div>
-            <label>Fecha</label>
-            <p class="input-group">
-              <input class="form-control" clear-text="Limpiar" close-text="Cerrar" date-disabled="disabled(date, mode)" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'" min-date="'2015-01-01'" ng-model="actividad.fecha" readonly="true" type="text"/>
-
-              <span class="input-group-btn">
-                <button class="btn btn-success" ng-click="open($event)" type="button">
-                  <i class="glyphicon glyphicon-calendar"></i>
-                </button>
-              </span>
-            </p>
-            <div class="row">
-              <div class="col-md-5">
-                <label>Inicio</label>
-                <timepicker hour-step="hstep" id="time" minute-step="mstep" mousewheel="false" ng-change="changed()" ng-model="actividad.inicio" show-meridian="false"></timepicker>
+            <form class="form" name="form" ng-submit="enviar(form)" novalidate>
+              <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted,
+                                                  'has-error': form.nombre.$invalid && submitted }">
+                <label>Nombre de la actividad</label>
+                <input class="form-control" name="nombre" ng-model="actividad.nombre" placeholder="Ej: Evaluado 1"  required type="text"/>
+                <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+                  Campo requerido
+                </p>
               </div>
-              <div class="col-md-5">
-                <label>Fin</label>
-                <timepicker hour-step="hstep" id="time" minute-step="mstep" mousewheel="false" ng-model="actividad.fin" show-meridian="false"></timepicker>
+              <div class="form-group"  ng-class="{ 'has-success': form.asistentes.$valid && submitted,
+                                                  'has-error': form.asistentes.$invalid && submitted }">
+                <label>Cantidad de Asistentes</label>
+                <input class="form-control" name="asistentes" min="1" placeholder="Agrega la cantidad de asistentes" required  ng-model="actividad.asistentes" type="number"/>
+                <p class="help-block" ng-show="form.asistentes.$error.required && submitted">
+                  Campo requerido
+                </p>
               </div>
-            </div>
-            <div class="form-group">
-              <label>Aulas</label>
-              <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" ng-model="actividad.aulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false">
-                <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarAulas($query)"></auto-complete>
-              </tags-input>
-            </div>
-            <div ng-if="esAdmin()">
+              <label>Fecha</label>
+              <p class="input-group" ng-class="{ 'has-success': form.fecha.$valid && submitted,
+                                                  'has-error': form.fecha.$invalid && submitted }">
+                <input class="form-control" name="fecha" clear-text="Limpiar" close-text="Cerrar"
+                datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'"
+                 min-date="minDate" ng-model="actividad.fecha"  required  readonly="true" type="text"/>
+
+                <span class="input-group-btn">
+                  <button class="btn btn-success" ng-click="open($event)" type="button">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </button>
+                </span>
+                <p class="help-block" ng-show="form.fecha.$error.required && submitted">
+                  Campo requerido
+                </p>
+
+              </p>
+              <div class="row">
+                <div class="col-md-5">
+                  <label>Inicio</label>
+                  <timepicker hour-step="hstep" id="time" minute-step="mstep" mousewheel="false" ng-change="changed()" ng-model="actividad.inicio" show-meridian="false"></timepicker>
+                </div>
+                <div class="col-md-5">
+                  <label>Fin</label>
+                  <timepicker hour-step="hstep" id="time" minute-step="mstep" mousewheel="false" ng-model="actividad.fin" show-meridian="false"></timepicker>
+                </div>
+              </div>
+              <div class="form-group" ng-class="{ 'has-success': form.aulas.$valid && submitted,
+                                                  'has-error': form.aulas.$invalid && submitted }" >
+                <label>Aulas</label>
+                <tags-input name="aulas" required add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" ng-model="actividad.aulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false">
+                  <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarAulas($query)"></auto-complete>
+                </tags-input>
+                <p class="help-block" ng-show="form.aulas.$error.required && submitted">
+                  Campo requerido
+                </p>
+
+              </div>
+              <div ng-if="esAdmin()">
+                <div class="form-group">
+                  <label>Escuela</label>
+                  <select class="form-control" ng-change="rellenarDocentes(escuela._id)" ng-model="actividad.escuela" ng-repeat="escuela in escuelas">
+                    <option value="{{escuela._id}}">{{escuela.nombre}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div ng-if="esRepresentante() || esAdmin()">
+                <div class="form-group">
+                  <label>Docente</label>
+                  <select class="form-control" ng-change="rellenarMaterias(docente._id)" ng-model="actividad.docente">
+                    <option ng-repeat="docente in docentes" value="{{docente}}">{{docente.nombre}}
+                    </option>
+                  </select>
+                </div>
+              </div>
               <div class="form-group">
-                <label>Escuela</label>
-                <select class="form-control" ng-change="rellenarDocentes(escuela._id)" ng-model="actividad.escuela" ng-repeat="escuela in escuelas">
-                  <option value="{{escuela._id}}">{{escuela.nombre}}
+                <label>Materia</label>
+                <select class="form-control" ng-change="materiaActual(materia.nombre)" ng-model="actividad.materia">
+                  <option ng-if="materia.imparteEnCiclo == 2 || materia.imparteEnCiclo == 3" ng-repeat="materia in materias" value="{{materia._id}}">
+                    {{materia.nombre}}
                   </option>
                 </select>
               </div>
-            </div>
-           <div ng-if="esRepresentante() || esAdmin()">
-            <div class="form-group">
-              <label>Docente</label>
-              <select class="form-control" ng-change="rellenarMaterias(docente._id)" ng-model="actividad.docente">
-                <option ng-repeat="docente in docentes" value="{{docente}}">{{docente.nombre}}
-                </option>
-              </select>
-            </div>
-           </div>
+              <button class="btn btn-danger form-control" type="submit">
+                Enviar</button>
+            </form>
 
-
-            <div class="form-group">
-              <label>Materia</label>
-              <select class="form-control" ng-change="materiaActual(materia.nombre)" ng-model="actividad.materia">
-                <option ng-if="materia.imparteEnCiclo == 2 || materia.imparteEnCiclo == 3" ng-repeat="materia in materias" value="{{materia._id}}">
-                  {{materia.nombre}}
-                </option>
-              </select>
-            </div>
-
-            <button class="btn btn-danger form-control" ng-click="enviar()">
-              Enviar</button>
           </div>
 
         </tab>
@@ -131,30 +147,36 @@
     <h3 class="modal-title">Detalle de la actividad</h3>
   </div>
   <div class="modal-body">
-    <DIV ALIGN="center">Nombre:
+    <h2 class="text-center">
       {{actividad.actividad.nombre}}
-    </DIV>
-    <DIV ALIGN="center">Asignatura:
-      {{actividad.materia}}
-    </DIV>
-    <DIV ALIGN="center">Encargado:
+    </h2>
+    <h4 class="text-center">
+      <div ng-if="actividad.actividad.tipo === 1">
+       Clase
+      </div>
+      <div ng-if="actividad.actividad.tipo === 2">
+       Evaluación
+      </div>
+    </h4> <br>
+    <div class="text-center"><label>Asignatura:</label>
+      {{actividad.actividad.materia.nombre}}
+    </div> <br>
+    <DIV class="text-center"><label for="">Encargado:</label>
       {{actividad.actividad.encargado}}
-    </DIV>
-    <DIV ALIGN="center">Fecha:
+    </DIV><br>
+    <DIV class="text-center"><label>Fecha:</label>
       {{actividad.inicio | date:'fullDate'}}
-    </DIV>
-    <DIV ALIGN="center">Hora de inicio:
+    </DIV><br>
+    <DIV class="text-center"><label for="">Hora de inicio:</label>
       {{actividad.inicio | date:'shortTime'}}
-    </DIV>
-    <DIV ALIGN="center">Hora de fin:
+    </DIV><br>
+    <DIV class="text-center"><label for="">Hora de fin:</label>
       {{actividad.fin | date:'shortTime'}}
-    </DIV>
-    <DIV ALIGN="center">Aulas:
+    </DIV><br>
+    <DIV class="text-center"><label for="">Aulas:</label>
       <div ng-repeat="aula in actividad.aulas">
-      <li>
-        {{aula.nombre}}
-      </li>
-    </div>
+        <label for=""> {{aula.nombre}}</label>
+      </div>
   </DIV>
 
 </div>

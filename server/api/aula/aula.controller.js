@@ -45,7 +45,7 @@ exports.update = function(req, res) {
   Aula.findById(req.params.id, function (err, aula) {
     if (err) { return handleError(res, err); }
     if(!aula) { return res.send(404); }
-    var updated = _.merge(aula, req.body);
+    var updated = _.assign(aula, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, aula);

@@ -19,7 +19,9 @@
         <tr ng-repeat="carrera in $data">
           <td class="text-center" data-title="'Codigo'" filter="{ 'codigo': 'text' }">{{carrera.codigo}}</td>
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{carrera.nombre}}</td>
-          <td class="text-center" data-title="'Escuela'">
+           <td class="text-center" data-title="'Plan'" >{{carrera.plan}}</td>
+          <td class="text-center" data-title="'Escuela'" >
+           {{ carrera.escuela.nombre}}
           </td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning" type="button" ng-click="editarCarrera(carrera)">
@@ -59,28 +61,28 @@
    <h3 class="modal-title">Nueva Carrera</h3>
  </div>
  <div class="container-fluid">
+  <form class="form" name="form" ng-submit="nuevaCarrera(form)" novalidate>
   <div class="form-group">
     <label>Codigo:</label>
-    <input name="codigo" type="text" value=""  class="form-control">
+    <input name="codigo" type="text" value=""  class="form-control" ng-model="carrera.codigo" required>
   </div>
   <div class="form-group">
     <label>Nombre:</label>
-     <input name="nombre" type="text" value=""  class="form-control">
+     <input name="nombre" type="text" value=""  class="form-control" ng-model="carrera.nombre" required>
+  </div>
+  <div class="form-group">
+    <label>Plan:</label>
+     <input name="plan" type="number" min="1990"   class="form-control" ng-model="carrera.plan" required>
   </div>
   <div class="form-group">
   <label>Escuela:</label>
-  <SELECT NAME="tescuela" SIZE=1 onChange=" " class= "form-control">
-  <OPTION VALUE=" ">Escuela de Ingenieria de Sistemas informaticos</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Industrial</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Electica</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Mecanica</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Alimentos</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Civil</OPTION>
+  <SELECT NAME="tescuela" SIZE=1 onChange=" " class= "form-control" ng-model="carrera.escuela" ng-repeat="escuela in escuelas" required>
+  <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
   </SELECT>
   </div>
-
+</form>
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
+  <button class="btn btn-success" ng-click="nuevaCarrera(form)" type="button">
    Agregar
   </button>
   <button class="btn btn-warning" ng-click="cancel()" type="button">

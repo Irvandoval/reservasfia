@@ -2,10 +2,10 @@
 
 angular.module('reservasApp')
   .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig) {
-
-   var Docente = $resource('/api/docentes/user/:docenteId', {
-     docenteId: '@id'
-   });
+    var DIAS_HABILES = 3; // Dias anteriores al dia que se quiere reservar
+    var Docente = $resource('/api/docentes/user/:docenteId', {
+      docenteId: '@id'
+    });
     /******************************Calendario******************************/
     /*Variables*/
     $scope.busqueda = {};
@@ -71,9 +71,6 @@ angular.module('reservasApp')
 
     };
 
-    $scope.disabled = function(date, mode) {
-      return (mode === 'day' && (date.getDay() === 0));
-    };
     $scope.porAulas = function() {
       // console.log("opcion: " + $scope.busqueda.opcion2);
       if ($scope.busqueda.opcion2 == true) {
@@ -177,8 +174,6 @@ angular.module('reservasApp')
         dayNamesShort: ["dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"],
         monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
       }
-
-
     };
 
     $scope.items = ['item1', 'item2', 'item3'];
@@ -203,8 +198,9 @@ angular.module('reservasApp')
         var docente = Docente.get({
           docenteId: usuario._id
         }, function() {
-         console.log(docente);
+          console.log(docente);
           $scope.materias = docente.materias;
+          $scope.actividad.escuela = docente.escuela;
         });
       }
 
@@ -224,15 +220,15 @@ angular.module('reservasApp')
           representanteId: usuario._id
         }, function() {
           $scope.actividad.escuela = representante.escuela;
-         // $scope.rellenarMaterias(representante.escuela);
-         var docentesPorEscuela = $resource('/api/docentes/escuela/:escuelaId', {
-           escuelaId: '@id'
-         });
+          // $scope.rellenarMaterias(representante.escuela);
+          var docentesPorEscuela = $resource('/api/docentes/escuela/:escuelaId', {
+            escuelaId: '@id'
+          });
 
-         var docentes =  docentesPorEscuela.query({
+          var docentes = docentesPorEscuela.query({
             escuelaId: representante.escuela
           }, function() {
-           console.log(docente);
+            console.log(docente);
             $scope.docentes = docentes;
           });
         });
@@ -240,6 +236,9 @@ angular.module('reservasApp')
 
     }
     $scope.datePicker = {};
+    var hoy = new Date();
+    $scope.minDate = new Date(hoy);
+    $scope.minDate.setDate(hoy.getDate() + DIAS_HABILES);
     $scope.open = function($event) {
       $event.preventDefault();
       $event.stopPropagation();
@@ -249,7 +248,7 @@ angular.module('reservasApp')
     /************************************************************************/
 
     /* event sources array*/
-    $scope.eventSources = [$scope.aprobadosEvt, $scope.esperaEvt,  $scope.esperaEscuelaEvt];
+    $scope.eventSources = [$scope.aprobadosEvt, $scope.esperaEvt, $scope.esperaEscuelaEvt];
     $scope.animationsEnabled = true;
 
     /**************************************************************************/
@@ -288,62 +287,66 @@ angular.module('reservasApp')
         });
     }
 
-    $scope.enviar = function() {
-      var fecha = new Date($scope.actividad.fecha);
-      var fechaHi = new Date($scope.actividad.inicio);
-      var fechaFi = new Date($scope.actividad.fin);
-      var encargado;
-      var aulas;
-      var nuevaActividad = {};
-      var dates = { // objeto con la fecha y horas de la actividad
-        dia: fecha.getDate(),
-        mes: fecha.getMonth(),
-        year: fecha.getFullYear(),
-        mi: fechaHi.getMinutes(),
-        hi: fechaHi.getHours(),
-        mf: fechaFi.getMinutes(),
-        hf: fechaFi.getHours()
-      };
-      var DetectaChoque = $resource('/api/reservas/choque/detectarChoque', {});
-      var reservasComprobar = crearReservas(dates); // creamos reservas 'auxiliares' para detectar posibles choques.
-      DetectaChoque.save(reservasComprobar).$promise //mandamos las reservas al WS para comprobar choque
-        .then(function(data) {
-          if (Auth.isDocente()) // si es docente
-            encargado = Auth.getCurrentUser().name; // el encargado de la materia es el usuario actual
-          else // si es admin o representante
-            encargado = JSON.parse($scope.actividad.docente).nombre; // el encargado estara definido en un campo especial
-          nuevaActividad = {
-            nombre: $scope.actividad.nombre,
-            tipo: 2, //esto deberia cambiar en un futuro para soportar otro tipo de actividades
-            encargado: encargado,
-            estado: 'espera_escuela',
-            creadoPor: Auth.getCurrentUser()._id,
-            materia: $scope.actividad.materia,
-            escuela: $scope.actividad.escuela
-          };
-          aulas = obtenerAulas();
-          var nuevoTurno = { // se crea el turno para la actividad (solo se soporta 1 turno en esta version)
-            inicio: new Date(dates.year, dates.mes, dates.dia, dates.hi, dates.mi),
-            fin: new Date(dates.year, dates.mes, dates.dia, dates.hf, dates.mf),
-            aulas: aulas
-          };
-          var actEnviar = {
-            actividad: nuevaActividad,
-            turnos: [nuevoTurno]
-          }
-          $resource('/api/actividades')
-            .save(actEnviar).$promise
-            .then(function(actividadCreada) {
-              uiCalendarConfig.calendars['calendario'].fullCalendar('refetchEvents');
-              toaster.pop('success', "Éxito", "La reserva se ha enviado a aprobación");
-              $scope.actividad = {};
-            }, function(err) {
-              toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-            });
-        }, function(err) {
-          toaster.pop('error', "Error", "Se ha detectado choque de horarios");
-        });
-
+    $scope.enviar = function(form) {
+      $scope.submitted = true;
+      console.log("enrt");
+      if (form.$valid) {
+        var fecha = new Date($scope.actividad.fecha);
+        var fechaHi = new Date($scope.actividad.inicio);
+        var fechaFi = new Date($scope.actividad.fin);
+        var encargado;
+        var aulas;
+        var nuevaActividad = {};
+        var dates = { // objeto con la fecha y horas de la actividad
+          dia: fecha.getDate(),
+          mes: fecha.getMonth(),
+          year: fecha.getFullYear(),
+          mi: fechaHi.getMinutes(),
+          hi: fechaHi.getHours(),
+          mf: fechaFi.getMinutes(),
+          hf: fechaFi.getHours()
+        };
+        var DetectaChoque = $resource('/api/reservas/choque/detectarChoque', {});
+        var reservasComprobar = crearReservas(dates); // creamos reservas 'auxiliares' para detectar posibles choques.
+        DetectaChoque.save(reservasComprobar).$promise //mandamos las reservas al WS para comprobar choque
+          .then(function(data) {
+            if (Auth.isDocente()) // si es docente
+              encargado = Auth.getCurrentUser().name; // el encargado de la materia es el usuario actual
+            else // si es admin o representante
+              encargado = JSON.parse($scope.actividad.docente).nombre; // el encargado estara definido en un campo especial
+            nuevaActividad = {
+              nombre: $scope.actividad.nombre,
+              tipo: 2, //esto deberia cambiar en un futuro para soportar otro tipo de actividades
+              encargado: encargado,
+              estado: 'espera_escuela',
+              creadoPor: Auth.getCurrentUser()._id,
+              materia: $scope.actividad.materia,
+              escuela: $scope.actividad.escuela
+            };
+            aulas = obtenerAulas();
+            var nuevoTurno = { // se crea el turno para la actividad (solo se soporta 1 turno en esta version)
+              inicio: new Date(dates.year, dates.mes, dates.dia, dates.hi, dates.mi),
+              fin: new Date(dates.year, dates.mes, dates.dia, dates.hf, dates.mf),
+              aulas: aulas
+            };
+            var actEnviar = {
+              actividad: nuevaActividad,
+              turnos: [nuevoTurno]
+            }
+            $resource('/api/actividades')
+              .save(actEnviar).$promise
+              .then(function(actividadCreada) {
+                uiCalendarConfig.calendars['calendario'].fullCalendar('refetchEvents');
+                toaster.pop('success', "Éxito", "La reserva se ha enviado a aprobación");
+                $scope.actividad = {};
+                $scope.submitted = false;
+              }, function(err) {
+                toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+              });
+          }, function(err) {
+            toaster.pop('error', "Error", "Se ha detectado choque de horarios");
+          });
+      }
     };
 
     function crearReservas(f) {

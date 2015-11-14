@@ -13,6 +13,16 @@ exports.index = function(req, res) {
   });
 };
 
+// Get list of aulas search by regular Expression
+exports.regexNombre = function(req, res) {
+  var regex = new RegExp(req.params.nombre, "i")
+  ,   query = { codigo: regex };
+ Materia.find(query,function (err, materias) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, materias);
+  });
+};
+
 // Get a single materia
 exports.show = function(req, res) {
   Materia.findById(req.params.id, function (err, materia) {

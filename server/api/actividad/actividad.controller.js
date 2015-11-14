@@ -1,5 +1,5 @@
 'use strict';
-
+var moment = require('moment');
 var _ = require('lodash');
 var Actividad = require('./actividad.model');
 var Representante = require('../representante/representante.model');
@@ -10,6 +10,7 @@ exports.index = function(req, res) {
   Actividad
   .find()
   .populate('materia')
+  .populate('creadoPor')
   .exec(function (err, docs) {
     if(err) { return handleError(res, err); }
     Actividad.populate(docs, {
@@ -102,6 +103,8 @@ exports.indexEsperaEscuelaA= function(req, res) {
 exports.indexEsperaEscuelaB = function(req, res) {
   Representante
   .findOne({usuario: req.user._id}, function(err, representante){
+   console.log("rep");
+   console.log(representante);
      Actividad
      .find({estado: 'espera_escuela', escuela: representante.escuela})
      .populate('materia','nombre')
@@ -151,7 +154,27 @@ exports.indexMisEspera = function(req, res) {
 };
 
 exports.comprobante = function(req, res){
-   res.render('comprobante', { title: 'ejs' });
+console.log(req.params.id);
+ Actividad
+ .findById(req.params.id)
+ .populate('materia')
+ .populate('escuela')
+ .populate('creadoPor')
+ .exec(function(err,actividad){
+    console.log("traen");
+    console.log(actividad);
+     if(err) { return handleError(res, err); }
+     Turno.find({actividad:req.params.id})
+     .populate('aulas')
+     .exec(function(err, turnos){
+       if(err) { return handleError(res, err); }
+        res.render('comprobante', { title: 'ejs',actividad : actividad ,turnos:turnos, moment:moment});
+
+     });
+
+   });
+
+
 }
 // Get a single actividad
 exports.show = function(req, res) {

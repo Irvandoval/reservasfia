@@ -1,16 +1,14 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
-
-<toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
-
-     <div class="panel panel-danger">
+  <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
+  <div class="panel panel-danger">
     <div class="panel-heading">
       <div class="row">
         <div class="col-md-10">
           <h4>Materias</h4>
         </div>
         <div class="col-md-2" ng-if="esAdmin()">
-          <button class="btn btn-success" ng-click="nuevaMateria()" type="button" >
+          <button class="btn btn-success" ng-click="nuevaMateria()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nueva Materia
           </button>
@@ -18,23 +16,30 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
+      <table class="table table-striped" ng-table="tablaMaterias" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="materia in $data">
           <td class="text-center" data-title="'Codigo'" filter="{ 'codigo': 'text' }">{{materia.codigo}}</td>
           <td class="text-center" data-title="'Nombre'">{{materia.nombre}}</td>
           <td class="text-center" data-title="'Tipo'">{{materia.tipo}}</td>
           <td class="text-center" data-title="'Escuela'">{{materia.escuela.nombre}}</td>
-          <td class="text-center" data-title="'Ciclo'">{{materia.imparteEnCiclo}}
-
+          <td class="text-center" data-title="'Ciclo'">
+              <div ng-if="materia.imparteEnCiclo === 1">
+               Ciclo I
+              </div>
+              <div ng-if="materia.imparteEnCiclo === 2">
+               Ciclo II
+              </div>
+              <div ng-if="materia.imparteEnCiclo === 3">
+               Ambos
+              </div>
           </td>
 
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning" type="button" ng-click="editarMateria(materia)">
+            <button class="btn btn-warning" ng-click="editarMateria(materia)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
             </button>
-            <button class="btn btn-danger" type="button" ng-click="eliminarMateria(materia._id)">
+            <button class="btn btn-danger" ng-click="eliminarMateria(materia._id)" type="button" confirm="¿Estas seguro de eliminar la materia {{materia.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
-              
             </button>
           </td>
         </tr>
@@ -63,74 +68,95 @@
 </script>
 
 <script id="nueva-materia.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Nueva Materia</h3>
- </div>
- <div class="container-fluid">
- <div class="form-group">
-    <label>Codigo:</label>
-    <input name="codigo" type="text" value=""  class="form-control">
+  <div class="modal-header">
+    <h3 class="modal-title">Nueva Materia</h3>
   </div>
-  <div class="form-group">
-    <label>Nombre:</label>
-    <input name="nombre" type="text" value=""  class="form-control">
-     </div>
-  <div class="form-group">
-    <label>Tipo:</label>
-     <select class="form-control" name="estado">
-       <option value="true">Obligatoria</option>
-       <option value="false">Electiva</option>
-     </select>
-  </div>
-  <div class="form-group">
-    <label>Ciclo:</label>
-    <input type="number" name="name"  min="1" class="form-control">
-  </div>
+  <div class="container-fluid">
+    <div class="form-group">
+      <label>Codigo:</label>
+      <input class="form-control" name="codigo" ng-model="materia.codigo" type="text">
+    </div>
+    <div class="form-group">
+      <label>Nombre:</label>
+      <input class="form-control" name="nombre" ng-model="materia.nombre" type="text">
+    </div>
+    <div class="form-group">
+      <label>Escuela:</label>
+      <select class="form-control" name="estado" ng-model="materia.escuela" ng-repeat="escuela in escuelas">
+        <option value="{{escuela._id}}">{{escuela.nombre}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Carrera:</label>
+      <select class="form-control" name="estado" ng-model="materia.carrera" ng-repeat="escuela in escuelas">
+        <option value="{{escuela._id}}">{{escuela.nombre}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Tipo:</label>
+      <select class="form-control" name="tipo" ng-model="materia.tipo">
+        <option value="obligatoria">Obligatoria</option>
+        <option value="electiva">Electiva</option>
+      </select>
+    </div>
 
- </div>
+    <div class="form-group">
+      <label>Se imparte en ciclo:</label>
+      <select class="form-control" name="ciclo" ng-model="materia.imparteEnCiclo">
+        <option value="1">Ciclo I</option>
+        <option value="2">Ciclo II</option>
+        <option value="3">Ambos ciclos</option>
+      </select>
+    </div>
+
+  </div>
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
-   Agregar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
+    <button class="btn btn-success" ng-click="nuevaMateria()" type="button">
+      Agregar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
   </div>
 
 </script>
 <script id="editar-materia.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Editar Materia</h3>
- </div>
- <div class="container-fluid">
-  <div class="form-group">
-    <label>Codigo:</label>
-    <input name="codigo" type="text"  class="form-control" ng-model="materia.codigo">
+  <div class="modal-header">
+    <h3 class="modal-title">Editar Materia</h3>
   </div>
-  <div class="form-group">
-    <label>Nombre:</label>
-    <input name="nombre" type="text"  class="form-control" ng-model="materia.nombre">
-  </div>
-  <div class="form-group">
-    <label>Tipo:</label>
-     <select class="form-control" name="tipo">
-       <option value="true">Obligatoria</option>
-       <option value="false">Electiva</option>
-     </select>
-  </div>
-  <div class="form-group">
-    <label>Ciclo:</label>
-    <input type="number" name="name"  min="0" class="form-control" ng-model="materia.imparteEnCiclo">
-  </div>
+  <div class="container-fluid">
+    <div class="form-group">
+      <label>Codigo:</label>
+      <input class="form-control" name="codigo" ng-model="materiaEdit.codigo" type="text">
+    </div>
+    <div class="form-group">
+      <label>Nombre:</label>
+      <input class="form-control" name="nombre" ng-model="materiaEdit.nombre" type="text">
+    </div>
+    <div class="form-group">
+      <label>Tipo:</label>
+      <select class="form-control" name="tipo" ng-model="materiaEdit.tipo">
+        <option value="obligatoria">Obligatoria</option>
+        <option value="electiva">Electiva</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Se imparte en ciclo:</label>
+      <select class="form-control" name="ciclo" ng-model="materiaEdit.imparteEnCiclo">
+        <option value="1">Ciclo I</option>
+        <option value="2">Ciclo II</option>
+        <option value="3">Ambos ciclos</option>
+      </select>
+    </div>
 
- </div>
+  </div>
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
-   Agregar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
+    <button class="btn btn-success" ng-click="editarMateria()" type="button">
+      Editar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
   </div>
 
 </script>

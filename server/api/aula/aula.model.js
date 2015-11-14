@@ -8,7 +8,7 @@ var AulaSchema = new Schema({
   descripcion: String,
   estado: Boolean,// si esta activo o inactivo
   sonido: Boolean,// si tiene sistema de audio
-  pizarra: Boolean,
+  pizarra: {},
   capacidad: Number,
   etiquetas: [{type:String, index: true}]//edificio X , Centro de computo, LCOM, Auditorios, Laboratorios UCB... etc etc etc
 });

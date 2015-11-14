@@ -1,7 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
   <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
-
   <div class="panel panel-danger">
     <div class="panel-heading">
       <div class="row">
@@ -17,7 +16,7 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
+      <table class="table table-striped" ng-table="tablaUsuarios" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="usuario in $data">
           <td class="text-center" data-title="'Usuario'" filter="{ 'nombre': 'text' }">{{usuario.username}}</td>
           <td class="text-center" data-title="'Nombre'">{{usuario.name}}</td>
@@ -70,24 +69,17 @@
             <label>Nombre</label>
 
             <input class="form-control" name="name" ng-model="user.name" required type="text"/>
-            <p class="help-block" ng-show="form.name.$error.required && submitted">
+            <p class="help-block" ng-show="form.username.$error.required && submitted">
               El nombre es requerido
             </p>
           </div>
 
-          <div class="form-group" ng-class="{ 'has-success': form.email.$valid && submitted,
-                                              'has-error': form.email.$invalid && submitted }">
+          <div class="form-group" ng-class="{ 'has-success': form.username.$valid && submitted,
+                                              'has-error': form.username.$invalid && submitted }">
             <label>Nombre de usuario</label>
-
-            <input class="form-control" mongoose-error name="email" ng-model="user.email" required type="text"/>
-            <p class="help-block" ng-show="form.email.$error.email && submitted">
-
-            </p>
-            <p class="help-block" ng-show="form.email.$error.required && submitted">
-
-            </p>
-            <p class="help-block" ng-show="form.email.$error.mongoose">
-              {{ errors.email }}
+            <input class="form-control" mongoose-error name="username" ng-model="user.username" required type="text"/>
+            <p class="help-block" ng-show="form.username.$error.required && submitted">
+              El nombre de usuario es requerido
             </p>
           </div>
 
@@ -95,50 +87,48 @@
                                               'has-error': form.password.$invalid && submitted }">
             <label>Contraseña</label>
 
-            <input class="form-control" mongoose-error name="password" ng-minlength="3" ng-model="user.password" required type="password"/>
+            <input class="form-control" mongoose-error name="password" ng-minlength="5" ng-model="user.password" required type="password"/>
             <p class="help-block" ng-show="(form.password.$error.minlength || form.password.$error.required) && submitted">
-              Password must be at least 3 characters.
+              Password debe contener minimo 5 caracteres
             </p>
             <p class="help-block" ng-show="form.password.$error.mongoose">
               {{ errors.password }}
             </p>
           </div>
-          <div class="form-group">
+          <div class="form-group" ng-class="{ 'has-success': form.role.$valid && submitted,
+                                              'has-error': form.role.$invalid && submitted }">
             <label>Rol</label>
-            <select class="form-control" name="role" ng-model="user.role">
+            <select class="form-control" name="role" ng-model="user.role" required>
               <option value="docente">Docente</option>
               <option value="representante">Representante</option>
               <option value="admin">Administrador</option>
             </select>
+            <p class="help-block" ng-show="form.role.$error.required && submitted">
+              El rol del usuario es requerido
+            </p>
           </div>
           <div ng-show="user.role == 'representante' || user.role == 'docente' ">
                <h3>Información del {{user.role}}</h3>
                 <div class="form-group">
                   <label>Escuela</label>
-                  <select class="form-control" name="escuela">
-                    <option value="sistemas">Sistemas informáticos</option>
-                    <option value="industrial">Escuela de Ingeniería Industrial</option>
-                    <option value="quimica">Escuela de Ingenieria Quimica</option>
-                     <option value="civil">Escuela de Ingenieria Civil</option>
-                     <option value="electrica">Escuela de Ingenieria Electrica</option>
+                  <select class="form-control" name="escuela" ng-model="usuario.escuela" ng-repeat="escuela in escuelas">
+                    <option value="{{escuela._id}}">{{escuela.nombre}}</option>
                   </select>
                 </div>
                 <div ng-if="user.role === 'docente'">
                      <label>Materias</label>
-                 <tags-input  class="bootstrap"  placeholder="Agrega una materia" replace-spaces-with-dashes="false">
-
-                 </tags-input>
+                     <tags-input name="aulas" required add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" ng-model="usuario.materias" placeholder="Agrega una materia" replace-spaces-with-dashes="false">
+                       <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarMaterias($query)"></auto-complete>
+                     </tags-input>
                 </div>
           </div>
         </form>
       </div>
     </div>
-    <hr>
-
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-success" ng-click="" type="button">
+    <button class="btn btn-success" ng-click="crearUsuario(form)" type="button">
       Agregar
     </button>
     <button class="btn btn-warning" ng-click="cancel()" type="button">
@@ -170,7 +160,7 @@
                                               'has-error': form.email.$invalid && submitted }">
             <label>Nombre de usuario</label>
 
-            <input class="form-control" mongoose-error name="email" ng-model="user.email" required type="text"/>
+            <input class="form-control" mongoose-error name="username" ng-model="usuario.username" required type="text"/>
             <p class="help-block" ng-show="form.email.$error.email && submitted">
 
             </p>
@@ -186,40 +176,13 @@
                                               'has-error': form.password.$invalid && submitted }">
             <label>Contraseña</label>
 
-            <input class="form-control" mongoose-error name="password" ng-minlength="3" ng-model="user.password" required type="password"/>
+            <input class="form-control" mongoose-error name="password" ng-minlength="3" ng-model="usuario.password" required type="password"/>
             <p class="help-block" ng-show="(form.password.$error.minlength || form.password.$error.required) && submitted">
               Password must be at least 3 characters.
             </p>
             <p class="help-block" ng-show="form.password.$error.mongoose">
               {{ errors.password }}
             </p>
-          </div>
-          <div class="form-group">
-            <label>Rol</label>
-            <select class="form-control" name="role" ng-model="usuario.role">
-              <option value="docente">Docente</option>
-              <option value="representante">Representante</option>
-              <option value="admin">Administrador</option>
-            </select>
-          </div>
-          <div ng-show="user.role == 'representante' || user.role == 'docente' ">
-               <h3>Información del {{user.role}}</h3>
-                <div class="form-group">
-                  <label>Escuela</label>
-                  <select class="form-control" name="escuela">
-                    <option value="sistemas">Sistemas informáticos</option>
-                    <option value="industrial">Escuela de Ingeniería Industrial</option>
-                    <option value="quimica">Escuela de Ingenieria Quimica</option>
-                     <option value="civil">Escuela de Ingenieria Civil</option>
-                     <option value="electrica">Escuela de Ingenieria Electrica</option>
-                  </select>
-                </div>
-                <div ng-if="user.role === 'docente'">
-                     <label>Materias</label>
-                 <tags-input  class="bootstrap"  placeholder="Agrega una materia" replace-spaces-with-dashes="false">
-
-                 </tags-input>
-                </div>
           </div>
         </form>
       </div>
@@ -229,12 +192,10 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-success" ng-click="" type="button">
-      Agregar
+    <button class="btn btn-success" ng-click="actualizar()" type="button">
+      Actualizar
     </button>
     <button class="btn btn-warning" ng-click="cancel()" type="button">
       Cancelar</button>
   </div>
 </script>
-
-

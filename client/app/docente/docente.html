@@ -9,7 +9,7 @@
           <h4>Docentes</h4>
         </div>
         <div class="col-md-2" ng-if="esAdmin()">
-          <button class="btn btn-success" ng-click="nuevoDocente()" type="button" >
+          <button class="btn btn-success" ng-click="nuevoDocente()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nuevo docente
           </button>
@@ -21,13 +21,18 @@
         <tr ng-repeat="docente in $data">
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{docente.nombre}}</td>
           <td class="text-center" data-title="'Escuela'">{{docente.escuela.nombre}}</td>
-          <td class="text-center" data-title="'Materias'">  <div ng-repeat = "materia in docente.materias"> {{materia.nombre}} </div> </td>
-          <td class="text-center" data-title="'Usuario'">{{docente.usuario.nombre}} </td>
+          <td class="text-center" data-title="'Materias'">
+            <div ng-repeat="materia in docente.materias">
+              {{materia.nombre}}
+            </div>
+          </td>
+          <td class="text-center" data-title="'Usuario'">{{docente.usuario.nombre}}
+          </td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning" type="button" ng-click="editarDocente(docente)">
+            <button class="btn btn-warning" ng-click="editarDocente(docente)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
             </button>
-            <button class="btn btn-danger" type="button">
+            <button class="btn btn-danger" type="button" ng-click="eliminarDocente(docente._id)" confirm="¿Estas seguro de eliminar el registro del docente {{docente.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
             </button>
           </td>
@@ -57,86 +62,95 @@
 </script>
 
 <script id="nuevo-docente.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Nuevo docente</h3>
- </div>
- <div class="container-fluid">
-  <form class="form" name="form" ng-submit="nuevoDocente(form)" novalidate>
-  <div class="form-group"   ng-class="{ 'has-success': form.nombre.$valid && submitted,
+  <div class="modal-header">
+    <h3 class="modal-title">Nuevo docente</h3>
+  </div>
+  <div class="container-fluid">
+    <form class="form" name="form" ng-submit="nuevoDocente(form)" novalidate>
+      <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted,
                                       'has-error': form.nombre.$invalid && submitted }">
-    <label>Nombre:</label>
-    <input name="nombre" type="text" value="" ng-model="docente.nombre" class="form-control" required>
-    <p class="help-block" ng-show="form.nombre.$error.required && submitted">
-      El nombre es requerido
-    </p>
-  </div>
-  <div class="form-group">
-    <label> Usuario:</label>
-    <input name="usuario" type="text" value="" ng-model="docente.usuario" class="form-control">
-  </div>
-  <div class="form-group"  ng-class="{ 'has-success': form.escuela.$valid && submitted,
+        <label>Nombre:</label>
+        <input class="form-control" name="nombre" ng-model="docente.nombre" required type="text" value="">
+        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          El nombre es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                       'has-error': form.escuela.$invalid && submitted }">
-    <label>Escuela:</label>
-    <SELECT NAME="escuela"  class= "form-control" ng-model="docente.escuela" required ng-repeat="escuela in escuelas">
-      <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
-    </SELECT>
-    <p class="help-block" ng-show="form.escuela.$error.required && submitted">
-      La escuela es requerida
-    </p>
-   </div>
-   <div class="form-group"  ng-class="{ 'has-success': form.materias.$valid && submitted,
+        <label>Escuela:</label>
+        <SELECT NAME="escuela" class="form-control" ng-model="docente.escuela" ng-repeat="escuela in escuelas" required>
+          <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+        </SELECT>
+        <p class="help-block" ng-show="form.escuela.$error.required && submitted">
+          La escuela es requerida
+        </p>
+      </div>
+      <div class="form-group" ng-class="{ 'has-success': form.materias.$valid && submitted,
                                        'has-error': form.materias.$invalid && submitted }">
-   <label>Materias:</label>
-        <tags-input name="materias" required add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" ng-model="docente.materias" placeholder="Agrega una materia" replace-spaces-with-dashes="false">
+        <label>Materias:</label>
+        <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" name="materias" ng-model="docente.materias" placeholder="Agrega una materia" replace-spaces-with-dashes="false" required>
           <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarMaterias($query)"></auto-complete>
         </tags-input>
         <p class="help-block" ng-show="form.materias.$error.required && submitted">
           Por lo menos una materia es requerida
         </p>
-   </div>
-  </form>
-    </div>
+      </div>
+    </form>
+  </div>
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="nuevoDocente(form)" type="button">
-   Agregar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
+    <button class="btn btn-success" ng-click="nuevoDocente(form)" type="button">
+      Agregar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
   </div>
 
 </script>
 <script id="editar-docente.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Editar docente</h3>
- </div>
- <div class="container-fluid">
-  <div class="form-group">
-
-  <label>Nombre:</label>
-  <input name="nombre" type="text" value=""  class="form-control" ng-model="docentex.nombre">
+  <div class="modal-header">
+    <h3 class="modal-title">Editar docente</h3>
   </div>
-  <div class="form-group">
-  <label>Escuela:</label>
-  <SELECT NAME="escuela"  class= "form-control" ng-model="docentex.escuela" required ng-repeat="escuela in escuelas">
-    <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
-  </SELECT>
+  <div class="container-fluid">
+    <div class="form-group">
+      <label>Nombre:</label>
+      <input class="form-control" name="nombre" ng-model="docentex.nombre" type="text" value="">
+    </div>
+    <div class="form-group">
+      <label>Escuela:</label>
+      <SELECT NAME="escuela" class="form-control" ng-model="docentex.escuela" ng-repeat="escuela in escuelas" required>
+        <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+      </SELECT>
+    </div>
+    <div class="form-group">
+      <label>Materias:</label>
+      <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" name="materias" ng-model="docentex.materias" placeholder="Agrega una materia" replace-spaces-with-dashes="false" required>
+        <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarMaterias($query)"></auto-complete>
+      </tags-input>
+    </div>
+    <div class="" ng-if="docentex.usuario === undefined">
+      <label>Crear usuario para docente</label>
+       <input type="checkbox" name="crearUsuario" value="false" ng-model="crearUsuario">
+       <div ng-if="crearUsuario === true">
+         <div class="form-group">
+          <label>Nombre de usuario</label>
+          <input class="form-control" name="nombre" ng-model="usuario.username" type="text">
+         </div>
+         <div class="form-group">
+          <label>Contraseña</label>
+          <input class="form-control" name="nombre" ng-model="usuario.password" type="password">
+         </div>
+         <button type="button" class="btn btn-success" name="bu" ng-click="createUsuario()">Crear</button>
+       </div>
+    </div>
 
-  <div class="form-group">
-  <label>Materias:</label>
-       <tags-input name="materias" required add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" ng-model="docentex.materias" placeholder="Agrega una materia" replace-spaces-with-dashes="false">
-         <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarMaterias($query)"></auto-complete>
-       </tags-input>
-  </div>
-
-  </div>
   </div>
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="actualizarDocente()" type="button">
-   Actualizar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
+    <button class="btn btn-success" ng-click="actualizarDocente()" type="button">
+      Actualizar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
   </div>
 
 </script>

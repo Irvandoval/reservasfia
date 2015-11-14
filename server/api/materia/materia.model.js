@@ -9,6 +9,7 @@ var MateriaSchema = new Schema({
   tipo: String, // obligatoria o electiva
   escuela: { type: Schema.Types.ObjectId, ref: 'Escuela' },
   carrera: { type: Schema.Types.ObjectId, ref: 'Carrera' },
+  nivel: Number,// nivel del pensum al que pertenece
   imparteEnCiclo: Number// 1: impar, 2: par, 3: par e impar
 });
 

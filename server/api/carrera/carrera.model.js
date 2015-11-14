@@ -4,8 +4,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var CarreraSchema = new Schema({
-  codigo: String,
+  codigo: {type:String, unique: true},
   nombre: String,
+  plan: String,
   escuela: { type: Schema.Types.ObjectId, ref: 'Escuela' }
 });
 

@@ -5,7 +5,9 @@ var Carrera = require('./carrera.model');
 
 // Get list of carreras
 exports.index = function(req, res) {
-  Carrera.find(function (err, carreras) {
+  Carrera.find()
+  .populate('escuela')
+  .exec(function (err, carreras) {
     if(err) { return handleError(res, err); }
     return res.json(200, carreras);
   });

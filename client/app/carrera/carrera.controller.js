@@ -45,7 +45,23 @@ angular.module('reservasApp')
    }
   })
 
-  .controller('NuevaCarreraCtrl', function(){
+  .controller('NuevaCarreraCtrl', function($scope, $rootScope,toaster, $resource, $modalInstance, Carrera){
+   var Escuela = $resource('/api/escuelas');
+   Escuela.query(function(escuela) {
+
+     $scope.escuelas = escuela;
+     console.log(escuela);
+   });
+   $scope.nuevaCarrera = function(form) {
+    $scope.submitted = true;
+    if(form.$valid){
+     Carrera.save($scope.carrera, function(carrera){
+       toaster.pop('success', "Carrera ingresada", "La carrera se ha agregado al sistema");
+     },function(err){
+       toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+     });
+    }
+   }
 
   })
 

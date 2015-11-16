@@ -37,7 +37,7 @@ angular.module('reservasApp')
         aulaId: idAula
       }, function() {
         $rootScope.tablaAulas.reload();
-        toaster.pop('success', "Aula eliminada", "El aula se ha eliminado del sistema'");
+        toaster.pop('success', "Aula eliminada", "El aula se ha eliminado del sistema");
       }, function(err) {});
     };
 

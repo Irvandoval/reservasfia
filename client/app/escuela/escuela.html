@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
+      <table class="table table-striped" ng-table="tablaEscuelas" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="escuela in $data">
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{escuela.nombre}}</td>
 
@@ -64,12 +64,12 @@
  <div class="container-fluid">
   <div class="form-group">
     <label>Nombre:</label>
-    <input name="nombre" type="text" value=""  class="form-control">
+    <input name="nombre" type="text" value=""  class="form-control" ng-model="escuela.nombre">
   </div>
  </div>
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
+  <button class="btn btn-success" ng-click="enviar()" type="button">
    Agregar
   </button>
   <button class="btn btn-warning" ng-click="cancel()" type="button">

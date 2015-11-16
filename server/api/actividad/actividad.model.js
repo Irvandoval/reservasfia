@@ -27,9 +27,7 @@ var ActividadSchema = new Schema({
 ActividadSchema.methods = {
   crearTurnos : function(turnos, callback){
    var k = 0;
-    console.log("tur length " + turnos);
     for(var i=0; i < turnos.length; i++){
-
       (function(it,actividad){
        console.log("entra funcion " + k);
        turnos[it].actividad = actividad._id;
@@ -43,4 +41,6 @@ ActividadSchema.methods = {
     }
   }
 }
+
+
 module.exports = mongoose.model('Actividad', ActividadSchema);

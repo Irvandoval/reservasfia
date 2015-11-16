@@ -1,6 +1,98 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('EscuelaCtrl', function ($scope) {
-    $scope.message = 'Hello';
-  });
+  .controller('EscuelaCtrl', function ($rootScope, $scope, $resource, ngTableParams, $filter, Escuela, $modal, toaster, Auth) {
+   $scope.esAdmin = Auth.isAdmin;
+
+   $rootScope.tablaEscuelas = new ngTableParams({
+     page: 1, // show first page
+     count: 5 // count per page
+   }, {
+     total: 0,
+     getData: function($defer, params) {
+       Escuela.query().$promise
+         .then(function(escuelas) {
+           var orderedRecentActivity = params.filter() ?
+             $filter('filter')(escuelas, params.filter()) :
+             escuelas;
+           params.total(orderedRecentActivity.length);
+           $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+         })
+
+     }
+   });
+
+   $scope.nuevaEscuela = function() {
+     var modalInstance = $modal.open({
+       animation: $scope.animationsEnabled,
+       templateUrl: 'nueva-escuela.html',
+       controller: 'NuevaEscuelaCtrl',
+       size: 'lg'
+     });
+   }
+
+
+   $scope.eliminarEscuela = function(id) {
+     Escuela.delete({
+       escuelaId: id
+     }, function() {
+       $rootScope.tablaEscuelas.reload();
+       toaster.pop('success', "Escuela eliminada", "La escuela se ha eliminado del sistema");
+     }, function(err) {});
+   };
+
+   $scope.editarEscuela = function(escuela) {
+     var modalInstance = $modal.open({
+       animation: $scope.animationsEnabled,
+       templateUrl: 'editar-escuela.html',
+       controller: 'EditarEscuelaCtrl',
+       size: 'lg',
+       resolve: {
+         aula: function() {
+           return escuela;
+         }
+       }
+     });
+   }
+  })
+
+  .controller('NuevaEscuelaCtrl', function($scope, $rootScope, $modalInstance, toaster, Escuela, $window) {
+    $scope.escuela = {};
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.enviar = function() {
+     console.log($scope.escuela);
+      Escuela.save($scope.escuela, function() {
+        $rootScope.tablaEscuelas.reload();
+        $modalInstance.dismiss('cancel');
+        toaster.pop('success', "Escuela ingresada", "La escuela se ha ingresado en el sistema");
+      }, function() {
+        console.log("error");
+      })
+    }
+
+  })
+
+
+  .controller('EditarEscuelaCtrl', function(escuela, $scope, $rootScope, $modalInstance, Escuela, toaster) {
+
+    $scope.escuela = escuela;
+
+    $scope.actualizar = function() {
+
+      Escuela.update({
+        aulaId: $scope.escuela._id
+      }, $scope.escuela, function() {
+        $rootScope.tablaEscuelas.reload();
+        $modalInstance.dismiss('cancel');
+        toaster.pop('success', "Escuela Editada", "La escuela se ha editado en el sistema");
+      }, function() {
+        console.log("error");
+      })
+    }
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+  })

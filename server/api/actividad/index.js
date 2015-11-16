@@ -8,7 +8,6 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/aprobados', auth.isAuthenticated(), controller.indexAprobados);
 router.get('/misaprobados', auth.isAuthenticated(), controller.indexMisAprobados);
-//router.get('/espera_escuela_a',auth.isAuthenticated(), controller.indexEsperaEscuelaA);
 router.get('/espera_escuela_b',auth.isAuthenticated(), controller.indexEsperaEscuelaB);
 router.get('/desaprobados_escuela',auth.isAuthenticated(), controller.indexDesaprobadosByEscuela);
 router.get('/aprobados_escuela',auth.isAuthenticated(), controller.indexByEscuela);

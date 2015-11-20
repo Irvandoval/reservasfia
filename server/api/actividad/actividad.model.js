@@ -25,19 +25,21 @@ var ActividadSchema = new Schema({
 }, schemaOptions);
 
 ActividadSchema.methods = {
-  crearTurnos : function(turnos, callback){
+  crearTurnos : function(turnos,callback){
    var k = 0;
-    for(var i=0; i < turnos.length; i++){
-      (function(it,actividad){
-       console.log("entra funcion " + k);
+  var abort= false;
+
+    for(var i=0; i < turnos.length && !abort; i++){
+      (function(it,actividad, abortar){
        turnos[it].actividad = actividad._id;
        Turno.create(turnos[it],function(err,turno){
+        if(err) { }
        });
         if (k == turnos.length -1){
          callback();
         }
        k++;
-      })(i,this);
+      })(i,this, abort);
     }
   }
 }

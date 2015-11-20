@@ -17,6 +17,19 @@ var TurnoSchema = new Schema({
    aulas: [{ type: Schema.Types.ObjectId, ref: 'Aula'}]
 }, schemaOptions);
 
+
+/* validators */
+TurnoSchema
+.path('inicio')
+.validate(function(inicio){
+  var self = this;
+  var date = new Date();
+  date.setHours(6);
+  date.setMinutes(19);
+  date.setDate(inicio.getDate());
+  return date <= inicio;
+}, 'La hora ingresada es invalida');
+
 /**virtuales**/
 TurnoSchema
 .virtual('start')

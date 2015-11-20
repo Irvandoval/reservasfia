@@ -298,7 +298,8 @@ exports.create = function(req, res) {
         return handleError(res, err);
       }
       var nuevaActividad = new Actividad(actividadPop);
-      nuevaActividad.crearTurnos(req.body.turnos, function() {
+      nuevaActividad.crearTurnos(req.body.turnos,function(err) {
+       if (err) { return handleError(res, err);}
         return res.status(201).json(actividadPop);
       });
     })

@@ -9,9 +9,10 @@ var schemaOptions = {
       },
       id: false
     };
+
 var TurnoSchema = new Schema({
-   inicio: Date,
-   fin: Date,
+   inicio: {type: Date, required: true},
+   fin: {type: Date, required: true, validate:[dateValidator,'Fin incorrecto']},
    materia: String, // nombre de la materia que pertenece el turno
    actividad: {type: Schema.Types.ObjectId, ref: 'Actividad'},
    aulas: [{ type: Schema.Types.ObjectId, ref: 'Aula'}]
@@ -27,9 +28,38 @@ TurnoSchema
   date.setHours(6);
   date.setMinutes(19);
   date.setDate(inicio.getDate());
+  date.setMonth(inicio.getMonth());
   return date <= inicio;
-}, 'La hora ingresada es invalida');
+}, 'Inicio incorrecto');
 
+TurnoSchema
+.path('inicio')
+.validate(function(inicio){
+  var self = this;
+  var date = new Date();
+  date.setHours(20);
+  date.setMinutes(14);
+  date.setDate(inicio.getDate());
+  date.setMonth(inicio.getMonth());
+  return date >= inicio;
+}, 'Inicio incorrecto');
+
+TurnoSchema
+.path('fin')
+.validate(function(fin){
+  var self = this;
+  var date = new Date();
+  date.setHours(20);
+  date.setMinutes(14);
+  date.setDate(fin.getDate());
+  date.setMonth(fin.getMonth());
+  return fin <= date;
+}, 'Fin incorrecto');
+
+/** funcion validar inicio y fin **/
+function dateValidator(value){
+ return this.inicio <= value;
+}
 /**virtuales**/
 TurnoSchema
 .virtual('start')

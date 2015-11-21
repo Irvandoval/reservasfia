@@ -52,15 +52,15 @@
               <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted,
                                                   'has-error': form.nombre.$invalid && submitted }">
                 <label>Nombre de la actividad</label>
-                <input class="form-control" name="nombre" ng-model="actividad.nombre" placeholder="Ej: Evaluado 1"  required type="text"/>
+                <input class="form-control" name="nombre" ng-model="actividad.nombre" placeholder="Ej: Evaluado 1" required type="text"/>
                 <p class="help-block" ng-show="form.nombre.$error.required && submitted">
                   Campo requerido
                 </p>
               </div>
-              <div class="form-group"  ng-class="{ 'has-success': form.asistentes.$valid && submitted,
+              <div class="form-group" ng-class="{ 'has-success': form.asistentes.$valid && submitted,
                                                   'has-error': form.asistentes.$invalid && submitted }">
                 <label>Cantidad de Asistentes</label>
-                <input class="form-control" name="asistentes" min="1" placeholder="Agrega la cantidad de asistentes" required  ng-model="actividad.asistentes" type="number"/>
+                <input class="form-control" min="1" name="asistentes" ng-model="actividad.asistentes" placeholder="Agrega la cantidad de asistentes" required type="number"/>
                 <p class="help-block" ng-show="form.asistentes.$error.required && submitted">
                   Campo requerido
                 </p>
@@ -68,9 +68,7 @@
               <label>Fecha</label>
               <p class="input-group" ng-class="{ 'has-success': form.fecha.$valid && submitted,
                                                   'has-error': form.fecha.$invalid && submitted }">
-                <input class="form-control" name="fecha" clear-text="Limpiar" close-text="Cerrar"
-                datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'"
-                 min-date="minDate" ng-model="actividad.fecha"  required  readonly="true" type="text"/>
+                <input class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="'2020-06-22'" min-date="minDate" name="fecha" ng-model="actividad.fecha" readonly="true" required type="text"/>
 
                 <span class="input-group-btn">
                   <button class="btn btn-success" ng-click="open($event)" type="button">
@@ -83,19 +81,43 @@
 
               </p>
               <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-5" ng-class="{ 'has-success': form.inicio.$valid && submitted,
+                                                'has-error': form.inicio.$invalid && submitted }">
                   <label>Inicio</label>
-                  <timepicker hour-step="hstep" id="time" minute-step="mstep" mousewheel="false" ng-change="" ng-model="actividad.inicio" show-meridian="false" min="hMin"></timepicker>
+                  <timepicker hour-step="hstep" id="time" min="hMin" minute-step="mstep" mongoose-error mousewheel="false" name="inicio" ng-change="" ng-model="actividad.inicio" show-meridian="false"></timepicker>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5" ng-class="{ 'has-success': form.fin.$valid && submitted,
+                                                'has-error': form.fin.$invalid && submitted }">
                   <label>Fin</label>
-                  <timepicker hour-step="hstep" id="time" minute-step="mstep" mousewheel="false" ng-model="actividad.fin" show-meridian="false"></timepicker>
+                  <timepicker hour-step="hstep" id="time" minute-step="mstep" mousewheel="false" name="fin" ng-model="actividad.fin" show-meridian="false"></timepicker>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-md-5" ng-class="{ 'has-success': form.inicio.$valid && submitted,
+                                                  'has-error': form.inicio.$invalid && submitted }">
+                  <p class="help-block" ng-show="form.inicio.$error.mongoose">
+                    {{ errors.inicio }}
+                  </p>
+
+                </div>
+                <div class="col-md-5" ng-class="{ 'has-success': form.fin.$valid && submitted,
+                                                  'has-error': form.fin.$invalid && submitted }">
+                  <p class="help-block" ng-show="form.fin.$error.mongoose">
+                    {{ errors.fin }}
+                  </p>
+              </div>
+             </div>
+             <div class="row">
+               <div class="col-md-10 has-warning">
+                <p class="help-block" ng-show="form.inicio.$error.mongoose || form.fin.$error.mongoose  ">
+                 Tip: la hora válida para una reserva es entre 6:20 a 20:15
+                </p>
+               </div>
+             </div>
               <div class="form-group" ng-class="{ 'has-success': form.aulas.$valid && submitted,
-                                                  'has-error': form.aulas.$invalid && submitted }" >
+                                                  'has-error': form.aulas.$invalid && submitted }">
                 <label>Aulas</label>
-                <tags-input name="aulas" required add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" ng-model="actividad.aulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false">
+                <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" name="aulas" ng-model="actividad.aulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false" required>
                   <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarAulas($query)"></auto-complete>
                 </tags-input>
                 <p class="help-block" ng-show="form.aulas.$error.required && submitted">
@@ -104,12 +126,16 @@
 
               </div>
               <div ng-if="esAdmin()">
-                <div class="form-group">
+                <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
+                                                    'has-error': form.escuela.$invalid && submitted }">
                   <label>Escuela</label>
-                  <select class="form-control" ng-change="rellenarDocentes(escuela._id)" ng-model="actividad.escuela" ng-repeat="escuela in escuelas">
+                  <select name="escuela" class="form-control" ng-change="rellenarDocentes(escuela._id)" ng-model="actividad.escuela" ng-repeat="escuela in escuelas" required>
                     <option value="{{escuela._id}}">{{escuela.nombre}}
                     </option>
                   </select>
+                  <p class="help-block" ng-show="form.aulas.$error.required && submitted">
+                    Campo requerido
+                  </p>
                 </div>
               </div>
               <div ng-if="esRepresentante() || esAdmin()">
@@ -152,36 +178,45 @@
     </h2>
     <h4 class="text-center">
       <div ng-if="actividad.actividad.tipo === 1">
-       Clase
+        Clase
       </div>
       <div ng-if="actividad.actividad.tipo === 2">
-       Evaluación
+        Evaluación
       </div>
-    </h4> <br>
-    <div class="text-center"><label>Asignatura:</label>
+    </h4>
+    <br>
+    <div class="text-center">
+      <label>Asignatura:</label>
       {{actividad.actividad.materia.nombre}}
-    </div> <br>
-    <DIV class="text-center"><label for="">Encargado:</label>
+    </div>
+    <br>
+    <DIV class="text-center">
+      <label for="">Encargado:</label>
       {{actividad.actividad.encargado}}
     </DIV><br>
-    <DIV class="text-center"><label>Fecha:</label>
+    <DIV class="text-center">
+      <label>Fecha:</label>
       {{actividad.inicio | date:'fullDate'}}
     </DIV><br>
-    <DIV class="text-center"><label for="">Hora de inicio:</label>
+    <DIV class="text-center">
+      <label for="">Hora de inicio:</label>
       {{actividad.inicio | date:'shortTime'}}
     </DIV><br>
-    <DIV class="text-center"><label for="">Hora de fin:</label>
+    <DIV class="text-center">
+      <label for="">Hora de fin:</label>
       {{actividad.fin | date:'shortTime'}}
     </DIV><br>
-    <DIV class="text-center"><label for="">Aulas:</label>
+    <DIV class="text-center">
+      <label for="">Aulas:</label>
       <div ng-repeat="aula in actividad.aulas">
-        <label for=""> {{aula.nombre}}</label>
+        <label for="">
+          {{aula.nombre}}</label>
       </div>
-  </DIV>
+    </DIV>
 
-</div>
-<div class="modal-footer">
-  <button class="btn btn-primary" ng-click='ok()'>OK</button>
-  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-</div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click='ok()'>OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
 </script>

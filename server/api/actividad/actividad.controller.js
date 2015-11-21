@@ -329,7 +329,12 @@ exports.create = function(req, res) {
       }
       var nuevaActividad = new Actividad(actividadPop);
       nuevaActividad.crearTurnos(req.body.turnos,function(err) {
-       if (err) { return handleError(res, err);}
+       if (err) {
+        Actividad.findByIdAndRemove(actividad._id, function(){
+          return handleError(res, err);
+        });
+
+       }else
         return res.status(201).json(actividadPop);
       });
     })

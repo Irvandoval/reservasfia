@@ -58,7 +58,7 @@ TurnoSchema
 
 /** funcion validar inicio y fin **/
 function dateValidator(value){
- return this.inicio <= value;
+ return this.inicio < value;
 }
 /**virtuales**/
 TurnoSchema

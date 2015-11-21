@@ -25,22 +25,24 @@ var ActividadSchema = new Schema({
 }, schemaOptions);
 
 ActividadSchema.methods = {
-  crearTurnos : function(turnos, callback){
+  crearTurnos : function(turnos,callback){
    var k = 0;
-    console.log("tur length " + turnos);
-    for(var i=0; i < turnos.length; i++){
+  var abort= false;
 
-      (function(it,actividad){
-       console.log("entra funcion " + k);
+    for(var i=0; i < turnos.length && !abort; i++){
+      (function(it,actividad, abortar){
        turnos[it].actividad = actividad._id;
        Turno.create(turnos[it],function(err,turno){
+        if(err) { }
        });
         if (k == turnos.length -1){
          callback();
         }
        k++;
-      })(i,this);
+      })(i,this, abort);
     }
   }
 }
+
+
 module.exports = mongoose.model('Actividad', ActividadSchema);

@@ -1,11 +1,21 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig) {
+  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig, Docente) {
     var DIAS_HABILES = 3; // Dias anteriores al dia que se quiere reservar
-    var Docente = $resource('/api/docentes/user/:docenteId', {
-      docenteId: '@id'
-    });
+    var H_MIN = 6;
+    var M_MIN = 20;
+    var H_MAX = 8;
+    var M_MAX = 15;
+    var dm = new Date();
+    dm.setHours(H_MIN);
+    dm.setMinutes(M_MIN);
+    $scope.hMin = dm;
+    var dm = new Date();
+    dm.setHours(6);
+    dm.setMinutes(20);
+    $scope.hMin = dm;
+
     /******************************Calendario******************************/
     /*Variables*/
     $scope.busqueda = {};
@@ -340,6 +350,7 @@ angular.module('reservasApp')
                 toaster.pop('success', "Éxito", "La reserva se ha enviado a aprobación");
                 $scope.actividad = {};
                 $scope.submitted = false;
+                $scope.irvan();
               }, function(err) {
                 toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
               });

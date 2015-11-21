@@ -16,20 +16,14 @@ exports.choque = function(req, res) {
          console.log(choque);
           if(reserva){
             choque = true;
-            console.log("entra a choque true");
           } // si existe reserva
 
           if(!reserva && choque == false) // si no existe reserva y la anterior iteracion no hubo choque
            choque  = false;
-
            if(k == reservas.length - 1){
-            console.log("entra con_" + choque);
-              console.log('entra al k');
               if (choque === true){
-               console.log("entra al handleerror");
                  return handleError(res,'Se detecto un choque');
               }else{
-               console.log("exito sgin");
                 return res.status(200).json({exito: 'Exito'});
               }
            }

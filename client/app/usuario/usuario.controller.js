@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('UsuarioCtrl', function($scope, $rootScope, ngTableParams, $filter, Usuario, $modal) {
+  .controller('UsuarioCtrl', function($scope, $rootScope, ngTableParams, $filter, Usuario, $modal, toaster) {
 
 
     $rootScope.tablaUsuarios = new ngTableParams({
@@ -46,9 +46,9 @@ angular.module('reservasApp')
     }
 
      $scope.eliminarUsuario = function(id){
-       Usuario.delete({usuarioId: id}, function(){
+       Usuario.delete({userId: id}, function(){
           $rootScope.tablaUsuarios.reload();
-         toaster.pop('success', "Docente creado", "El docente se ha creado'");
+         toaster.pop('success', "Usuario eliminado", "El usuario se ha eliminado");
        }, function(){
           toaster.pop('error', "Error", "Ha ocurrido un error al eliminar. Por favor intente mas tarde");
        });

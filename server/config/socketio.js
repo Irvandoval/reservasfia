@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/franja/franja.socket').register(socket);
   require('../api/representante/representante.socket').register(socket);
   require('../api/turno/turno.socket').register(socket);
   require('../api/actividad/actividad.socket').register(socket);

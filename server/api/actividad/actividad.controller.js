@@ -78,6 +78,36 @@ exports.indexDesaprobados = function(req, res) {
     });
 };
 
+exports.indexCancelados = function(req, res) {
+  Actividad
+    .find({
+      estado: 'cancelado'
+    })
+    // .populate('turnos')
+    // .populate('aulas')
+    .populate('materia', 'nombre')
+    .exec(function(err, actividades) {
+      if (err) {
+        return handleError(res, err);
+      }
+      return res.status(200).json(actividades);
+    });
+};
+exports.indexToEscuelaAdmin = function(req, res) {
+  Actividad
+    .find({estado: 'espera_escuela', creadoPor: req.user._id})
+    // .populate('turnos')
+    // .populate('aulas')
+    .populate('materia', 'nombre')
+    .exec(function(err, actividades) {
+      if (err) {
+        return handleError(res, err);
+      }
+      return res.status(200).json(actividades);
+    });
+};
+
+
 // obtiene las actividades desaprobadas ya sean por la escuela o por el admin
 exports.indexMisDesaprobados = function(req, res) {
   console.log(req.user);

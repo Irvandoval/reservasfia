@@ -20,6 +20,7 @@
       <table class="table table-striped" ng-table="tablaRepresentantes" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="representante in $data">
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{representante.nombre}}</td>
+           <td class="text-center" data-title="'Usuario'">{{representante.usuario.username}}</td>
           <td class="text-center" data-title="'Escuela'">{{representante.escuela.nombre}}</td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning" type="button" ng-click="EditarRepresentante(representante)">
@@ -65,7 +66,7 @@
     <input name="nombre" type="text" value=""  class="form-control" ng-model="representante.nombre">
         </div>
           <div class="form-group" ng-class="{ 'has-success': form.usuario.$valid && submitted, 'has-error': form.usuario.$invalid && submitted}">
-        
+
          <label> Usuario:</label>
           <SELECT NAME="usuario" class="form-control" ng-model="representante.usuario" ng-repeat="usuario in usuario" required>
             <OPTION VALUE "{{usuario._id}}">{{usuario.name}}</OPTION>
@@ -83,7 +84,7 @@
         <p class="help-block" ng-show="form.escuela.$error.required && submitted">
           La escuela es requerida
         </p>
-      </div>          
+      </div>
    </form>
 </div>
 
@@ -121,7 +122,7 @@
         <p class="help-block" ng-show="form.escuela.$error.required && submitted">
           La escuela es requerida
         </p>
-      </div>   
+      </div>
   </div>
   <div class="modal-footer">
       <button class="btn btn-success" ng-click="" type="button">
@@ -133,4 +134,3 @@
   </div>
 
 </script>
-

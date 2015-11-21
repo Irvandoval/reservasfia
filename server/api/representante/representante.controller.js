@@ -7,7 +7,7 @@ var Representante = require('./representante.model');
 exports.index = function(req, res) {
   Representante.find()
   .populate('escuela')
-  //.populate('usuario')
+  .populate('usuario')
   .exec(function (err, representantes) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(representantes);

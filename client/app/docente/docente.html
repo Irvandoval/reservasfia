@@ -65,7 +65,7 @@
   <div class="modal-header">
     <h3 class="modal-title">Nuevo docente</h3>
   </div>
-  <div class="container-fluid">
+  <div class="container-fluid" >
     <form class="form" name="form" ng-submit="nuevoDocente(form)" novalidate>
       <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted,
                                       'has-error': form.nombre.$invalid && submitted }">
@@ -85,8 +85,7 @@
           La escuela es requerida
         </p>
       </div>
-      <div class="form-group" ng-class="{ 'has-success': form.materias.$valid && submitted,
-                                       'has-error': form.materias.$invalid && submitted }">
+      <div class="form-group" ng-class="{ 'has-success': form.materias.$valid && submitted, 'has-error': form.materias.$invalid && submitted }">
         <label>Materias:</label>
         <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" name="materias" ng-model="docente.materias" placeholder="Agrega una materia" replace-spaces-with-dashes="false" required>
           <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarMaterias($query)"></auto-complete>

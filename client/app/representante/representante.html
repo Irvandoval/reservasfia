@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
   <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
@@ -10,7 +9,7 @@
           <h4>Representantes</h4>
         </div>
         <div class="col-md-2" ng-if="esAdmin()">
-          <button class="btn btn-success" ng-click="nuevoRepresentante()" type="button" >
+          <button class="btn btn-success" ng-click="NuevoRepresentante()" type="button" >
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nuevo Representante
           </button>
@@ -18,16 +17,15 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
-        <tr ng-repeat="docente in $data">
+      <table class="table table-striped" ng-table="tablaRepresentantes" show-filter="true" template-pagination="custom/pager">
+        <tr ng-repeat="representante in $data">
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{representante.nombre}}</td>
           <td class="text-center" data-title="'Escuela'">{{representante.escuela.nombre}}</td>
-          <td class="text-center" data-title="'Usuario'">{{representante.usuario.nombre}} </td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning" type="button" ng-click="editarDocente(docente)">
+            <button class="btn btn-warning" type="button" ng-click="EditarRepresentante(representante)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
             </button>
-            <button class="btn btn-danger" type="button">
+            <button class="btn btn-danger" type="button" ng-click="EliminarRepresentante(representante._id)" confirm="¿Estas seguro de eliminar el registro del Representante {{representante.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
             </button>
           </td>
@@ -56,41 +54,50 @@
   </ul>
 </script>
 
-<script id="nuevo-representante.html" type="text/ng-template">
+<script id="nuevo-Representante.html" type="text/ng-template">
  <div class="modal-header">
    <h3 class="modal-title">Nuevo Representante</h3>
  </div>
- <div class="container-fluid">
-  <div class="form-group">
+<div class="container-fluid">
+    <form class="form" name="form" ng-submit="NuevoRepresentante(form)" novalidate>
+        <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted, 'has-error': form.nombre.$invalid && submitted }">
     <label>Nombre:</label>
-    <input name="nombre" type="text" value=""  class="form-control">
-  </div>
-  <div class="form-group">
-    <label> Usuario:</label>
-    <input name="usuario" type="text" value=""  class="form-control">
-  </div>
-  <div class="form-group">
-    <label>Escuela:</label>
-    <SELECT NAME="tescuela" SIZE=1 onChange=" " class= "form-control">
-    <OPTION VALUE=" ">Escuela de Ingenieria de Sistemas informaticos</OPTION>
-    <OPTION VALUE=" ">Escuela de Ingenieria Industrial</OPTION>
-    <OPTION VALUE=" ">Escuela de Ingenieria Electica</OPTION>
-    <OPTION VALUE=" ">Escuela de Ingenieria Mecanica</OPTION>
-    <OPTION VALUE=" ">Escuela de Ingenieria Alimentos</OPTION>
-    <OPTION VALUE=" ">Escuela de Ingenieria Civil</OPTION>
-    </SELECT>
-   </div>
-    </div>
+    <input name="nombre" type="text" value=""  class="form-control" ng-model="representante.nombre">
+        </div>
+          <div class="form-group" ng-class="{ 'has-success': form.usuario.$valid && submitted, 'has-error': form.usuario.$invalid && submitted}">
+        
+         <label> Usuario:</label>
+          <SELECT NAME="usuario" class="form-control" ng-model="representante.usuario" ng-repeat="usuario in usuario" required>
+            <OPTION VALUE "{{usuario._id}}">{{usuario.name}}</OPTION>
+            </SELECT>
+            <p class="help-block" ng-show="form.usuario.$error.required && submitted">
+          El usuario es requerido
+        </p>
+          </div>
+    <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
+                                      'has-error': form.escuela.$invalid && submitted }">
+        <label>Escuela:</label>
+        <SELECT NAME="escuela" class="form-control" ng-model="representante.escuela" ng-repeat="escuela in escuelas" required>
+          <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+        </SELECT>
+        <p class="help-block" ng-show="form.escuela.$error.required && submitted">
+          La escuela es requerida
+        </p>
+      </div>          
+   </form>
+</div>
 
-  <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
-   Agregar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
-  </div>
-
+      <div class="modal-footer">
+          <button class="btn btn-success" ng-click="NuevoRepresentante(form)" type="button">
+           Agregar
+          </button>
+      <button class="btn btn-warning" ng-click="cancel()" type="button">
+        Cancelar
+        </button>
+      </div>
 </script>
+
+
 <script id="editar-representante.html" type="text/ng-template">
  <div class="modal-header">
    <h3 class="modal-title">Editar representante</h3>
@@ -103,36 +110,27 @@
   </div>
   <div class="form-group">
   <label> Usuario:</label>
-  <input name="usuario" type="text" value=""  class="form-control" ng-model="docente.nombre">
+  <input name="usuario" type="text" value=""  class="form-control" ng-model="representante.nombre">
   </div>
-  <div class="form-group">
-  <label>Escuela:</label>
-  <SELECT NAME="tescuela" SIZE=1 onChange=" "  class="form-control">
-  <OPTION VALUE=" ">Escuela de Ingenieria de Sistemas informaticos</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Industrial</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Electica</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Mecanica</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Alimentos</OPTION>
-  <OPTION VALUE=" ">Escuela de Ingenieria Civil</OPTION>
-  </SELECT>
-  </div>
-  <div class="form-group">
-  <label>Materias:</label>
-  <input name="materia" type="text" value=""  class="form-control" ng-model="docente.materia.nombre">
-  </div>
+   <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
+                                      'has-error': form.escuela.$invalid && submitted }">
+        <label>Escuela:</label>
+        <SELECT NAME="escuela" class="form-control" ng-model="representante.escuela" ng-repeat="escuela in escuelas" required>
+          <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+        </SELECT>
+        <p class="help-block" ng-show="form.escuela.$error.required && submitted">
+          La escuela es requerida
+        </p>
+      </div>   
   </div>
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
-   Actualizar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
+      <button class="btn btn-success" ng-click="" type="button">
+           Actualizar
+      </button>
+      <button class="btn btn-warning" ng-click="cancel()" type="button">
+          Cancelar
+      </button>
   </div>
 
 </script>
 
-=======
-<div class="col-md-12">
-This is the representante view.
-</div>
->>>>>>> 5309244487f9efeaa1d505142cb2abdc83acbd39

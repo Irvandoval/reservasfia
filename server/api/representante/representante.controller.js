@@ -5,15 +5,18 @@ var Representante = require('./representante.model');
 
 // Get list of representantes
 exports.index = function(req, res) {
-  Representante.find(function (err, representantes) {
+  Representante.find()
+  .populate('escuela')
+  //.populate('usuario')
+  .exec(function (err, representantes) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(representantes);
   });
 };
 exports.showByUser = function(req, res) {
-  Representante.findOne({usuario: req.user._id },function (err, representante) {
+  Representante.findOne({usuario: req.user._id },function (err, representantes) {
     if(err) { return handleError(res, err); }
-    return res.status(200).json(representante);
+    return res.status(200).json(representantes);
   });
 };
 // Get a single representante

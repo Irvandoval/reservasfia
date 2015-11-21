@@ -16,9 +16,6 @@ describe('Controller: RepresentanteCtrl', function () {
   }));
 
   it('should ...', function () {
-<<<<<<< HEAD
-=======
     expect(1).toEqual(1);
->>>>>>> 5309244487f9efeaa1d505142cb2abdc83acbd39
   });
 });

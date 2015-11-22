@@ -30,7 +30,7 @@ $scope.NuevoRepresentante = function() {
       });
     }
 
-$scope.EditarRepresentante= function(representante) {
+$scope.editarRepresentante= function(representante) {
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'editar-representante.html',
@@ -81,6 +81,7 @@ $scope.NuevoRepresentante = function() {
 })
 
 .controller('EditarRepresentanteCtrl', function(representante, $resource, $scope, $rootScope, $modalInstance, Representante, toaster, Auth) {
+    $scope.R
   $resource('/api/escuelas').query(function(escuelas) {
     $scope.escuelas = escuelas;
   });
@@ -94,40 +95,17 @@ $scope.NuevoRepresentante = function() {
   };
 
   $scope.actualizarRepresentante = function() {
-   Representante.update({
+    Representante.update({
         representanteId: representante._id
       }, $scope.representantex,
       function(representante) {
-        $rootScope.tablaRepresentante.reload();
+        $rootScope.tablaRepresentantes.reload();
         $modalInstance.dismiss('cancel');
-        toaster.pop('success', "Representate actualizado", "El representante se ha actualizado");
+        toaster.pop('success', "Representante actualizado", "El representante se ha actualizado");
       },
       function() {
         toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
       })
-  };
-  $scope.createUsuario = function() {
-    $scope.usuario.role = 'representante';
-    $scope.usuario.name = representante.nombre;
-    Auth.createUser($scope.usuario)
-      .then(function(user) {
-       console.log(user);
-        Representante.update({
-          docenteId: representante._id
-        }, {
-          usuario: user._id
-        }, function() {
-          $rootScope.tablaRepresentante.reload();
-          $modalInstance.dismiss('cancel');
-          toaster.pop('success', "Creado usuario", "Se ha creado un usuario para el Representante éxitosamente");
-        }, function() {
-          toaster.pop('error', "Error", "Ha ocurrido un error actualizar docente. Por favor intente mas tarde");
-        })
-      })
-      .catch(function(err) {
-        toaster.pop('error', "Error", "Ha ocurrido un error al crear usuario. Por favor intente mas tarde");
-      });
-
   };
 
   $scope.cancel = function() {

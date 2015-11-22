@@ -2,7 +2,7 @@
 
 angular.module('reservasApp')
   .factory('Representante', function ($resource) {
-   return $resource('/api/representantes/:repId', {repId:'@id'},  {
+   return $resource('/api/representantes/:representanteId', {representanteId:'@id'},  {
        'update': { method:'PUT' }
    });
   });

@@ -87,12 +87,11 @@ $scope.NuevoRepresentante = function() {
   });
   console.log(representante);
   $scope.representantex = {};
-  $scope.usuario = {};
+  //$scope.usuario = {};
   $scope.representantex = {
     _id: representante._id,
     nombre: representante.nombre,
     escuela: representante.escuela._id,
-    usuario: representante.usuario
   };
 
   $scope.actualizarRepresentante = function() {

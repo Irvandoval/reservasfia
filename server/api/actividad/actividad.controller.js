@@ -61,6 +61,21 @@ exports.indexMisAprobados = function(req, res) {
       return res.status(200).json(actividades);
     });
 };
+exports.indexMisCancelados = function(req, res) {
+  console.log(req.user);
+  Actividad
+    .find({
+      estado: 'cancelado',
+      encargado: req.user.name
+    })
+    .populate('materia', 'nombre')
+    .exec(function(err, actividades) {
+      if (err) {
+        return handleError(res, err);
+      }
+      return res.status(200).json(actividades);
+    });
+};
 //Obtiene las actividades desaprobadas por el admin
 exports.indexDesaprobados = function(req, res) {
   Actividad
@@ -210,12 +225,36 @@ exports.indexDesaprobadosByEscuela = function(req, res) {
 
     })
 };
-// obtiene las actividades que han sido aprobadas por x escuela que actualmente estan en los estados del admin
-exports.indexByEscuela = function(req, res) {
+
+//Obtiene las reservas que han sido cancelados por x escuela
+exports.indexCanceladosByEscuela = function(req, res) {
   Representante
     .findOne({
       usuario: req.user._id
     }, function(err, representante) {
+      Actividad
+        .find({
+          estado: 'cancelado',
+          escuela: representante.escuela
+        })
+        .populate('materia', 'nombre')
+        .exec(function(err, actividades) {
+          if (err) {
+            return handleError(res, err);
+          }
+          return res.status(200).json(actividades);
+        });
+
+    })
+};
+// obtiene las actividades que han sido aprobadas por x escuela que actualmente estan en los estados del admin
+exports.indexByEscuela = function(req, res) {
+ console.log(req.user);
+  Representante
+    .findOne({
+      usuario: req.user._id
+    }, function(err, representante) {
+     console.log("esto " + representante);
       Actividad
         .find({
           $and: [{

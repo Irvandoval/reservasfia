@@ -133,6 +133,7 @@ angular.module('reservasApp')
 
 .controller('DetalleReservaEscuelaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
 console.log("entra al ctrl");
+$scope.mensaje =  {};
   $scope.actividad = actividad;
   $scope.tipo = tipo;
  // diferencia entre ahora y la fecha de creacion de la actividadEditada
@@ -155,7 +156,26 @@ console.log("entra al ctrl");
       });
 
   };
+    $scope.cancelarSolicitud = function(comentario){
+     console.log($scope.mensaje.descripcion);
+      $modalInstance.close(actividad);
+      var actividadEditada = {};
+      actividadEditada = nuevaActividad(actividad,'cancelado');
+      actividadEditada.comentario =  $scope.mensaje.descripcion;
+      Actividad.update({
+          idActividad: actividad._id
+        }, actividadEditada).$promise
+        .then(function() {
+          $rootScope.enEspera.reload();
+          $rootScope.aprobados.reload();
+          $rootScope.desaprobados.reload();
+          $rootScope.cancelados.reload();
+            toaster.pop('success', "Actividad cancelada", "La actividad ahora se ha movido a 'Cancelados'");
+        }, function(err) {
+          console.log("error");
+        });
 
+    };
   $scope.eliminarSolicitud = function(){
     var Actividad = $resource('/api/actividades/:actividadId', {actividadId:'@id'});
    Actividad.delete({actividadId: actividad._id},function(){

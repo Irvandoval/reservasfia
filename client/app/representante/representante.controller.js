@@ -3,7 +3,7 @@
 angular.module('reservasApp')
   .controller('RepresentanteCtrl', function ($scope, $rootScope, $resource, ngTableParams, $filter, Representante, $modal, toaster, Auth) {
     $scope.esAdmin = Auth.isAdmin;
-    
+
     $rootScope.tablaRepresentantes= new ngTableParams({
       page: 1, // show first page
       count: 7 // count per page
@@ -38,7 +38,7 @@ $scope.editarRepresentante= function(representante) {
         size: 'lg',
         resolve: {
           representante: function() {
-            return Representante;
+            return representante;
           }
         }
       });
@@ -85,6 +85,7 @@ $scope.NuevoRepresentante = function() {
   $resource('/api/escuelas').query(function(escuelas) {
     $scope.escuelas = escuelas;
   });
+  console.log(representante);
   $scope.representantex = {};
   $scope.usuario = {};
   $scope.representantex = {
@@ -112,5 +113,5 @@ $scope.NuevoRepresentante = function() {
     $modalInstance.dismiss('cancel');
   };
 
- 
+
 })

@@ -118,7 +118,6 @@ angular.module('reservasApp')
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
           })
-
       }
     });
 
@@ -150,18 +149,19 @@ angular.module('reservasApp')
 
   })
 
-
-
 .controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
   $scope.cancelar = false;
+  $scope.mensaje = {};
   console.log("entra al ctrl");
   $scope.tipo = tipo;
   $scope.diferenciaMinutos = Math.round(((new Date() - new Date(actividad.fechaCreacion)) / 1000 )/60); // minutes
   console.log($scope.diferenciaMinutos);
   $scope.rechazarSolicitud = function(){
     $modalInstance.close(actividad);
-    var actividadEditada = nuevaActividad(actividad,'desaprobado');
+    var actividadEditada = {};
+    actividadEditada = nuevaActividad(actividad,'desaprobado');
+    actividadEditada.comentario = $scope.mensaje.descripcion;
     Actividad.update({
         idActividad: actividad._id
       }, actividadEditada).$promise
@@ -176,9 +176,12 @@ angular.module('reservasApp')
 
   };
 
-  $scope.cancelarSolicitud = function(){
+  $scope.cancelarSolicitud = function(comentario){
+   console.log($scope.mensaje.descripcion);
     $modalInstance.close(actividad);
-    var actividadEditada = nuevaActividad(actividad,'cancelado');
+    var actividadEditada = {};
+    actividadEditada = nuevaActividad(actividad,'cancelado');
+    actividadEditada.comentario =  $scope.mensaje.descripcion;
     Actividad.update({
         idActividad: actividad._id
       }, actividadEditada).$promise
@@ -186,7 +189,7 @@ angular.module('reservasApp')
         $rootScope.enEspera.reload();
         $rootScope.aprobados.reload();
         $rootScope.desaprobados.reload();
-         $rootScope.cancelados.reload();
+        $rootScope.cancelados.reload();
           toaster.pop('success', "Actividad cancelada", "La actividad ahora se ha movido a 'Cancelados'");
       }, function(err) {
         console.log("error");

@@ -6,6 +6,7 @@ angular.module('reservasApp')
       .state('pensum', {
         url: '/pensum',
         templateUrl: 'app/pensum/pensum.html',
-        controller: 'PensumCtrl'
+        controller: 'PensumCtrl',
+        authenticate: true
       });
   });

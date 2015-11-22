@@ -6,6 +6,7 @@ angular.module('reservasApp')
       .state('ayuda', {
         url: '/ayuda',
         templateUrl: 'app/ayuda/ayuda.html',
-        controller: 'AyudaCtrl'
+        controller: 'AyudaCtrl',
+        authenticate: true
       });
   });

@@ -47,6 +47,9 @@
  .esper{
   color: #E65100;
  }
+ .cancelado{
+  color: gray;
+ }
 .aprobado{
   background-color:#43A047;
   border-color:#388E3C;

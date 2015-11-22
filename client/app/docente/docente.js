@@ -6,6 +6,7 @@ angular.module('reservasApp')
       .state('docente', {
         url: '/docente',
         templateUrl: 'app/docente/docente.html',
-        controller: 'DocenteCtrl'
+        controller: 'DocenteCtrl',
+        authenticate: true
       });
   });

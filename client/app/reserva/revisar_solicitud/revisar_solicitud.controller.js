@@ -51,6 +51,52 @@ angular.module('reservasApp')
       }
     });
 
+    $rootScope.cancelados = new ngTableParams({
+      page: 1, // paginacion, primera en mostrar
+      count: 15, // cantidad de elementos a mostrar por pagina
+      sorting: {
+        fechaCreacion: 'desc'
+      }
+    }, {
+      total: 0,
+      getData: function($defer, params) {
+        Actividad.query({
+            idActividad: 'cancelados'
+          }).$promise
+          .then(function(actividades) {
+            var orderedRecentActivity = params.filter() ?
+              $filter('orderBy')(actividades, params.orderBy()) :
+              actividades;
+            params.total(orderedRecentActivity.length);
+            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+          })
+
+      }
+    });
+
+    $rootScope.enviadosAEscuela = new ngTableParams({
+      page: 1, // paginacion, primera en mostrar
+      count: 15, // cantidad de elementos a mostrar por pagina
+      sorting: {
+        fechaCreacion: 'desc'
+      }
+    }, {
+      total: 0,
+      getData: function($defer, params) {
+        Actividad.query({
+            idActividad: 'enviados_escuela_admin'
+          }).$promise
+          .then(function(actividades) {
+            var orderedRecentActivity = params.filter() ?
+              $filter('orderBy')(actividades, params.orderBy()) :
+              actividades;
+            params.total(orderedRecentActivity.length);
+            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+          })
+
+      }
+    });
+
 
     $rootScope.desaprobados = new ngTableParams({
       page: 1, // paginacion, primera en mostrar
@@ -108,6 +154,7 @@ angular.module('reservasApp')
 
 .controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
+  $scope.cancelar = false;
   console.log("entra al ctrl");
   $scope.tipo = tipo;
   $scope.diferenciaMinutos = Math.round(((new Date() - new Date(actividad.fechaCreacion)) / 1000 )/60); // minutes
@@ -128,6 +175,27 @@ angular.module('reservasApp')
       });
 
   };
+
+  $scope.cancelarSolicitud = function(){
+    $modalInstance.close(actividad);
+    var actividadEditada = nuevaActividad(actividad,'cancelado');
+    Actividad.update({
+        idActividad: actividad._id
+      }, actividadEditada).$promise
+      .then(function() {
+        $rootScope.enEspera.reload();
+        $rootScope.aprobados.reload();
+        $rootScope.desaprobados.reload();
+         $rootScope.cancelados.reload();
+          toaster.pop('success', "Actividad cancelada", "La actividad ahora se ha movido a 'Cancelados'");
+      }, function(err) {
+        console.log("error");
+      });
+
+  };
+  $scope.cancelacion = function(){
+   $scope.cancelar = true;
+  }
   $scope.aprobarSolicitud = function() {
     $modalInstance.close(actividad);
     var reservas = {};

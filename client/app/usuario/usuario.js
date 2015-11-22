@@ -6,6 +6,7 @@ angular.module('reservasApp')
       .state('usuario', {
         url: '/usuario',
         templateUrl: 'app/usuario/usuario.html',
-        controller: 'UsuarioCtrl'
+        controller: 'UsuarioCtrl',
+        authenticate: true
       });
   });

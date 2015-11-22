@@ -6,6 +6,7 @@ angular.module('reservasApp')
       .state('calendarizacion', {
         url: '/calendarizacion',
         templateUrl: 'app/calendarizacion/calendarizacion.html',
-        controller: 'CalendarizacionCtrl'
+        controller: 'CalendarizacionCtrl',
+        authenticate: true
       });
   });

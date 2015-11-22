@@ -6,6 +6,7 @@ angular.module('reservasApp')
       .state('escuela', {
         url: '/escuela',
         templateUrl: 'app/escuela/escuela.html',
-        controller: 'EscuelaCtrl'
+        controller: 'EscuelaCtrl',
+        authenticate: true
       });
   });

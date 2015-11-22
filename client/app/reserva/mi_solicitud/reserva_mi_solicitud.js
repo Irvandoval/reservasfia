@@ -6,6 +6,7 @@ angular.module('reservasApp')
       .state('reserva-mi-solicitud', {
         url: '/mis-solicitudes',
         templateUrl: 'app/reserva/mi_solicitud/reserva_mi_solicitud.html',
-        controller: 'ReservaMiSolicitudCtrl'
+        controller: 'ReservaMiSolicitudCtrl',
+        authenticate: true
       });
   });

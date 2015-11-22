@@ -22,26 +22,31 @@ var ActividadSchema = new Schema({
    fechaCreacion: {type: Date},
    fechaAprobacion:{type:Date},
    creadoPor: {type: Schema.Types.ObjectId, ref: 'User' },
+   comentario: {type: String, required: false}
 }, schemaOptions);
 
 ActividadSchema.methods = {
   crearTurnos : function(turnos,callback){
-   var k = 0;
-  var abort= false;
+     var k = 0;
+     (function crear(actividad){
+      console.log(k);
+      if(k < turnos.length){
+         turnos[k].actividad = actividad._id;
+         Turno.create(turnos[k],function(err,turno){
+              if(err) { //si da error en crear turno
+                   Turno.remove({actividad:this._id})
 
-    for(var i=0; i < turnos.length && !abort; i++){
-      (function(it,actividad, abortar){
-       turnos[it].actividad = actividad._id;
-       Turno.create(turnos[it],function(err,turno){
-        if(err) { }
-       });
-        if (k == turnos.length -1){
-         callback();
-        }
-       k++;
-      })(i,this, abort);
-    }
-  }
+                  callback(err);// elimina todos los turnos creados hasta el momento
+              }else{
+               k++;
+               crear(actividad);
+              }
+          });
+      }else{
+       callback(null);
+      }
+     }(this));
+   }
 }
 
 

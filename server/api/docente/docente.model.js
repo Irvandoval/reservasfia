@@ -8,7 +8,7 @@ var DocenteSchema = new Schema({
   escuela: { type: Schema.Types.ObjectId, ref: 'Escuela', required: true}, //escuela a la que pertenece
   materias: [ {type: Schema.Types.ObjectId, ref: 'Materia', required: false} ],//materias que imparte
   usuario: {type: Schema.Types.ObjectId, ref: 'User', required: false },// el usuario en el sistema
-    correo: {type: String, required: true}
+  correo: {type: String, required: false}
 });
 
 module.exports = mongoose.model('Docente', DocenteSchema);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig, Docente) {
+  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig) {
     var DIAS_HABILES = 3; // Dias anteriores al dia que se quiere reservar
     var H_MIN = 6;
     var M_MIN = 20;
@@ -16,6 +16,7 @@ angular.module('reservasApp')
     dm.setMinutes(20);
     $scope.hMin = dm;
 
+     var errorDB = false;
     /******************************Calendario******************************/
     /*Variables*/
     $scope.busqueda = {};
@@ -205,13 +206,22 @@ angular.module('reservasApp')
       $scope.mostrar = true;
       if (Auth.isDocente()) {
         var usuario = Auth.getCurrentUser();
-        var docente = Docente.get({
+        $resource('/api/docentes/user/:idUser', {
+            idEscuela: '@id'
+          }).get({
+            idUser: usuario._id
+          }, function(docente) {
+           $scope.materias = docente.materias;
+           $scope.actividad.escuela = docente.escuela;
+          });
+
+       /* var docente = Docente.get({
           docenteId: usuario._id
         }, function() {
           console.log(docente);
           $scope.materias = docente.materias;
           $scope.actividad.escuela = docente.escuela;
-        });
+        });*/
       }
 
       if (Auth.isAdmin()) {
@@ -299,8 +309,8 @@ angular.module('reservasApp')
 
     $scope.enviar = function(form) {
       $scope.submitted = true;
-      console.log("enrt");
-      if (form.$valid) {
+      console.log(form.$valid) ;
+      if (form.$valid || errorDB) {
         var fecha = new Date($scope.actividad.fecha);
         var fechaHi = new Date($scope.actividad.inicio);
         var fechaFi = new Date($scope.actividad.fin);
@@ -350,9 +360,20 @@ angular.module('reservasApp')
                 toaster.pop('success', "Éxito", "La reserva se ha enviado a aprobación");
                 $scope.actividad = {};
                 $scope.submitted = false;
+                form.fin.$error.mongoose = false;
+                form.inicio.$error.mongoose = false;
+                errorDB =  false;
                 $scope.irvan();
               }, function(err) {
-                toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+                $scope.errors = {};
+               console.log(err.data.errors);
+               // Update validity of form fields that match the mongoose errors
+               angular.forEach(err.data.errors, function(error, field) {
+                 form[field].$setValidity('mongoose', false);
+                 $scope.errors[field] = error.message;
+               });
+                errorDB = true;
+               toaster.pop('error', "Error", "Ha ocurrido un error al enviar");
               });
           }, function(err) {
             toaster.pop('error', "Error", "Se ha detectado choque de horarios");

@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
 var RepresentanteSchema = new Schema({
  nombre: { type: String, required: true },// Nombre del representante
  escuela: { type: Schema.Types.ObjectId, ref: 'Escuela', required: true},
- usuario: {type: Schema.Types.ObjectId, ref: 'User' } 
+ usuario: {type: Schema.Types.ObjectId, ref: 'User' },
+ correo: {type: String, required: false}
 });
 
 module.exports = mongoose.model('Representante', RepresentanteSchema);

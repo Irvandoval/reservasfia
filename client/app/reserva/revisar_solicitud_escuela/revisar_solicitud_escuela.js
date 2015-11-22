@@ -6,6 +6,7 @@ angular.module('reservasApp')
       .state('reserva-revisar-solicitud-escuela', {
         url: '/solicitudes-reservas-escuela',
         templateUrl: 'app/reserva/revisar_solicitud_escuela/revisar_solicitud_escuela.html',
-        controller: 'RevisarSolicitudEscuelaCtrl'
+        controller: 'RevisarSolicitudEscuelaCtrl',
+        authenticate: true
       });
   });

@@ -52,6 +52,31 @@ angular.module('reservasApp')
 
       }
     });
+
+    $rootScope.cancelados = new ngTableParams({
+      page: 1, // paginacion, primera en mostrar
+      count: 15, // cantidad de elementos a mostrar por pagina
+      sorting: {
+        fechaCreacion: 'asc'
+      }
+    }, {
+      total: 0,
+      getData: function($defer, params) {
+        Actividad.query({
+            idActividad: 'cancelados_escuela'
+          }).$promise
+          .then(function(actividadesProm) {
+           console.log(actividadesProm);
+            actividades = actividadesProm;
+            var orderedRecentActivity = params.filter() ?
+              $filter('orderBy')(actividades, params.orderBy()) :
+              actividades;
+            params.total(orderedRecentActivity.length);
+            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+          })
+
+      }
+    });
     $rootScope.aprobados = new ngTableParams({
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
@@ -133,6 +158,7 @@ angular.module('reservasApp')
 
 .controller('DetalleReservaEscuelaCtrl', function($rootScope, $scope, $resource, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
 console.log("entra al ctrl");
+$scope.cancelar =  false;
 $scope.mensaje =  {};
   $scope.actividad = actividad;
   $scope.tipo = tipo;
@@ -141,7 +167,9 @@ $scope.mensaje =  {};
   console.log($scope.diferenciaMinutos);
   $scope.rechazarSolicitud = function(){
     $modalInstance.close(actividad);
-    var actividadEditada = nuevaActividad(actividad,'desaprobado_escuela');
+    var actividadEditada = {};
+    actividadEditada = nuevaActividad(actividad,'desaprobado_escuela');
+    actividadEditada.comentario =  $scope.mensaje.descripcion;
     Actividad.update({
         idActividad: actividad._id
       }, actividadEditada).$promise
@@ -175,6 +203,9 @@ $scope.mensaje =  {};
           console.log("error");
         });
 
+    };
+    $scope.cancelacion = function(){
+     $scope.cancelar = true;
     };
   $scope.eliminarSolicitud = function(){
     var Actividad = $resource('/api/actividades/:actividadId', {actividadId:'@id'});

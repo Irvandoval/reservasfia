@@ -28,6 +28,30 @@ angular.module('reservasApp')
      }
    });
 
+   $rootScope.cancelados = new ngTableParams({
+     page: 1, // paginacion, primera en mostrar
+     count: 15, // cantidad de elementos a mostrar por pagina
+     sorting: {
+       fechaCreacion: 'asc'
+     }
+   }, {
+     total: 0,
+     getData: function($defer, params) {
+       Actividad.query({
+           idActividad: 'miscancelados'
+         }).$promise
+         .then(function(actividadesProm) {
+           actividades = actividadesProm;
+           var orderedRecentActivity = params.filter() ?
+             $filter('orderBy')(actividades, params.orderBy()) :
+             actividades;
+           params.total(orderedRecentActivity.length);
+           $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+         })
+
+     }
+   });
+
    $rootScope.aprobados = new ngTableParams({
      page: 1, // paginacion, primera en mostrar
      count: 15, // cantidad de elementos a mostrar por pagina

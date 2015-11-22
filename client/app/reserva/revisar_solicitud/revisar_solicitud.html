@@ -205,15 +205,22 @@ Fecha de creación</label>
   </td>
 </tr>
 </table>
+<div ng-if="actividad.comentario" >
+ <h4>Comentarios del administrador y/o representante</h4>
+  <p>
+  {{actividad.comentario}}
+ </p>
+</div>
 <div class="form-group" ng-if="cancelar">
- <label>Comentarios sobre cancelamiento</label>
- <textarea name="name" rows="8" cols="40" ng-model="descripcion"></textarea>
+ <h3>Agregue comentarios</h3>
+ <textarea class="form-control" name="name" rows="5" cols="40" ng-model="mensaje.descripcion"></textarea>
 </div>
 </div>
 <div class="modal-footer" ng-if="tipo == 1">
 <button class="btn btn-success" ng-click="aprobarSolicitud()" type="button">
 Aprobar</button>
-<button class="btn btn-danger" ng-click="rechazarSolicitud()" type="button">
+<button type="button" class="btn btn-danger" name="bun" ng-if="!cancelar" ng-click="cancelacion()">Rechazar actividad</button>
+<button ng-if="cancelar" class="btn btn-danger" ng-click="rechazarSolicitud()" type="button">
 Rechazar</button>
 <button class="btn btn-warning" ng-click="cancel()" type="button">
 Cerrar</button>

@@ -12,10 +12,12 @@ router.get('/misaprobados', auth.isAuthenticated(), controller.indexMisAprobados
 router.get('/espera_escuela_b',auth.isAuthenticated(), controller.indexEsperaEscuelaB);
 router.get('/desaprobados_escuela',auth.isAuthenticated(), controller.indexDesaprobadosByEscuela);
 router.get('/aprobados_escuela',auth.isAuthenticated(), controller.indexByEscuela);
+router.get('/cancelados_escuela', auth.isAuthenticated(), controller.indexCanceladosByEscuela);
 router.get('/espera', auth.isAuthenticated(), controller.indexEspera);
 router.get('/misespera', auth.isAuthenticated(),controller.indexMisEspera);
 router.get('/desaprobados', controller.indexDesaprobados);
 router.get('/misdesaprobados',auth.isAuthenticated(), controller.indexMisDesaprobados);
+router.get('/miscancelados',auth.isAuthenticated(), controller.indexMisCancelados);
 router.get('/enviados_escuela_admin', auth.hasRole('admin'), controller.indexToEscuelaAdmin);
 router.get('/cancelados', auth.hasRole('admin'), controller.indexCancelados);
 router.get('/:id', controller.show);

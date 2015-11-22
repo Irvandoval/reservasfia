@@ -7,5 +7,6 @@ angular.module('reservasApp')
         url: '/representante',
         templateUrl: 'app/representante/representante.html',
         controller: 'RepresentanteCtrl',
+        authenticate: true
       });
   });

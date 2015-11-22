@@ -217,7 +217,7 @@ Fecha de creación</label>
 </div>
 </div>
 <div class="modal-footer" ng-if="tipo == 1">
-<button class="btn btn-success" ng-click="aprobarSolicitud()" type="button">
+<button  ng-if="!cancelar" class="btn btn-success" ng-click="aprobarSolicitud()" type="button">
 Aprobar</button>
 <button type="button" class="btn btn-danger" name="bun" ng-if="!cancelar" ng-click="cancelacion()">Rechazar actividad</button>
 <button ng-if="cancelar" class="btn btn-danger" ng-click="rechazarSolicitud()" type="button">

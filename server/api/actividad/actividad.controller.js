@@ -187,8 +187,6 @@ exports.indexEsperaEscuelaB = function(req, res) {
     .findOne({
       usuario: req.user._id
     }, function(err, representante) {
-      console.log("rep");
-      console.log(representante);
       Actividad
         .find({
           estado: 'espera_escuela',

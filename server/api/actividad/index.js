@@ -3,6 +3,7 @@
 var express = require('express');
 var controller = require('./actividad.controller');
 var auth = require('../../auth/auth.service');
+var comprobar = require('../../components/middleware/actividad.mw');
 var router = express.Router();
 
 router.get('/', controller.index);
@@ -20,8 +21,8 @@ router.get('/cancelados', auth.hasRole('admin'), controller.indexCancelados);
 router.get('/:id', controller.show);
 router.get('/comprobante/:id',controller.comprobante);
 router.post('/', controller.create);
-router.put('/:id', controller.update);
-router.patch('/:id', controller.update);
+router.put('/:id', comprobar.actividadCancelada(), controller.update);
+router.patch('/:id', comprobar.actividadCancelada(), controller.update);
 router.delete('/:id', controller.destroy);
 
 module.exports = router;

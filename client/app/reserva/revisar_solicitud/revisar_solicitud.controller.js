@@ -154,6 +154,7 @@ angular.module('reservasApp')
 
 .controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
+  $scope.cancelar = false;
   console.log("entra al ctrl");
   $scope.tipo = tipo;
   $scope.diferenciaMinutos = Math.round(((new Date() - new Date(actividad.fechaCreacion)) / 1000 )/60); // minutes
@@ -185,12 +186,16 @@ angular.module('reservasApp')
         $rootScope.enEspera.reload();
         $rootScope.aprobados.reload();
         $rootScope.desaprobados.reload();
+         $rootScope.cancelados.reload();
           toaster.pop('success', "Actividad cancelada", "La actividad ahora se ha movido a 'Cancelados'");
       }, function(err) {
         console.log("error");
       });
 
   };
+  $scope.cancelacion = function(){
+   $scope.cancelar = true;
+  }
   $scope.aprobarSolicitud = function() {
     $modalInstance.close(actividad);
     var reservas = {};

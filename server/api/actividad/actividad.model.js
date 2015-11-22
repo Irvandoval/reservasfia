@@ -22,6 +22,7 @@ var ActividadSchema = new Schema({
    fechaCreacion: {type: Date},
    fechaAprobacion:{type:Date},
    creadoPor: {type: Schema.Types.ObjectId, ref: 'User' },
+   comentario: {type: String, required: false}
 }, schemaOptions);
 
 ActividadSchema.methods = {

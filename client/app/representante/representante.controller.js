@@ -61,8 +61,11 @@ $scope.EliminarRepresentante = function(representanteId) {
   var Escuela = $resource('/api/escuelas');
     Escuela.query(function(escuela){
     $scope.escuelas = escuela;
-  });
-
+         });
+    var Usuario = $resource('api/users');
+        Usuario.query(function(user){
+        $scope.users = user;
+       });
 $scope.NuevoRepresentante = function() {
   Representante.save($scope.representante, function(representante) {
      $rootScope.tablaRepresentantes.reload();

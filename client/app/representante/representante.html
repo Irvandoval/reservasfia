@@ -8,12 +8,6 @@
         <div class="col-md-10">
           <h4>Representantes</h4>
         </div>
-        <div class="col-md-2" ng-if="esAdmin()">
-          <button class="btn btn-success" ng-click="NuevoRepresentante()" type="button" >
-            <span aria-hidden="true" class="fa fa-plus-circle"></span>
-            Nuevo Representante
-          </button>
-        </div>
       </div>
     </div>
     <div class="table-responsive">
@@ -61,20 +55,22 @@
  </div>
 <div class="container-fluid">
     <form class="form" name="form" ng-submit="NuevoRepresentante(form)" novalidate>
-        <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted, 'has-error': form.nombre.$invalid && submitted }">
+        <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid &&    submitted, 'has-error': form.nombre.$invalid && submitted }">
     <label>Nombre:</label>
     <input name="nombre" type="text" value=""  class="form-control" ng-model="representante.nombre">
         </div>
-          <div class="form-group" ng-class="{ 'has-success': form.usuario.$valid && submitted, 'has-error': form.usuario.$invalid && submitted}">
-
-         <label> Usuario:</label>
-          <SELECT NAME="usuario" class="form-control" ng-model="representante.usuario" ng-repeat="usuario in usuario" required>
-            <OPTION VALUE "{{usuario._id}}">{{usuario.name}}</OPTION>
-            </SELECT>
-            <p class="help-block" ng-show="form.usuario.$error.required && submitted">
+          
+      <div class="form-group" ng-class="{ 'has-success': form.usuario.$valid && submitted,'has-error': form.usuario.$invalid && submitted }">
+        <label>Usuario:</label>
+        <div>
+        <SELECT NAME="Usuario" class="form-control" ng-model="representante.usuario" ng-repeat="user in users" required >
+          <OPTION VALUE="{user._id}} ">{{user.username}}</OPTION>
+        </SELECT>
+        <p class="help-block" ng-show="form.user.$error.required && submitted">
           El usuario es requerido
         </p>
-          </div>
+        </div>
+      </div>
     <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                       'has-error': form.escuela.$invalid && submitted }">
         <label>Escuela:</label>
@@ -108,10 +104,6 @@
 
   <label>Nombre:</label>
   <input name="nombre" type="text" value=""  class="form-control" ng-model="representante.nombre">
-  </div>
-  <div class="form-group">
-  <label> Usuario:</label>
-  <input name="usuario" type="text" value=""  class="form-control" ng-model="representante.nombre">
   </div>
    <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                       'has-error': form.escuela.$invalid && submitted }">

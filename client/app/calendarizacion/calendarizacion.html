@@ -155,6 +155,10 @@
                   </option>
                 </select>
               </div>
+              <div ng-if="esRepresentante()">
+               <label>Enviar directamente a Académica</label>
+               <input type="checkbox" name="repre" ng-model="solicitud.enviarAdmin">
+              </div>
               <button class="btn btn-danger form-control" type="submit">
                 Enviar</button>
             </form>

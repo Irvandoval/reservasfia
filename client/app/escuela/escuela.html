@@ -79,36 +79,18 @@
 </script>
 <script id="editar-escuela.html" type="text/ng-template">
  <div class="modal-header">
-   <h3 class="modal-title">Editar Aula</h3>
+   <h3 class="modal-title">Editar Escuela</h3>
  </div>
  <div class="container-fluid">
   <div class="form-group">
+   
     <label>Nombre:</label>
-    <input name="nombre" type="text"  class="form-control" ng-model="aula.nombre">
+    <input name="nombre" type="text"  class="form-control" ng-model="escuela.nombre">
   </div>
-  <div class="form-group">
-    <label>Descripción:</label>
-     <textarea name="descripcion" rows="5" cols="20" class="form-control" ng-model="aula.descripcion"></textarea>
-  </div>
-  <div class="form-group">
-    <label>Estado:</label>
-     <select class="form-control" name="estado">
-       <option value="true">Habilitado</option>
-       <option value="false">Deshabilitado</option>
-     </select>
-  </div>
-  <div class="form-group">
-    <label>Capacidad:</label>
-    <input type="number" name="name"  min="0" class="form-control" ng-model="aula.capacidad">
-  </div>
-    <label>Sonido:</label>
-     <input type="checkbox" name="name" ng-model="aula.sonido">
-     <label>Pizarra:</label>
-      <input type="checkbox" name="name" ng-model="aula.pizarra">
- </div>
+ 
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
+  <button class="btn btn-success" ng-click="actualizarEscuela()" type="button">
    Actualizar
   </button>
   <button class="btn btn-warning" ng-click="cancel()" type="button">

@@ -76,23 +76,35 @@ angular.module('reservasApp')
   })
 
 
-  .controller('EditarEscuelaCtrl', function(escuela, $scope, $rootScope, $modalInstance, Escuela, toaster) {
 
-    $scope.escuela = escuela;
+.controller('EditarEscuelaCtrl', function(escuela, $resource, $scope, $rootScope, $modalInstance, Escuela, toaster, Auth) {
+   
+  
+  console.log(escuela);
+  $scope.escuelax = {};
+  $scope.escuelax= {
+    _id: escuela._id,
+    nombre: escuela.nombre,
+  };
 
-    $scope.actualizar = function() {
-
-      Escuela.update({
-        aulaId: $scope.escuela._id
-      }, $scope.escuela, function() {
+  $scope.actualizarEscuela = function() {
+    Escuela.update({
+        escuelaId: escuela._id
+      }, $scope.escuelax,
+      function(escuela) {
         $rootScope.tablaEscuelas.reload();
         $modalInstance.dismiss('cancel');
-        toaster.pop('success', "Escuela Editada", "La escuela se ha editado en el sistema");
-      }, function() {
-        console.log("error");
+        toaster.pop('success', "Escuela actualizada", "La escuela se ha actualizado");
+      },
+      function() {
+        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
       })
-    }
-    $scope.cancel = function() {
-      $modalInstance.dismiss('cancel');
-    };
-  })
+  };
+
+  $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
+
+
+})
+

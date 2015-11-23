@@ -33,6 +33,8 @@
           </td>
           <td class="text-center" data-title="'Usuario'">{{docente.usuario.nombre}}
           </td>
+           <td class="text-center" data-title="'Correo'">{{docente.usuario.correo}}
+          </td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning" ng-click="editarDocente(docente)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
@@ -99,6 +101,10 @@
           Por lo menos una materia es requerida
         </p>
       </div>
+    <div class="form-group">
+    <label>Correo:</label>
+    <input name="correo" type="text" value=""  class="form-control" ng-model="docente.correo">
+        </div>
     </form>
   </div>
 
@@ -120,6 +126,10 @@
       <label>Nombre:</label>
       <input class="form-control" name="nombre" ng-model="docentex.nombre" type="text" value="">
     </div>
+    <div class="form-group">
+    <label>Correo:</label>
+    <input name="correo" type="text" value=""  class="form-control" ng-model="docentex.correo">
+        </div>
     <div class="form-group">
       <label>Escuela:</label>
       <SELECT NAME="escuela" class="form-control" ng-model="docentex.escuela" ng-repeat="escuela in escuelas" required>

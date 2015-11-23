@@ -27,7 +27,7 @@
             <button class="btn btn-warning" type="button" ng-click="editarEscuela(escuela)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
             </button>
-            <button class="btn btn-danger" type="button" ng-click="eliminarEscuela(escuela._id)">
+            <button class="btn btn-danger" type="button" ng-click="eliminarEscuela(escuela._id)" confirm="¿Estas seguro de eliminar la escuela {{escuela.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
 
             </button>

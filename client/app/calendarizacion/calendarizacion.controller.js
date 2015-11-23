@@ -17,6 +17,7 @@ angular.module('reservasApp')
     $scope.hMin = dm;
 
      var errorDB = false;
+     $scope.solicitud = {};
     /******************************Calendario******************************/
     /*Variables*/
     $scope.busqueda = {};
@@ -248,7 +249,7 @@ angular.module('reservasApp')
           var docentes = docentesPorEscuela.query({
             escuelaId: representante.escuela
           }, function() {
-            console.log(docente);
+            //console.log(docente);
             $scope.docentes = docentes;
           });
         });
@@ -328,6 +329,12 @@ angular.module('reservasApp')
         };
         var DetectaChoque = $resource('/api/reservas/choque/detectarChoque', {});
         var reservasComprobar = crearReservas(dates); // creamos reservas 'auxiliares' para detectar posibles choques.
+        var estado;
+        if ($scope.solicitud.enviarAdmin == true){
+         estado = 'espera_admin';
+        }else{
+         estado = 'espera_escuela'
+        }
         DetectaChoque.save(reservasComprobar).$promise //mandamos las reservas al WS para comprobar choque
           .then(function(data) {
             if (Auth.isDocente()) // si es docente
@@ -338,12 +345,13 @@ angular.module('reservasApp')
               nombre: $scope.actividad.nombre,
               tipo: 2, //esto deberia cambiar en un futuro para soportar otro tipo de actividades
               encargado: encargado,
-              estado: 'espera_escuela',
+              estado: estado,
               creadoPor: Auth.getCurrentUser()._id,
               materia: $scope.actividad.materia,
               escuela: $scope.actividad.escuela
             };
             aulas = obtenerAulas();
+            console.log(dates);
             var nuevoTurno = { // se crea el turno para la actividad (solo se soporta 1 turno en esta version)
               inicio: new Date(dates.year, dates.mes, dates.dia, dates.hi, dates.mi),
               fin: new Date(dates.year, dates.mes, dates.dia, dates.hf, dates.mf),
@@ -353,15 +361,18 @@ angular.module('reservasApp')
               actividad: nuevaActividad,
               turnos: [nuevoTurno]
             }
+          //  console.log(actEnviar);
             $resource('/api/actividades')
               .save(actEnviar).$promise
               .then(function(actividadCreada) {
                 uiCalendarConfig.calendars['calendario'].fullCalendar('refetchEvents');
                 toaster.pop('success', "Éxito", "La reserva se ha enviado a aprobación");
                 $scope.actividad = {};
+                $scope.actividad.inicio = nuevoTurno.inicio;
+                $scope.actividad.fin =  nuevoTurno.fin;
                 $scope.submitted = false;
-                form.fin.$error.mongoose = false;
-                form.inicio.$error.mongoose = false;
+                 form.fin.$error.mongoose = false;
+                 form.inicio.$error.mongoose = false;
                 errorDB =  false;
                 $scope.irvan();
               }, function(err) {

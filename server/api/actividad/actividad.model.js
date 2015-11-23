@@ -1,5 +1,12 @@
 'use strict';
 var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'reservasfia@gmail.com',
+        pass: 'reserva$'
+    }
+});
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var Turno = require('../turno/turno.model');

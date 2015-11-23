@@ -111,8 +111,9 @@
                <h3>Información del {{user.role}}</h3>
                 <div class="form-group">
                   <label>Escuela</label>
-                  <select class="form-control" name="escuela" ng-model="usuario.escuela" ng-repeat="escuela in escuelas">
-                    <option value="{{escuela._id}}">{{escuela.nombre}}</option>
+                  <select class="form-control" name="escuela" ng-model="usuario.escuela" >
+
+                    <option ng-repeat="escuela in escuelas" value="{{escuela._id}}">{{escuela.nombre}}</option>
                   </select>
                 </div>
                 <div ng-if="user.role === 'docente'">

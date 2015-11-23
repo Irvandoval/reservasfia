@@ -1,5 +1,5 @@
 'use strict';
-
+var nodemailer = require('nodemailer');
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var Turno = require('../turno/turno.model');
@@ -46,6 +46,9 @@ ActividadSchema.methods = {
        callback(null);
       }
      }(this));
+   },
+   enviarCorreo: function(){
+
    }
 }
 

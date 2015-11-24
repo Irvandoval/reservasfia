@@ -118,9 +118,9 @@
                 </div>
                  <div class="form-group">
                     <label>Correo:</label>
-                        <input name="correo" type="text" value=""  class="form-control"                            ng-model="representante.correo">
+                        <input name="correo" type="text" value=""  class="form-control"  ng-model="usuario.correo">
                  </div>
-                
+
                 <div ng-if="user.role === 'docente'">
                      <label>Materias</label>
                      <tags-input name="aulas" required add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" ng-model="usuario.materias" placeholder="Agrega una materia" replace-spaces-with-dashes="false">

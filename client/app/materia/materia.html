@@ -83,6 +83,7 @@
     <div class="form-group">
       <label>Escuela:</label>
       <select class="form-control" name="estado" ng-model="materia.escuela" >
+        <option value="">---Selecciona Escuela---</option>
         <option ng-repeat="escuela in escuelas" value="{{escuela._id}}">{{escuela.nombre}}</option>
       </select>
     </div>

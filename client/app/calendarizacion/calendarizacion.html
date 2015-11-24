@@ -129,8 +129,9 @@
                 <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                                     'has-error': form.escuela.$invalid && submitted }">
                   <label>Escuela</label>
-                  <select name="escuela" class="form-control" ng-change="rellenarDocentes(escuela._id)" ng-model="actividad.escuela" ng-repeat="escuela in escuelas" required>
-                    <option value="{{escuela._id}}">{{escuela.nombre}}
+                  <select name="escuela" class="form-control" ng-change="rellenarDocentes(escuela._id)" ng-model="actividad.escuela"  required>
+                   <option value="">--- Seleccione una escuela ---</option>
+                    <option ng-repeat="escuela in escuelas" value="{{escuela._id}}">{{escuela.nombre}}
                     </option>
                   </select>
                   <p class="help-block" ng-show="form.aulas.$error.required && submitted">
@@ -141,15 +142,16 @@
               <div ng-if="esRepresentante() || esAdmin()">
                 <div class="form-group">
                   <label>Docente</label>
-                  <select class="form-control" ng-change="rellenarMaterias(docente._id)" ng-model="actividad.docente">
-                    <option ng-repeat="docente in docentes" value="{{docente}}">{{docente.nombre}}
+                  <select class="form-control" ng-change="rellenarMaterias()" ng-model="actividad.docente">
+                     <option value="">--- Seleccione un docente ---</option>
+                    <option ng-repeat="docente in docentes" value="{{docente._id}}">{{docente.nombre}}
                     </option>
                   </select>
                 </div>
               </div>
               <div class="form-group">
                 <label>Materia</label>
-                <select class="form-control" ng-change="materiaActual(materia.nombre)" ng-model="actividad.materia">
+                <select class="form-control"  ng-model="actividad.materia">
                   <option ng-if="materia.imparteEnCiclo == 2 || materia.imparteEnCiclo == 3" ng-repeat="materia in materias" value="{{materia._id}}">
                     {{materia.nombre}}
                   </option>
@@ -196,7 +198,7 @@
     <br>
     <DIV class="text-center">
       <label for="">Encargado:</label>
-      {{actividad.actividad.encargado}}
+      {{actividad.actividad.encargado.nombre}}
     </DIV><br>
     <DIV class="text-center">
       <label>Fecha:</label>

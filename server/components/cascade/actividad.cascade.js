@@ -9,9 +9,10 @@ function actividad(){
  return compose()
  .use(function(req, res, next){
   Actividad.findById(req.params.id, function(err, actividad){
-     if (err) {return handleError(res, err);}
+    if (err) {return next(err)}
+    if(actividad){return res.send(401);}
      Reserva.find({actividad: actividad._id}).remove( function(){
-        if (err) {return handleError(res, err);}
+        if (err) {return next(err)}
         Turno.find({actividad: actividad._id}).remove(function(){
              next();
         });

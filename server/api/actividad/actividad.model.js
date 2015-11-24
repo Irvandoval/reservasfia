@@ -14,7 +14,7 @@ var schemaOptions = {
 var ActividadSchema = new Schema({
    nombre: String,// Evaluacion I
    tipo: Number, // clase, evaluacion
-   encargado: {type: Schema.Types.ObjectId, ref: 'Docente', required: false },
+   encargado: {type: Schema.Types.ObjectId, ref: 'Docente', required: true },
    materia: {type: Schema.Types.ObjectId, ref: 'Materia'},
    escuela: {type: Schema.Types.ObjectId, ref: 'Escuela'},
    estado: String, // aprobado, desaprobado o en espera

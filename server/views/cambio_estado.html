@@ -1,0 +1,8 @@
+<p>
+ Estimado usuario, se le informa que solicitud de reserva para la actividad <b><%= actividad.nombre %></b>
+ de la materia <b><%= actividad.materia.nombre %></b> ha cambiado de estado de
+ <b><%= actividad.estado%></b> a <b><%= nuevoEstado%></b>. Si desea mas información ingrese a la página web de Reservas FIA
+ o póngase en contacto con el Representante de la Escuela o con el Administrador de reservas.
+</p>
+<h4>Comentarios sobre el cambio de estado:</h4>
+<i><%= comentario || no hay comentarios que mostrar%></i>

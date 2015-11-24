@@ -4,6 +4,7 @@ var express = require('express');
 var controller = require('./actividad.controller');
 var auth = require('../../auth/auth.service');
 var comprobar = require('../../components/middleware/actividad.mw');
+var envioCorreo = require('../../components/middleware/correo.mw');
 var router = express.Router();
 
 router.get('/', controller.index);
@@ -23,8 +24,8 @@ router.get('/cancelados', auth.hasRole('admin'), controller.indexCancelados);
 router.get('/:id', controller.show);
 router.get('/comprobante/:id',controller.comprobante);
 router.post('/', controller.create);
-router.put('/:id', comprobar.actividadCancelada(), controller.update);
-router.patch('/:id', comprobar.actividadCancelada(), controller.update);
+router.put('/:id', auth.isAuthenticated(), comprobar.actividadCancelada(), envioCorreo.cambioEstado(), controller.update);
+router.patch('/:id', auth.isAuthenticated(), comprobar.actividadCancelada(), envioCorreo.cambioEstado(), controller.update);
 router.delete('/:id', controller.destroy);
 
 module.exports = router;

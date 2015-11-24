@@ -37,9 +37,11 @@
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning" ng-click="editarMateria(materia)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
+              Editar
             </button>
             <button class="btn btn-danger" ng-click="eliminarMateria(materia._id)" type="button" confirm="¿Estas seguro de eliminar la materia {{materia.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
+              Eliminar
             </button>
           </td>
         </tr>

@@ -12,31 +12,43 @@ function docente(){
  return compose()
  .use(function(req, res, next){
    Docente.findById(req.params.id, function(err, docente){
-    if (err) {return handleError(res, err);}
-    User.findById(docente.usuario, function(err, user){
-          Actividad.find({creadoPor: user._id}, function(err, actividades){
-           if (err) {return handleError(res, err);}
+    if (err) {return next(err)}
+    if(!docente){ return res.send(401);}
+     User.findById(docente.usuario, function(err, user){
+      if (err) {return next(err)}
+     if(user){
+       Actividad.find({creadoPor: user._id}, function(err, actividades){
+           if (err) {return next(err)}
+          if(actividades){
            for (var i = 0; i < actividades.length; i++) {
-             (function(it) {
-               Reserva.find({
-                 actividad: actividades[it]._id
-               }).remove();
-             })(i)
-           }
-           for (var i = 0; i < actividades.length; i++) {
-             (function(it) {
-               Turno.find({
-                 actividad: actividades[it]._id
-               }).remove();
-             })(i)
-           }
-          }).remove(); //
-    }).remove(function(){
-        next();
-    });
-   });
+              (function(it) {
+                Reserva.find({
+                  actividad: actividades[it]._id
+                }).remove();
+              })(i)
+            }
+            for (var i = 0; i < actividades.length; i++) {
+              (function(it) {
+                Turno.find({
+                  actividad: actividades[it]._id
+                }).remove();
+              })(i)
+            }
+        for (var i = 0; i < actividades.length; i++) {
+         (function(it) {
+             actividades[it].remove();
+         })(i)
+        }
+
+          }
+         });
+         user.remove();
+     }
+     });
+     next();
  });
 
+});
 }
 
 exports.docente = docente;

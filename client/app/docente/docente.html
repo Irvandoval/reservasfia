@@ -82,8 +82,9 @@
       <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                       'has-error': form.escuela.$invalid && submitted }">
         <label>Escuela:</label>
-        <SELECT NAME="escuela" class="form-control" ng-model="docente.escuela" ng-repeat="escuela in escuelas" required>
-          <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+        <SELECT NAME="escuela" class="form-control" ng-model="docente.escuela"  required>
+          <option value="">---Selecciona Escuela---</option>
+          <OPTION ng-repeat="escuela in escuelas" VALUE="{{escuela._id}}">{{escuela.nombre}}</OPTION>
         </SELECT>
         <p class="help-block" ng-show="form.escuela.$error.required && submitted">
           La escuela es requerida
@@ -129,8 +130,9 @@
         </div>
     <div class="form-group">
       <label>Escuela:</label>
-      <SELECT NAME="escuela" class="form-control" ng-model="docentex.escuela" ng-repeat="escuela in escuelas" required>
-        <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+      <SELECT NAME="escuela" class="form-control" ng-model="docentex.escuela" required>
+           <option value="">---Selecciona Escuela---</option>
+        <OPTION  ng-repeat="escuela in escuelas" VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
       </SELECT>
     </div>
     <div class="form-group">

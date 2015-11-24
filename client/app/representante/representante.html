@@ -114,8 +114,9 @@
   </div>
    <div class="form-group">
         <label>Escuela:</label>
-        <SELECT NAME="escuela" class="form-control" ng-model="representantex.escuela" ng-repeat="escuela in escuelas" required>
-          <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+        <SELECT NAME="escuela" class="form-control" ng-model="representantex.escuela"  required>
+          <option value="">---Selecciona Escuela---</option>
+          <OPTION ng-repeat="escuela in escuelas" VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
         </SELECT>
         <p class="help-block" ng-show="form.escuela.$error.required && submitted">
           La escuela es requerida

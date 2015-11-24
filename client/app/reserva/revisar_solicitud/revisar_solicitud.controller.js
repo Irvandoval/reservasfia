@@ -310,7 +310,7 @@ angular.module('reservasApp')
     actividadEdit.tipo = actividad.tipo;
     actividadEdit.materia =  actividad.materia._id;
     actividadEdit.nombre = actividad.nombre;
-    actividadEdit.encargado = actividad.encargado;
+    actividadEdit.encargado = actividad.encargado._id;
     actividadEdit.creadoPor = actividad.creadoPor;
     actividadEdit.fechaCreacion = actividad.fechaCreacion;
     return actividadEdit;

@@ -88,13 +88,21 @@ exports.indexEnEspera = function(req, res){
    if (err) {
      return handleError(res, err);
    }
-   Turno.populate(docs, options, function(err, turnos){
+   Turno.populate(docs, options, function(err, docs){
       if(err) return handleError(res, err);
-      var turn = Turno.eliminarValoresNull(turnos);
-      return res.status(200).json(turn);
+      var opt  ={
+       path: 'actividad.encargado',
+       model: 'Docente'
+      }
+      Turno.populate(docs, opt,function(err, turnos){
+          if(err) return handleError(res, err);
+          var turn = Turno.eliminarValoresNull(turnos);
+          return res.status(200).json(turn);
+      });
    });
  });
 }
+
 exports.indexEsperaEscuela = function(req, res) {
  Turno.find({$and: [{
    inicio: {
@@ -116,10 +124,17 @@ exports.indexEsperaEscuela = function(req, res) {
    if (err) {
      return handleError(res, err);
    }
-   Turno.populate(docs, options, function(err, turnos){
+   Turno.populate(docs, options, function(err, docs){
       if(err) return handleError(res, err);
-      var turn = Turno.eliminarValoresNull(turnos);
-      return res.status(200).json(turn);
+      var opt  ={
+       path: 'actividad.encargado',
+       model: 'Docente'
+      }
+      Turno.populate(docs, opt,function(err, turnos){
+          if(err) return handleError(res, err);
+          var turn = Turno.eliminarValoresNull(turnos);
+          return res.status(200).json(turn);
+      });
    });
  });
 };

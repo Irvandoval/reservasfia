@@ -1,15 +1,8 @@
 'use strict';
-var nodemailer = require('nodemailer');
-var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'reservasfia@gmail.com',
-        pass: 'reserva$'
-    }
-});
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var Turno = require('../turno/turno.model');
+var User = require('../user/user.model');
 var schemaOptions = {
   toJSON: {
     virtuals: true
@@ -21,7 +14,7 @@ var schemaOptions = {
 var ActividadSchema = new Schema({
    nombre: String,// Evaluacion I
    tipo: Number, // clase, evaluacion
-   encargado: String,
+   encargado: {type: Schema.Types.ObjectId, ref: 'Docente', required: false },
    materia: {type: Schema.Types.ObjectId, ref: 'Materia'},
    escuela: {type: Schema.Types.ObjectId, ref: 'Escuela'},
    estado: String, // aprobado, desaprobado o en espera
@@ -53,9 +46,6 @@ ActividadSchema.methods = {
        callback(null);
       }
      }(this));
-   },
-   enviarCorreo: function(){
-
    }
 }
 

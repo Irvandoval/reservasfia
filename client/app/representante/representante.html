@@ -20,9 +20,11 @@
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning" type="button" ng-click="editarRepresentante(representante)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
+              Editar
             </button>
             <button class="btn btn-danger" type="button" ng-click="EliminarRepresentante(representante._id)" confirm="¿Estas seguro de eliminar el registro del Representante {{representante.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
+              Eliminar
             </button>
           </td>
         </tr>
@@ -60,7 +62,7 @@
     <label>Nombre:</label>
     <input name="nombre" type="text" value=""  class="form-control" ng-model="representante.nombre">
         </div>
-          
+
       <div class="form-group" ng-class="{ 'has-success': form.usuario.$valid && submitted,'has-error': form.usuario.$invalid && submitted }">
         <label>Usuario:</label>
         <div>

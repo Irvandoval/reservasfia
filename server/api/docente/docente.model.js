@@ -11,4 +11,16 @@ var DocenteSchema = new Schema({
   correo: {type: String, required: false}
 });
 
+DocenteSchema
+.path('nombre')
+.validate(function(nombre){
+ return /([a-z ñáéíóú]{2,60})/i.test(nombre);
+}, 'Nombre Inválido');
+
+DocenteSchema
+.path('correo')
+.validate(function(correo){
+ return /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/i.test(correo);
+}, 'Correo Inválido');
+
 module.exports = mongoose.model('Docente', DocenteSchema);

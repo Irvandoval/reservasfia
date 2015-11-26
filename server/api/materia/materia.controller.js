@@ -7,6 +7,7 @@ var Materia = require('./materia.model');
 exports.index = function(req, res) {
   Materia.find()
   .populate('escuela')
+  .populate('carreras')
   .exec(function (err, materias) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(materias);
@@ -25,7 +26,9 @@ exports.regexNombre = function(req, res) {
 
 // Get a single materia
 exports.show = function(req, res) {
-  Materia.findById(req.params.id, function (err, materia) {
+  Materia.findById(req.params.id)
+  .populate('carreras')
+  .exec(function (err, materia) {
     if(err) { return handleError(res, err); }
     if(!materia) { return res.status(404).send('Not Found'); }
     return res.json(materia);
@@ -46,7 +49,7 @@ exports.update = function(req, res) {
   Materia.findById(req.params.id, function (err, materia) {
     if (err) { return handleError(res, err); }
     if(!materia) { return res.status(404).send('Not Found'); }
-    var updated = _.merge(materia, req.body);
+    var updated = _.assign(materia, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.status(200).json(materia);

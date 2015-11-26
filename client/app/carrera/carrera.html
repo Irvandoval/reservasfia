@@ -1,5 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
+ <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
   <div class="panel panel-danger">
     <div class="panel-heading">
       <div class="row">
@@ -15,7 +16,7 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
+      <table class="table table-striped" ng-table="tablaCarreras" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="carrera in $data">
           <td class="text-center" data-title="'Codigo'" filter="{ 'codigo': 'text' }">{{carrera.codigo}}</td>
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{carrera.nombre}}</td>
@@ -28,7 +29,7 @@
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger" type="button">
+            <button class="btn btn-danger" type="button" ng-click="eliminarCarrera(carrera._id)">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -38,7 +39,6 @@
     </div>
   </div>
 </div>
-
 <script id="custom/pager" type="text/ng-template">
   <ul class="ng-cloak pager">
     <li ng-class="{'disabled': !page.active}" ng-repeat="page in pages" ng-switch="page.type">
@@ -78,11 +78,13 @@
   </div>
   <div class="form-group">
   <label>Escuela:</label>
-  <SELECT NAME="tescuela" SIZE=1 onChange=" " class= "form-control" ng-model="carrera.escuela" ng-repeat="escuela in escuelas" required>
-  <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
-  </SELECT>
+  <select NAME="tescuela" SIZE=1 onChange=" " class= "form-control" ng-model="carrera.escuela"  required>
+   <option value="">---Selecciona una escuela---</option>
+  <option ng-repeat="escuela in escuelas" value="{{escuela._id}} ">{{escuela.nombre}}</option>
+ </select>
   </div>
 </form>
+</div>
   <div class="modal-footer">
   <button class="btn btn-success" ng-click="nuevaCarrera(form)" type="button">
    Agregar
@@ -92,38 +94,37 @@
   </div>
 
 </script>
-<script id="editar-aula.html" type="text/ng-template">
+<script id="editar-carrera.html" type="text/ng-template">
  <div class="modal-header">
    <h3 class="modal-title">Editar Aula</h3>
  </div>
  <div class="container-fluid">
+  <form class="form" name="form" ng-submit="nuevaCarrera(form)" novalidate>
+  <div class="form-group">
+    <label>Codigo:</label>
+    <input name="codigo" type="text" value=""  class="form-control" ng-model="carrerax.codigo" required>
+  </div>
   <div class="form-group">
     <label>Nombre:</label>
-    <input name="nombre" type="text"  class="form-control" ng-model="aula.nombre">
+     <input name="nombre" type="text" value=""  class="form-control" ng-model="carrerax.nombre" required>
   </div>
   <div class="form-group">
-    <label>Descripción:</label>
-     <textarea name="descripcion" rows="5" cols="20" class="form-control" ng-model="aula.descripcion"></textarea>
+    <label>Plan:</label>
+     <input name="plan" type="number" min="1990"   class="form-control" ng-model="carrerax.plan" required>
   </div>
   <div class="form-group">
-    <label>Estado:</label>
-     <select class="form-control" name="estado">
-       <option value="true">Habilitado</option>
-       <option value="false">Deshabilitado</option>
-     </select>
+  <label>Escuela:</label>
+  <select name="tescuela"  class= "form-control" ng-model="carrerax.escuela"  required>
+    <option value="">---Selecciona una escuela---</option>
+  <option ng-repeat="escuela in escuelas" value="{{escuela._id}} ">{{escuela.nombre}}</option>
+ </select>
   </div>
-  <div class="form-group">
-    <label>Capacidad:</label>
-    <input type="number" name="name"  min="0" class="form-control" ng-model="aula.capacidad">
-  </div>
-    <label>Sonido:</label>
-     <input type="checkbox" name="name" ng-model="aula.sonido">
-     <label>Pizarra:</label>
-      <input type="checkbox" name="name" ng-model="aula.pizarra">
- </div>
+</form>
+</div>
+
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
+  <button class="btn btn-success" ng-click="editar()" type="button">
    Actualizar
   </button>
   <button class="btn btn-warning" ng-click="cancel()" type="button">

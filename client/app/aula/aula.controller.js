@@ -78,16 +78,10 @@ angular.module('reservasApp')
 
 .controller('EditarAulaCtrl', function(aula, $scope, $rootScope, $modalInstance, Aula, toaster) {
  console.log(aula.estado);
-  $scope.aula = {
-  _id: aula._id,
-  nombre: aula.nombre,
-  descripcion: aula.descripcion,
-  estado: aula.estado,
-  capacidad: aula.capacidad,
-  sonido: aula.sonido,
-  pizarra: aula.pizarra
-  };
-  console.log($scope.aula);
+  Aula.get({aulaId: aula._id}, function(aulax){
+   $scope.aula = aulax;
+  })
+
   $scope.actualizar = function() {
    console.log($scope.aula);
     Aula.update({

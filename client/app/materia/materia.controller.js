@@ -4,8 +4,6 @@ angular.module('reservasApp')
 
 .controller('MateriaCtrl', function($scope, $rootScope, $resource, ngTableParams, $filter, Materia, $modal, Auth, toaster) {
   $scope.esAdmin = Auth.isAdmin;
-
-
   $rootScope.tablaMaterias = new ngTableParams({
     page: 1, // show first page
     count: 5 // count per page
@@ -56,26 +54,37 @@ angular.module('reservasApp')
       }
     });
   }
-
+  $rootScope.cargarCarreras = function(query) {
+    var res = $resource('/api/carreras/codigo/' + query);
+    return res.query().$promise
+  };
 
 })
 
 .controller('NuevoMateriaCtrl', function($scope, $rootScope, $modalInstance, $resource, Materia, toaster) {
   var Escuela = $resource('/api/escuelas');
   Escuela.query(function(escuela) {
-
     $scope.escuelas = escuela;
     console.log(escuela);
   });
   $scope.nuevaMateria = function() {
+   $scope.materia.carreras = obtenerCarreras();
     Materia.save($scope.materia, function(materia) {
      $rootScope.tablaMaterias.reload();
+     $modalInstance.dismiss('cancel');
       toaster.pop('success', "Materia ingresada", "La materia se ha ingresado al sistema");
       $modalInstance.dismiss('cancel');
     }, function(err) {
       toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
     });
 
+  }
+  function obtenerCarreras() {
+    var carrerasAux = [];
+    for (var i = 0; i < $scope.materia.carreras.length; i++) {
+      carrerasAux.push($scope.materia.carreras[i]._id);
+    }
+    return carrerasAux;
   }
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
@@ -84,28 +93,33 @@ angular.module('reservasApp')
 })
 
 .controller('EditarMateriaCtrl', function(materia, $rootScope, $scope, $modalInstance, Materia, toaster) {
-  $scope.materiaEdit = {
-    _id: materia._id,
-    codigo: materia.codigo,
-    nombre: materia.nombre,
-    tipo: materia.tipo,
-    imparteEnCiclo: materia.imparteEnCiclo
-  };
+Materia.get({materiaId: materia._id}, function(materiax){
+ $scope.materiaEdit = materiax;
+});
 
   $scope.editarMateria = function() {
+   $scope.materiaEdit.carreras = obtenerCarreras();
     Materia.update({
       materiaId: $scope.materiaEdit._id
     }, $scope.materiaEdit, function(materia) {
      $rootScope.tablaMaterias.reload();
+     $modalInstance.dismiss('cancel');
       toaster.pop('success', "Materia editada", "La materia se ha editado éxitosamente");
       $modalInstance.dismiss('cancel');
     }, function(err) {
+     $modalInstance.dismiss('cancel');
       toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
     })
   }
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
-
+  function obtenerCarreras() {
+    var carrerasAux = [];
+    for (var i = 0; i < $scope.materiaEdit.carreras.length; i++) {
+      carrerasAux.push($scope.materiaEdit.carreras[i]._id);
+    }
+    return carrerasAux;
+  }
 
 })

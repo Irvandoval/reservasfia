@@ -13,7 +13,6 @@ var schemaOptions = {
 var TurnoSchema = new Schema({
    inicio: {type: Date, required: true},
    fin: {type: Date, required: true, validate:[dateValidator,'Fin incorrecto']},
-   materia: String, // nombre de la materia que pertenece el turno
    actividad: {type: Schema.Types.ObjectId, ref: 'Actividad'},
    aulas: [{ type: Schema.Types.ObjectId, ref: 'Aula'}]
 }, schemaOptions);
@@ -50,7 +49,7 @@ TurnoSchema
   var self = this;
   var date = new Date();
   date.setHours(20);
-  date.setMinutes(14);
+  date.setMinutes(15);
   date.setDate(fin.getDate());
   date.setMonth(fin.getMonth());
   return fin <= date;

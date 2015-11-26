@@ -370,29 +370,19 @@ exports.show = function(req, res) {
 
 // Creates a new actividad in the DB.
 exports.create = function(req, res) {
-  req.body.actividad.fechaCreacion = Date.now();
-  Actividad.create(req.body.actividad, function(err, actividad) {
-    var opts = {
-      path: 'materia',
-      select: 'nombre'
-    };
-    Actividad.populate(actividad, opts, function(err, actividadPop) {
+ req.body.actividad.fechaCreacion = Date.now();
+ Actividad.create(req.body.actividad, function(err, actividad) {
+   if(err) { return handleError(res, err);}
+    var nuevaActividad = new Actividad(actividad);
+    nuevaActividad.crearTurnos(req.body.turnos,function(err) {
       if (err) {
-        return handleError(res, err);
-      }
-      var nuevaActividad = new Actividad(actividadPop);
-      nuevaActividad.crearTurnos(req.body.turnos,function(err) {
-       if (err) {
-        Actividad.findByIdAndRemove(actividad._id, function(){
-          return handleError(res, err);
-        });
-
-       }else
-        return res.status(201).json(actividadPop);
-      });
-    })
-
-  });
+       Actividad.findByIdAndRemove(actividad._id, function(){
+         return handleError(res, err);
+       });
+      }else
+       return res.status(201).json(actividad);
+     });
+ });
 };
 
 // Updates an existing actividad in the DB.

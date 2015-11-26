@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var MateriaSchema = new Schema({
   codigo: { type: String, unique: true, required:true },// MAT115, FDE115
-  nombre: {type: String,required:true}, // Matematica I , Fundamentos de Economia
+  nombre: {type: String, required:true}, // Matematica I , Fundamentos de Economia
   tipo: {type: String, required:true}, // obligatoria o electiva
   escuela: { type: Schema.Types.ObjectId, ref: 'Escuela' },
   carreras: [{ type: Schema.Types.ObjectId, ref: 'Carrera' }],

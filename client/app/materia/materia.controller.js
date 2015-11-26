@@ -67,16 +67,28 @@ angular.module('reservasApp')
     $scope.escuelas = escuela;
     console.log(escuela);
   });
-  $scope.nuevaMateria = function() {
-   $scope.materia.carreras = obtenerCarreras();
-    Materia.save($scope.materia, function(materia) {
-     $rootScope.tablaMaterias.reload();
-     $modalInstance.dismiss('cancel');
-      toaster.pop('success', "Materia ingresada", "La materia se ha ingresado al sistema");
-      $modalInstance.dismiss('cancel');
-    }, function(err) {
-      toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-    });
+  $scope.nuevaMateria = function(form) {
+    $scope.submitted = true;
+    console.log(form.$valid);
+     if(form.$valid){
+      $scope.materia.carreras = obtenerCarreras();
+       Materia.save($scope.materia, function(materia) {
+        $rootScope.tablaMaterias.reload();
+        $modalInstance.dismiss('cancel');
+         toaster.pop('success', "Materia ingresada", "La materia se ha ingresado al sistema");
+         $modalInstance.dismiss('cancel');
+       }, function(err) {
+        $scope.materia.carreras = undefined;
+        $scope.errors = {};
+        // Update validity of form fields that match the mongoose errors
+        angular.forEach(err.data.errors, function(error, field) {
+          form[field].$setValidity('mongoose', false);
+          $scope.errors[field] = error.message;
+        });
+         toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+       });
+     }
+
 
   }
   function obtenerCarreras() {
@@ -101,13 +113,13 @@ Materia.get({materiaId: materia._id}, function(materiax){
    $scope.materiaEdit.carreras = obtenerCarreras();
     Materia.update({
       materiaId: $scope.materiaEdit._id
-    }, $scope.materiaEdit, function(materia) {
+    }, $scope.materiaEdit, function(materiax) {
      $rootScope.tablaMaterias.reload();
      $modalInstance.dismiss('cancel');
       toaster.pop('success', "Materia editada", "La materia se ha editado éxitosamente");
       $modalInstance.dismiss('cancel');
     }, function(err) {
-     $modalInstance.dismiss('cancel');
+      $scope.materiaEdit.carreras =  materia.carreras;
       toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
     })
   }

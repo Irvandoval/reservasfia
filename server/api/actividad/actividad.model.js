@@ -12,16 +12,16 @@ var schemaOptions = {
 };
 
 var ActividadSchema = new Schema({
-   nombre: String,// Evaluacion I
+   nombre: {type:String, required:true},// Evaluacion I
    tipo: Number, // clase, evaluacion
    encargado: {type: Schema.Types.ObjectId, ref: 'Docente', required: true },
    materia: {type: Schema.Types.ObjectId, ref: 'Materia'},
    escuela: {type: Schema.Types.ObjectId, ref: 'Escuela'},
-   estado: String, // aprobado, desaprobado o en espera
+   estado: {type:String, required:true}, // aprobado, desaprobado o en espera
    //turnos: [{type: Schema.Types.ObjectId, ref: 'Turno'}],
-   fechaCreacion: {type: Date},
-   fechaAprobacion:{type:Date},
-   creadoPor: {type: Schema.Types.ObjectId, ref: 'User' },
+   fechaCreacion: {type: Date,required: true},
+   fechaAprobacion:{type:Date,required: true},
+   creadoPor: {type: Schema.Types.ObjectId, ref: 'User', required: true },
    comentario: {type: String, required: false}
 }, schemaOptions);
 

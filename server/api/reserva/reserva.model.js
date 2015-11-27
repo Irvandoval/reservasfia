@@ -49,7 +49,6 @@ ReservaSchema.methods = {
   *@return {Object} el objeto Reserva que choca.
   */
   detectarChoque: function(callback){
-    // { $and:[{condition1}, {condition2}] }
     var query = {
       $and: [{$or:[ { $and: [ { inicio:{ $lte: this.fin } }, { inicio:{ $gte: this.inicio } } ] },
 		    { $and: [ { fin:{ $gte: this.inicio } }, { fin:{ $lte: this.fin } } ] },

@@ -1,3 +1,91 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
 <div class="col-md-12">
-This is the subir_horario_manual view.
+ <div class="page-header">
+<h1>Subir un nuevo horario</h1>
+</div>
+
+<label>Ciclo / año:</label>
+<select class="form-control">
+<option>I 2016</option>
+<option>II 2015</option>
+</select>
+<label>Escuela:</label>
+<select class="form-control">
+<option>Ingenieria de Sistemas Informaticos</option>
+<option>Ingenieria Industrial</option>
+<option>Ciencias Básicas</option>
+<option>Ingenieria Civil</option>
+<option>Ingenieria Quimica</option>
+</select>
+<div class="content-fluid text-center" id="horarioDiv">
+
+ <table class="table table-striped">
+  <tr>
+   <th>Código</th>
+   <th>Tipo</th>
+   <th>Número</th>
+   <th>Cupo</th>
+   <th>Aula</th>
+   <th>Día 1</th>
+   <th>Franja</th>
+   <th>Día 2</th>
+   <th>Franja</th>
+   <th>Acciones<th>
+  </tr>
+   <tr ng-repeat="grupo in grupos[0]">
+   <td ng-if="grupo.codigoMateria != grupos[$index - 1].codigoMateria">{{grupo.codigoMateria}}</td>
+   <td ng-if="grupo.codigoMateria == grupos[$index - 1].codigoMateria"></td>
+   <td  ng-class="{'success': grupo.tipo == 'GT','danger': grupo.tipo == 'GD', 'info': grupo.tipo == 'GL'}">{{grupo.tipo}}</td>
+   <td>{{grupo.numero}}</td>
+   <td>{{grupo.cupo}}</td>
+   <td>{{grupo.aula}}</td>
+   <td>{{grupo.dia[0]}}</td>
+   <td>{{grupo.franja1}}</td>
+   <td ng-if="grupo.dia[1] !== undefined">{{grupo.dia[1]}}</td>
+   <td ng-if="grupo.dia[1] !== undefined">{{grupo.franja1}}</td>
+   <td ng-if="grupo.dia[1] === undefined"></td>
+   <td ng-if="grupo.dia[1] === undefined">{{grupo.franja2}}</td>
+ <td>
+  <button type="button" name="button" class="btn btn-warning">Editar</button>
+ </td>
+
+  </tr>
+
+  <tr>
+   <td>
+    <input type="text" name="name" value="">
+   </td>
+   <td>
+    <input type="text" name="name" value="">
+   </td>
+   <td>
+    <input type="text" name="name" value="">
+   </td>
+   <td>
+    <input type="text" name="name" value="">
+   </td>
+   <td>
+    <input type="text" name="name" value="">
+   </td>
+   <td>
+    <input type="text" name="name" value="">
+   </td>
+   <td>
+    <input type="text" name="name" value="">
+   </td>
+   <td>
+    <input type="text" name="name" value="">
+   </td>
+   <td>
+    <input type="text" name="name" value="">
+   </td>
+   <td>
+    <input class="btn btn-success" type="button" name="name" value="agregar">
+   </td>
+  </tr>
+ </table>
+ <button class=" btn btn-success"  type="button" name="button">Enviar a aprobacion</button>
+</div>
+
+
 </div>

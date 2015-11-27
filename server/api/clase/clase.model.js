@@ -18,4 +18,6 @@ var ClaseSchema = new Schema({
    horario: { type: Schema.Types.ObjectId, ref: 'Horario', required:true}
 });
 
+ClaseSchema.index({materia: 1, tipo: 1, numero: 1}, {unique: true});
+
 module.exports = mongoose.model('Clase', ClaseSchema);

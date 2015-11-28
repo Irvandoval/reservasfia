@@ -12,20 +12,6 @@ var Materia = require('../api/materia/materia.model');
 var Docente = require('../api/docente/docente.model');
 var Ciclo = require('../api/ciclo/ciclo.model');
 var Representante = require('../api/representante/representante.model');
-
-Ciclo.find({}).remove(function(){
-Ciclo.create({
- numero: 1,
- anio: 2015,
- inicioClases: new Date(),
- finClases: new Date(),
- inicioCiclo: new Date(),
- finCiclo: new Date(),
- inicioSubidaHorario: new Date(),
- finSubidaHorario: new Date()
-})
-
-})
 /*Representante.find({}).remove(function(){
    Representante.create({
     nombre: 'Representante Sistemas',
@@ -53,18 +39,6 @@ Ciclo.create({
 Escuela.find({}).remove(function(){
    Escuela.create({nombre: "Escuela de Ingenieria de Sistemas informaticos"});
 });*/
-Ciclo.find({}).remove(function(){
- Ciclo.create({
-  numero: 1,
-  anio: 2015,
-  inicioClases: new Date(2015,8,5),
-  finClases:  new Date(2015,11,31),
-  inicioCiclo:  new Date(2015,8,5),
-  finCiclo: new Date(2016,1,11),
-  inicioSubidaHorario: new Date(2016,1,12),
-  finSubidaHorario: new Date(2016,1,17)
- });
-});
 
 
 Materia.find({},function(){

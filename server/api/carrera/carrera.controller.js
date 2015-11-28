@@ -45,7 +45,7 @@ exports.update = function(req, res) {
   Carrera.findById(req.params.id, function (err, carrera) {
     if (err) { return handleError(res, err); }
     if(!carrera) { return res.send(404); }
-    var updated = _.merge(carrera, req.body);
+    var updated = _.assign(carrera, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, carrera);

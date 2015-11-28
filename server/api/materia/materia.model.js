@@ -16,6 +16,6 @@ var MateriaSchema = new Schema({
 MateriaSchema
 .path('codigo')
 .validate(function(codigo){
-  return /([A-Z]){3}\d{3}/.test(codigo);
+  return /([A-Z]){3}\d{3}$/.test(codigo);
 }, 'Código inválido');
 module.exports = mongoose.model('Materia', MateriaSchema);

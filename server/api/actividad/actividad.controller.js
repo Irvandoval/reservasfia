@@ -379,8 +379,16 @@ exports.create = function(req, res) {
        Actividad.findByIdAndRemove(actividad._id, function(){
          return handleError(res, err);
        });
-      }else
+      }else{
+          Actividad.populate(actividad,{path: 'materia', select: 'nombre'}, function(err, actividadPop){
+           res.render('nueva_actividad', {actividad: actividadPop},function(err, html) {
+                    if(err) console.log(err);
+                     else
+                    Actividad.correoNuevaActividad(actividad, html);
+           });
+       });
        return res.status(201).json(actividad);
+      }
      });
  });
 };

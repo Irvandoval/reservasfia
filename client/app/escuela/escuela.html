@@ -10,7 +10,7 @@
         </div>
 
         <div class="col-md-2">
-          <button class="btn btn-success" ng-click="nuevaEscuela()" type="button">
+          <button ng-if="esAdmin()" class="btn btn-success" ng-click="nuevaEscuela()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nueva Escuela
           </button>
@@ -21,9 +21,7 @@
       <table class="table table-striped" ng-table="tablaEscuelas" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="escuela in $data">
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{escuela.nombre}}</td>
-
-
-          <td class="text-center" data-title="'Acciones'">
+          <td  ng-if="esAdmin()" class="text-center" data-title="'Acciones'">
             <button class="btn btn-warning" type="button" ng-click="editarEscuela(escuela)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar

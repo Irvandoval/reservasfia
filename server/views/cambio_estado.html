@@ -5,4 +5,10 @@
  o póngase en contacto con el Representante de la Escuela o con el Administrador de reservas.
 </p>
 <h4>Comentarios sobre el cambio de estado:</h4>
-<i><%= comentario || no hay comentarios que mostrar%></i>
+<% if(comentario){ %>
+ <i><%= comentario %></i>
+ <% } else{ %>
+   <p>
+    Ninguno.
+   </p>
+<% } %>

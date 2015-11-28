@@ -3,6 +3,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var Turno = require('../turno/turno.model');
 var User = require('../user/user.model');
+var Docente = require('../docente/docente.model');
+var Representante  = require('../representante/representante.model');
+
 var schemaOptions = {
   toJSON: {
     virtuals: true
@@ -10,6 +13,14 @@ var schemaOptions = {
   id: false,
   collection: 'actividades'
 };
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'reservasfia@gmail.com',
+        pass: 'reserva$'
+    }
+});
 
 var ActividadSchema = new Schema({
    nombre: {type:String, required:true},// Evaluacion I
@@ -49,5 +60,34 @@ ActividadSchema.methods = {
    }
 }
 
+ActividadSchema.statics.correoNuevaActividad =  function  correoNuevaActividad(actividad, html){
+var correos = [];
+  Representante.find({escuela: actividad.escuela}, function(err, representantes){
+   if(!err && representantes){
+    for(var i = 0; i< representantes.length; i++){
+      if(representantes[i].correo){
+       correos.push(representantes[i].correo)
+      }
+    }
+   }
+   Docente.findById(actividad.encargado, function(err, docente){
+         if(!err && docente){
+           if(docente.correo){
+            correos.push(docente.correo);
+           }
+         }
+    var mailOptions = {
+             from: 'Reservas FIA-UES <reservasfia@gmail.com>', // sender address
+             to: correos, // list of receivers
+             subject: '¡' + actividad.nombre + ' ' + 'ha sido creado!',  // Subject line
+             html: html
+            };
+            transporter.sendMail(mailOptions, function(error, info){
+              if(error){console.log(error);}
+            });
+   });
+  });
+
+};
 
 module.exports = mongoose.model('Actividad', ActividadSchema);

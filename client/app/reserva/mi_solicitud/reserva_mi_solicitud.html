@@ -14,7 +14,7 @@
             </td>
 
             <td class="text-center" data-title="'Solicitante'">
-              {{actividad.encargado}}
+              {{actividad.encargado.nombre}}
             </td>
             <td class="text-center" data-title="'Actividad'">
               {{actividad.nombre}}
@@ -43,7 +43,7 @@
               {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
             </td>
             <td class="text-center" data-title="'Solicitante'">
-              {{actividad.encargado}}
+              {{actividad.encargado.nombre}}
             </td>
             <td class="text-center" data-title="'Actividad'">
               {{actividad.nombre}}
@@ -69,7 +69,7 @@
                   {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
                 </td>
                 <td class="text-center" data-title="'Solicitante'">
-                  {{actividad.encargado}}
+                  {{actividad.encargado.nombre}}
                 </td>
                 <td class="text-center" data-title="'Actividad'">
                   {{actividad.nombre}}
@@ -100,7 +100,7 @@
                     </td>
 
                     <td class="text-center" data-title="'Solicitante'">
-                      {{actividad.encargado}}
+                      {{actividad.encargado.nombre}}
                     </td>
                     <td class="text-center" data-title="'Actividad'">
                       {{actividad.nombre}}
@@ -147,7 +147,7 @@
             <h3>
               {{actividad.nombre}}</h3>
             <label>Encargado:</label>
-            {{actividad.encargado}}
+            {{actividad.encargado.nombre}}
           </br>
           <label>Materia:</label>
           {{actividad.materia.nombre}}

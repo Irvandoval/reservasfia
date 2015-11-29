@@ -212,6 +212,7 @@ angular.module('reservasApp')
           }).get({
             idUser: usuario._id
           }, function(docente) {
+           $scope.actividad.docente = docente._id;
            $scope.materias = docente.materias;
            $scope.actividad.escuela = docente.escuela;
           });
@@ -284,33 +285,33 @@ angular.module('reservasApp')
       return res.query().$promise
     };
     /****************************************************************************/
-    $scope.rellenarDocentes = function(idEscuela) {
+    $scope.rellenarDocentes = function() {
+     console.log($scope.actividad.escuela);
       $resource('/api/docentes/escuela/:idEscuela', {
           idEscuela: '@id'
         })
         .query({
-          idEscuela: idEscuela
+          idEscuela: $scope.actividad.escuela
         }, function(docentes) {
           $scope.docentes = docentes;
         });
     }
-    $scope.rellenarMaterias = function(docenteId) {
-      var docente = JSON.parse($scope.actividad.docente);
-      var idDocente = docente._id;
+    $scope.rellenarMaterias = function() {
+//console.log($scope.actividad.docente);
       $resource('/api/docentes/:idDocente', {
           idDocente: '@id'
         })
         .get({
-          idDocente: idDocente
+          idDocente: $scope.actividad.docente
         }, function(docente) {
           $scope.materias = docente.materias;
-          console.log(docente);
+         // console.log(docente);
         });
     }
 
     $scope.enviar = function(form) {
       $scope.submitted = true;
-      console.log(form.$valid) ;
+   //   console.log(form.$valid) ;
       if (form.$valid || errorDB) {
         var fecha = new Date($scope.actividad.fecha);
         var fechaHi = new Date($scope.actividad.inicio);
@@ -337,10 +338,7 @@ angular.module('reservasApp')
         }
         DetectaChoque.save(reservasComprobar).$promise //mandamos las reservas al WS para comprobar choque
           .then(function(data) {
-            if (Auth.isDocente()) // si es docente
-              encargado = Auth.getCurrentUser().name; // el encargado de la materia es el usuario actual
-            else // si es admin o representante
-              encargado = JSON.parse($scope.actividad.docente).nombre; // el encargado estara definido en un campo especial
+            encargado = $scope.actividad.docente // el encargado estara definido en un campo especial
             nuevaActividad = {
               nombre: $scope.actividad.nombre,
               tipo: 2, //esto deberia cambiar en un futuro para soportar otro tipo de actividades

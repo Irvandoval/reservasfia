@@ -39,9 +39,11 @@
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning" type="button" ng-click="editarAula(aula)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
+              Editar
             </button>
             <button class="btn btn-danger" type="button" ng-click="eliminarAula(aula._id)" confirm="¿Estas seguro de eliminar el aula {{aula.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
+              Eliminar
             </button>
           </td>
         </tr>

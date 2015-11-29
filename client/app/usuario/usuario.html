@@ -26,9 +26,11 @@
           <td class="text-center" data-title="'Acciones'">
             <button class="btn btn-warning" ng-click="editarUsuario(usuario)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
+              Editar
             </button>
             <button class="btn btn-danger" type="button" ng-click="eliminarUsuario(usuario._id)" confirm="¿Estas seguro de eliminar el usuario {{usuario.name}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
+              Eliminar
             </button>
           </td>
         </tr>
@@ -118,12 +120,16 @@
                 </div>
                  <div class="form-group">
                     <label>Correo:</label>
+<<<<<<< HEAD
                         <input name="correo" type="text" value=""  class="form-control"                            ng-model="representante.correo">
                         <p class="help-block" ng-show="form.correo.$error.required && submitted">
           El correo es requerido
     </p>
+=======
+                        <input name="correo" type="text" value=""  class="form-control"  ng-model="usuario.correo">
+>>>>>>> 1b1bbec7f0a80d7794da2baa614e68a323574387
                  </div>
-                
+
                 <div ng-if="user.role === 'docente'">
                      <label>Materias</label>
                      <tags-input name="aulas" required add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" ng-model="usuario.materias" placeholder="Agrega una materia" replace-spaces-with-dashes="false">

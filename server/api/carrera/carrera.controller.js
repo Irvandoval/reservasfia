@@ -13,6 +13,15 @@ exports.index = function(req, res) {
   });
 };
 
+// Get list of carreras search by regular Expression
+exports.regexCodigo = function(req, res) {
+  var regex = new RegExp(req.params.codigo, "i")
+  ,   query = { codigo: regex };
+ Carrera.find(query,function (err, carreras) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, carreras);
+  });
+};
 // Get a single carrera
 exports.show = function(req, res) {
   Carrera.findById(req.params.id, function (err, carrera) {
@@ -36,7 +45,7 @@ exports.update = function(req, res) {
   Carrera.findById(req.params.id, function (err, carrera) {
     if (err) { return handleError(res, err); }
     if(!carrera) { return res.send(404); }
-    var updated = _.merge(carrera, req.body);
+    var updated = _.assign(carrera, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, carrera);

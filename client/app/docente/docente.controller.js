@@ -75,7 +75,14 @@ angular.module('reservasApp')
         $rootScope.tablaDocentes.reload();
         $modalInstance.dismiss('cancel');
         toaster.pop('success', "Docente creado", "El docente se ha creado");
-      }, function() {
+      }, function(err) {
+       $scope.errors = {};
+       // Update validity of form fields that match the mongoose errors
+       angular.forEach(err.data.errors, function(error, field) {
+         form[field].$setValidity('mongoose', false);
+         $scope.errors[field] = error.message;
+       });
+       $scope.docente.materias =  undefined;
         toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
       });
     }

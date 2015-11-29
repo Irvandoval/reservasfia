@@ -33,9 +33,11 @@
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning" ng-click="editarDocente(docente)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
+              Editar
             </button>
             <button class="btn btn-danger" type="button" ng-click="eliminarDocente(docente._id)" confirm="¿Estas seguro de eliminar el registro del docente {{docente.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
+              Eliminar
             </button>
           </td>
         </tr>
@@ -68,20 +70,34 @@
     <h3 class="modal-title">Nuevo docente</h3>
   </div>
   <div class="container-fluid" >
-    <form class="form" name="form" ng-submit="nuevoDocente(form)" novalidate>
+    <form class="form" name="form" novalidate>
       <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted,
                                       'has-error': form.nombre.$invalid && submitted }">
         <label>Nombre:</label>
-        <input class="form-control" name="nombre" ng-model="docente.nombre" required type="text" value="">
+        <input class="form-control" name="nombre" ng-model="docente.nombre" required type="text" mongoose-error>
         <p class="help-block" ng-show="form.nombre.$error.required && submitted">
           El nombre es requerido
         </p>
+        <p class="help-block" ng-show="form.nombre.$error.mongoose">
+          {{ errors.nombre }}
+        </p>
       </div>
+      <div class="form-group" ng-class="{ 'has-success': form.correo.$valid && submitted, 'has-error': form.correo.$invalid && submitted }">
+           <label>Correo:</label>
+           <input name="correo" type="text" value=""  class="form-control" ng-model="docente.correo" required  mongoose-error/>
+           <p class="help-block" ng-show="form.escuela.$error.required && submitted">
+             el correo es requerido
+           </p>
+           <p class="help-block" ng-show="form.correo.$error.mongoose">
+             {{ errors.correo }}
+           </p>
+       </div>
       <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                       'has-error': form.escuela.$invalid && submitted }">
         <label>Escuela:</label>
-        <SELECT NAME="escuela" class="form-control" ng-model="docente.escuela" ng-repeat="escuela in escuelas" required>
-          <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+        <SELECT NAME="escuela" class="form-control" ng-model="docente.escuela"  required>
+          <option value="">---Selecciona Escuela---</option>
+          <OPTION ng-repeat="escuela in escuelas" VALUE="{{escuela._id}}">{{escuela.nombre}}</OPTION>
         </SELECT>
         <p class="help-block" ng-show="form.escuela.$error.required && submitted">
           La escuela es requerida
@@ -96,10 +112,7 @@
           Por lo menos una materia es requerida
         </p>
       </div>
-    <div class="form-group">
-    <label>Correo:</label>
-    <input name="correo" type="text" value=""  class="form-control" ng-model="docente.correo">
-        </div>
+
     </form>
   </div>
 
@@ -127,8 +140,9 @@
         </div>
     <div class="form-group">
       <label>Escuela:</label>
-      <SELECT NAME="escuela" class="form-control" ng-model="docentex.escuela" ng-repeat="escuela in escuelas" required>
-        <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+      <SELECT NAME="escuela" class="form-control" ng-model="docentex.escuela" required>
+           <option value="">---Selecciona Escuela---</option>
+        <OPTION  ng-repeat="escuela in escuelas" VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
       </SELECT>
     </div>
     <div class="form-group">

@@ -10,4 +10,15 @@ var RepresentanteSchema = new Schema({
  correo: {type: String, required: false}
 });
 
+RepresentanteSchema
+.path('nombre')
+.validate(function(nombre){
+ return /([a-z ñáéíóú]{2,60})/i.test(nombre);
+}, 'Nombre Inválido');
+
+RepresentanteSchema
+.path('correo')
+.validate(function(correo){
+ return /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/i.test(correo);
+}, 'Correo Inválido');
 module.exports = mongoose.model('Representante', RepresentanteSchema);

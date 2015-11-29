@@ -12,78 +12,94 @@ function user() {
   return compose()
     .use(function(req, res, next) {
       User.findById(req.params.id, function(err, user) {
-        if (user.role === 'docente') {
-          Docente.find({
-            usuario: req.params.id
-          }, function(err, docente) {
-            if (err) {
-              return handleError(res, err);
-            }
-            Actividad.find({
+         if (err) {return next(err)}
+         if(!user){ return res.send(401);}
+         if(user.role == 'docente'){
+          Docente.findOne({
+          usuario: req.params.id
+        }, function(err, docente) {
+
+            if (err) {return next(err)}
+            if(docente){
+              docente.remove();
+             Actividad.find({
               creadoPor: req.params.id
             }, function(err, actividades) {
-              if (err) {
-                return handleError(res, err);
-              }
-              for (var i = 0; i < actividades.length; i++) {
-                (function(it) {
-                  Reserva.find({
-                    actividad: actividades[it]._id
-                  }).remove();
-                })(i)
-              }
-              for (var i = 0; i < actividades.length; i++) {
-                (function(it) {
-                  Turno.find({
-                    actividad: actividades[it]._id
-                  }).remove();
-                })(i)
-              }
-              //en este punto eliminamos las reservas y los turnos creados de este usuario
-            }).remove(); //eliminamos actividades
-          }).remove(function() {
-            next();
-          });
+               if (err) {return next(err)}
+               if(actividades){
 
-        }else{
-           if(user.role === 'representante'){
-           Representante.find({
-              usuario: req.params.id
-            }, function(err, representante) {
-              if (err) {
-                return handleError(res, err);
-              }
-              Actividad.find({
+                for (var i = 0; i < actividades.length; i++) {
+                   (function(it) {
+                     Reserva.find({
+                       actividad: actividades[it]._id
+                     }).remove();
+                   })(i)
+                 }
+                 for (var i = 0; i < actividades.length; i++) {
+                   (function(it) {
+                     Turno.find({
+                       actividad: actividades[it]._id
+                     }).remove();
+                   })(i)
+                 }
+             for (var i = 0; i < actividades.length; i++) {
+              (function(it) {
+                  actividad[it].remove();
+              })(i)
+             }
+           }
+
+            });
+
+            }
+              docente.remove();
+        });
+
+
+         }else{
+           if(user.role == 'representante'){
+            Representante.findOne({
+            usuario: req.params.id
+          }, function(err, representante) {
+              if (err) {return next(err)}
+              if(representante){
+
+               Actividad.find({
                 creadoPor: req.params.id
               }, function(err, actividades) {
-                if (err) {
-                  return handleError(res, err);
-                }
-                for (var i = 0; i < actividades.length; i++) {
-                  (function(it) {
-                    Reserva.find({
-                      actividad: actividades[it]._id
-                    }).remove();
-                  })(i)
-                }
-                for (var i = 0; i < actividades.length; i++) {
-                  (function(it) {
-                    Turno.find({
-                      actividad: actividades[it]._id
-                    }).remove();
-                  })(i)
-                }
-                //en este punto eliminamos las reservas y los turnos creados de este usuario
-              }).remove(); //eliminamos actividades
-            }).remove(function() {
-              next();
-            });
-           }else{
-              next();
+                 if (err) {return next(err)}
+                 if(actividades){
+
+                  for (var i = 0; i < actividades.length; i++) {
+                     (function(it) {
+                       Reserva.find({
+                         actividad: actividades[it]._id
+                       }).remove();
+                     })(i)
+                   }
+                   for (var i = 0; i < actividades.length; i++) {
+                     (function(it) {
+                       Turno.find({
+                         actividad: actividades[it]._id
+                       }).remove();
+                     })(i)
+                   }
+               for (var i = 0; i < actividades.length; i++) {
+                (function(it) {
+                    actividades[it].remove();
+                })(i)
+               }
+             }
+
+              });
+               representante.remove();
+              }
+
+          });
+
            }
-        }
-
-
+         }
+         next();
       });
     });
 }

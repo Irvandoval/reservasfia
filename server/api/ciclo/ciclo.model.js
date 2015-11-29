@@ -5,13 +5,13 @@ var mongoose = require('mongoose'),
 
 var CicloSchema = new Schema({
    numero: Number, // 1 o 2
-   anio: Number,
-   inicioClases: Date,
-   finClases: Date,
-   inicioCiclo: Date,
-   finCiclo: Date,
-   inicioSubidaHorario: Date,
-   finSubidaHorario: Date,
+   anio: {type: Number, required: true},
+   inicioClases: {type: Date,required: true, unique: true},
+   finClases: {type: Date, required: true, unique: true},
+   inicioCiclo: {type: Date, required: true, unique: true},
+   finCiclo: {type: Date, required: true, unique: true},
+   inicioSubidaHorario: {type: Date, required: true, unique: true},
+   finSubidaHorario: {type: Date, required: true, unique: true},
 
 });
 

@@ -13,6 +13,7 @@ exports.index = function(req, res) {
     .find()
     .populate('materia')
     .populate('creadoPor')
+    .populate('encargado')
     .exec(function(err, docs) {
       if (err) {
         return handleError(res, err);
@@ -37,6 +38,7 @@ exports.indexAprobados = function(req, res) {
       estado: 'aprobado'
     })
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -51,9 +53,10 @@ exports.indexMisAprobados = function(req, res) {
   Actividad
     .find({
       estado: 'aprobado',
-      encargado: req.user.name
+      encargado: req.user._id
     })
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -66,9 +69,10 @@ exports.indexMisCancelados = function(req, res) {
   Actividad
     .find({
       estado: 'cancelado',
-      encargado: req.user.name
+      encargado: req.user._id
     })
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -85,6 +89,7 @@ exports.indexDesaprobados = function(req, res) {
     // .populate('turnos')
     // .populate('aulas')
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -101,6 +106,7 @@ exports.indexCancelados = function(req, res) {
     // .populate('turnos')
     // .populate('aulas')
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -114,6 +120,7 @@ exports.indexToEscuelaAdmin = function(req, res) {
     // .populate('turnos')
     // .populate('aulas')
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -135,10 +142,11 @@ exports.indexMisDesaprobados = function(req, res) {
           estado: 'desaprobado_escuela'
         }]
       }, {
-        encargado: req.user.name
+        encargado: req.user._id
       }]
     })
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -154,6 +162,7 @@ exports.indexEspera = function(req, res) {
       estado: 'espera_admin'
     })
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -193,6 +202,7 @@ exports.indexEsperaEscuelaB = function(req, res) {
           escuela: representante.escuela
         })
         .populate('materia', 'nombre')
+        .populate('encargado')
         .exec(function(err, actividades) {
           if (err) {
             return handleError(res, err);
@@ -214,6 +224,7 @@ exports.indexDesaprobadosByEscuela = function(req, res) {
           escuela: representante.escuela
         })
         .populate('materia', 'nombre')
+        .populate('encargado')
         .exec(function(err, actividades) {
           if (err) {
             return handleError(res, err);
@@ -236,6 +247,7 @@ exports.indexCanceladosByEscuela = function(req, res) {
           escuela: representante.escuela
         })
         .populate('materia', 'nombre')
+        .populate('encargado')
         .exec(function(err, actividades) {
           if (err) {
             return handleError(res, err);
@@ -268,6 +280,7 @@ exports.indexByEscuela = function(req, res) {
           }]
         })
         .populate('materia', 'nombre')
+        .populate('encargado')
         .exec(function(err, actividades) {
           if (err) {
             return handleError(res, err);
@@ -288,9 +301,10 @@ exports.indexMisEspera = function(req, res) {
       }, {
         estado: 'espera_admin'
       }],
-      encargado: req.user.name
+      encargado: req.user._id
     })
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -307,6 +321,7 @@ exports.comprobante = function(req, res) {
       .populate('materia')
       .populate('escuela')
       .populate('creadoPor')
+      .populate('encargado')
       .exec(function(err, actividad) {
        if (err) {
          return handleError(res, err);
@@ -341,6 +356,7 @@ exports.show = function(req, res) {
   Actividad
     .findById(req.params.id)
     .populate('materia', 'nombre')
+    .populate('encargado')
     .exec(function(err, actividad) {
       if (err) {
         return handleError(res, err);
@@ -354,29 +370,27 @@ exports.show = function(req, res) {
 
 // Creates a new actividad in the DB.
 exports.create = function(req, res) {
-  req.body.actividad.fechaCreacion = Date.now();
-  Actividad.create(req.body.actividad, function(err, actividad) {
-    var opts = {
-      path: 'materia',
-      select: 'nombre'
-    };
-    Actividad.populate(actividad, opts, function(err, actividadPop) {
+ req.body.actividad.fechaCreacion = Date.now();
+ Actividad.create(req.body.actividad, function(err, actividad) {
+   if(err) { return handleError(res, err);}
+    var nuevaActividad = new Actividad(actividad);
+    nuevaActividad.crearTurnos(req.body.turnos,function(err) {
       if (err) {
-        return handleError(res, err);
+       Actividad.findByIdAndRemove(actividad._id, function(){
+         return handleError(res, err);
+       });
+      }else{
+          Actividad.populate(actividad,{path: 'materia', select: 'nombre'}, function(err, actividadPop){
+           res.render('nueva_actividad', {actividad: actividadPop},function(err, html) {
+                    if(err) console.log(err);
+                     else
+                    Actividad.correoNuevaActividad(actividad, html);
+           });
+       });
+       return res.status(201).json(actividad);
       }
-      var nuevaActividad = new Actividad(actividadPop);
-      nuevaActividad.crearTurnos(req.body.turnos,function(err) {
-       if (err) {
-        Actividad.findByIdAndRemove(actividad._id, function(){
-          return handleError(res, err);
-        });
-
-       }else
-        return res.status(201).json(actividadPop);
-      });
-    })
-
-  });
+     });
+ });
 };
 
 // Updates an existing actividad in the DB.
@@ -391,6 +405,7 @@ exports.update = function(req, res) {
     if (!actividad) {
       return res.status(404).send('Not Found');
     }
+ //
     var updated = _.merge(actividad, req.body);
     updated.save(function(err) {
       if (err) {

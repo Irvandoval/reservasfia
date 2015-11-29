@@ -69,7 +69,7 @@
             <label>Nombre</label>
 
             <input class="form-control" name="name" ng-model="user.name" required type="text"/>
-            <p class="help-block" ng-show="form.username.$error.required && submitted">
+            <p class="help-block" ng-show="form.name.$error.required && submitted">
               El nombre es requerido
             </p>
           </div>
@@ -119,6 +119,9 @@
                  <div class="form-group">
                     <label>Correo:</label>
                         <input name="correo" type="text" value=""  class="form-control"                            ng-model="representante.correo">
+                        <p class="help-block" ng-show="form.correo.$error.required && submitted">
+          El correo es requerido
+    </p>
                  </div>
                 
                 <div ng-if="user.role === 'docente'">

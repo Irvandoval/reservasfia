@@ -58,7 +58,10 @@
     <form class="form" name="form" ng-submit="NuevoRepresentante(form)" novalidate>
         <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid &&    submitted, 'has-error': form.nombre.$invalid && submitted }">
     <label>Nombre:</label>
-    <input name="nombre" type="text" value=""  class="form-control" ng-model="representante.nombre">
+    <input name="nombre" type="text" value=""  class="form-control" ng-model="representante.nombre" required>
+        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          El nombre es requerido
+        </p>
         </div>
           
       <div class="form-group" ng-class="{ 'has-success': form.usuario.$valid && submitted,'has-error': form.usuario.$invalid && submitted }">
@@ -67,13 +70,16 @@
         <SELECT NAME="Usuario" class="form-control" ng-model="representante.usuario" ng-repeat="user in users" required >
           <OPTION VALUE="{user._id}} ">{{user.username}}</OPTION>
         </SELECT>
-        <p class="help-block" ng-show="form.user.$error.required && submitted">
+        <p class="help-block" ng-show="form.Usuario.$error.required && submitted">
           El usuario es requerido
         </p>
         </div>
     <div class="form-group">
     <label>Correo:</label>
-    <input name="correo" type="text" value=""  class="form-control" ng-model="representante.correo">
+    <input name="correo" type="text" value="" class="form-control" ng-model="representante.correo">
+       <p class="help-block" ng-show="form.correo.$error.required && submitted">
+          El Correo es requerido
+        </p>
         </div>
       </div>
     <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
@@ -105,12 +111,18 @@
    <h3 class="modal-title">Editar representante</h3>
  </div>
  <div class="container-fluid">
-  <div class="form-group">
+ <form class="form" name="form" ng-submit="actualizarRepresentante(form)" novalidate>
+  <div class="form-group"  ng-class="{ 'has-success': form.name.$valid && submitted,
+                                              'has-error': form.name.$invalid && submitted }">
 
   <label>Nombre:</label>
-  <input name="nombre" type="text" value=""  class="form-control" ng-model="representantex.nombre">
+  <input name="nombre" type="text" value=""  class="form-control" ng-model="representantex.nombre" required>
+   <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          El nombre es requerido
+    </p>
   </div>
-   <div class="form-group">
+   <div class="form-group"ng-class="{ 'has-success': form.escuela.$valid && submitted,
+                                              'has-error': form.escuela.$invalid && submitted }">
         <label>Escuela:</label>
         <SELECT NAME="escuela" class="form-control" ng-model="representantex.escuela" ng-repeat="escuela in escuelas" required>
           <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
@@ -121,7 +133,10 @@
       </div>
 <div class="form-group">
     <label>Correo:</label>
-    <input name="correo" type="text" value=""  class="form-control" ng-model="representantex.correo">
+    <input name="correo" type="text" value=""  class="form-control" ng-model="representantex.correo" required>
+        <p class="help-block" ng-show="form.correo.$error.required && submitted">
+          El correo es requerido
+        </p>
         </div>
   </div>
   <div class="modal-footer">

@@ -20,22 +20,21 @@
       <table class="table table-striped" ng-table="tablaDocentes" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="docente in $data">
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{docente.nombre}}</td>
-          <td class="text-center" data-title="'Escuela'">{{docente.escuela.nombre}}</td>
-          <td class="text-center" data-title="'Materias'">
-            <div ng-repeat="materia in docente.materias">
-              {{materia.nombre}}
-            </div>
-          </td>
-          <td class="text-center" data-title="'Usuario'">{{docente.usuario.username}}
-          </td>
-           <td class="text-center" data-title="'Correo'">{{docente.correo}}
+          <td class="text-center" data-title="'Usuario'">{{docente.usuario.username}}</td>
+            <td class="text-center" data-title="'Escuela'">{{docente.escuela.nombre}}</td>
+            <td class="text-center" data-title="'Materias'">
+              <div ng-repeat="materia in docente.materias">
+                {{materia.nombre}}
+              </div>
+            </td>
+          <td class="text-center" data-title="'Correo'">{{docente.correo}}
           </td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning" ng-click="editarDocente(docente)" type="button">
+            <button class="btn btn-warning btn-sm" ng-click="editarDocente(docente)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger" type="button" ng-click="eliminarDocente(docente._id)" confirm="¿Estas seguro de eliminar el registro del docente {{docente.nombre}}?">
+            <button class="btn btn-danger btn-sm" confirm="¿Estas seguro de eliminar el registro del docente {{docente.nombre}}?" ng-click="eliminarDocente(docente._id)" type="button">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -69,12 +68,12 @@
   <div class="modal-header">
     <h3 class="modal-title">Nuevo docente</h3>
   </div>
-  <div class="container-fluid" >
+  <div class="container-fluid">
     <form class="form" name="form" novalidate>
       <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted,
                                       'has-error': form.nombre.$invalid && submitted }">
         <label>Nombre:</label>
-        <input class="form-control" name="nombre" ng-model="docente.nombre" required type="text" mongoose-error>
+        <input class="form-control" mongoose-error name="nombre" ng-model="docente.nombre" required type="text">
         <p class="help-block" ng-show="form.nombre.$error.required && submitted">
           El nombre es requerido
         </p>
@@ -83,21 +82,21 @@
         </p>
       </div>
       <div class="form-group" ng-class="{ 'has-success': form.correo.$valid && submitted, 'has-error': form.correo.$invalid && submitted }">
-           <label>Correo:</label>
-           <input name="correo" type="text" value=""  class="form-control" ng-model="docente.correo" required  mongoose-error/>
-           <p class="help-block" ng-show="form.escuela.$error.required && submitted">
-             el correo es requerido
-           </p>
-           <p class="help-block" ng-show="form.correo.$error.mongoose">
-             {{ errors.correo }}
-           </p>
-       </div>
+        <label>Correo:</label>
+        <input class="form-control" mongoose-error name="correo" ng-model="docente.correo" required type="text" value=""/>
+        <p class="help-block" ng-show="form.escuela.$error.required && submitted">
+          el correo es requerido
+        </p>
+        <p class="help-block" ng-show="form.correo.$error.mongoose">
+          {{ errors.correo }}
+        </p>
+      </div>
       <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                       'has-error': form.escuela.$invalid && submitted }">
         <label>Escuela:</label>
-        <SELECT NAME="escuela" class="form-control" ng-model="docente.escuela"  required>
+        <SELECT NAME="escuela" class="form-control" ng-model="docente.escuela" required>
           <option value="">---Selecciona Escuela---</option>
-          <OPTION ng-repeat="escuela in escuelas" VALUE="{{escuela._id}}">{{escuela.nombre}}</OPTION>
+          <OPTION VALUE="{{escuela._id}}" ng-repeat="escuela in escuelas">{{escuela.nombre}}</OPTION>
         </SELECT>
         <p class="help-block" ng-show="form.escuela.$error.required && submitted">
           La escuela es requerida
@@ -135,14 +134,14 @@
       <input class="form-control" name="nombre" ng-model="docentex.nombre" type="text" value="">
     </div>
     <div class="form-group">
-    <label>Correo:</label>
-    <input name="correo" type="text" value=""  class="form-control" ng-model="docentex.correo">
-        </div>
+      <label>Correo:</label>
+      <input class="form-control" name="correo" ng-model="docentex.correo" type="text" value="">
+    </div>
     <div class="form-group">
       <label>Escuela:</label>
       <SELECT NAME="escuela" class="form-control" ng-model="docentex.escuela" required>
-           <option value="">---Selecciona Escuela---</option>
-        <OPTION  ng-repeat="escuela in escuelas" VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+        <option value="">---Selecciona Escuela---</option>
+        <OPTION VALUE="{{escuela._id}} " ng-repeat="escuela in escuelas">{{escuela.nombre}}</OPTION>
       </SELECT>
     </div>
     <div class="form-group">
@@ -151,20 +150,20 @@
         <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarMaterias($query)"></auto-complete>
       </tags-input>
     </div>
-    <div class="" ng-if="docentex.usuario === undefined">
+    <div class="" ng-if="!docentex.usuario">
       <label>Crear usuario para docente</label>
-       <input type="checkbox" name="crearUsuario" value="false" ng-model="crearUsuario">
-       <div ng-if="crearUsuario === true">
-         <div class="form-group">
+      <input name="crearUsuario" ng-model="crearUsuario" type="checkbox" value="false">
+      <div ng-if="crearUsuario === true">
+        <div class="form-group">
           <label>Nombre de usuario</label>
           <input class="form-control" name="nombre" ng-model="usuario.username" type="text">
-         </div>
-         <div class="form-group">
+        </div>
+        <div class="form-group">
           <label>Contraseña</label>
           <input class="form-control" name="nombre" ng-model="usuario.password" type="password">
-         </div>
-         <button type="button" class="btn btn-success" name="bu" ng-click="createUsuario()">Crear</button>
-       </div>
+        </div>
+        <button class="btn btn-success" name="bu" ng-click="createUsuario()" type="button">Crear</button>
+      </div>
     </div>
 
   </div>

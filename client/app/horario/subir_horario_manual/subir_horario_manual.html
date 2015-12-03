@@ -1,113 +1,198 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
+<toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
 <div class="col-md-12">
- <div class="page-header">
-<h1>Subir un nuevo horario</h1>
+ <label> Año - Ciclo</label>
+ <select class="form-control" ng-change="ciclo()" ng-model="opcion.ciclo">
+   <option ng-repeat="ciclo in ciclos" value="{{ciclo._id}}"> {{ciclo.numero}} / {{ciclo.anio}}</option>
+ </select>
+  <div class="esAdmin()" ng-if="">
+    <label> Escuela:</label>
+     <select class="form-control" ng-model="opcion.escuela">
+       <option value="">---Seleccione escuela---</option>
+       <option ng-repeat="escuela in escuelas" value="{{escuela._id}}">{{escuela.nombre}}</option>
+     </select>
+  </div>
+  <br>
+<div class="well" ng-if="opcion.noHayHorario == true">
+  Actualmente no se ha creado un horario para el actual ciclo. Haga clic en el botón para crear un nuevo horario de clases a partir de una plantilla
+  <button type="button" class="btn btn-default" ng-click="crearHorario()"> Crear</button>
 </div>
-
-<label>Ciclo / año:</label>
-<select class="form-control">
-<option>I 2016</option>
-<option>II 2015</option>
-</select>
-<label>Escuela:</label>
-<select class="form-control">
-<option>Ingenieria de Sistemas Informaticos</option>
-<option>Ingenieria Industrial</option>
-<option>Ciencias Básicas</option>
-<option>Ingenieria Civil</option>
-<option>Ingenieria Quimica</option>
-</select>
-<div class="content-fluid text-center" id="horarioDiv">
-
- <table class="table table-striped">
-  <tr>
-   <th>Código</th>
-   <th>Tipo</th>
-   <th>Número</th>
-   <th>Cupo</th>
-   <th>Aula</th>
-   <th>Día 1</th>
-   <th>Franja</th>
-   <th>Día 2</th>
-   <th>Franja</th>
-   <th>Acciones<th>
-  </tr>
-   <tr ng-repeat="grupo in grupos[0]">
-   <td ng-if="grupo.codigoMateria != grupos[$index - 1].codigoMateria">{{grupo.codigoMateria}}</td>
-   <td ng-if="grupo.codigoMateria == grupos[$index - 1].codigoMateria"></td>
-   <td  ng-class="{'success': grupo.tipo == 'GT','danger': grupo.tipo == 'GD', 'info': grupo.tipo == 'GL'}">{{grupo.tipo}}</td>
-   <td>{{grupo.numero}}</td>
-   <td>{{grupo.cupo}}</td>
-   <td>{{grupo.aula}}</td>
-   <td>{{grupo.dia[0]}}</td>
-   <td>{{grupo.franja1}}</td>
-   <td ng-if="grupo.dia[1] !== undefined">{{grupo.dia[1]}}</td>
-   <td ng-if="grupo.dia[1] !== undefined">{{grupo.franja1}}</td>
-   <td ng-if="grupo.dia[1] === undefined"></td>
-   <td ng-if="grupo.dia[1] === undefined">{{grupo.franja2}}</td>
- <td>
-  <button type="button" name="button" class="btn btn-warning">Editar</button>
- </td>
-
-  </tr>
-
-  <tr>
-   <td>
-    <input type="text" name="name" value="">
-   </td>
-   <td>
-   <select class="" name="">
-    <option value="option">GT</option>
-    <option value="option">GD</option>
-    <option value="option">GL</option>
-   </select>
-   </td>
-   <td>
-    <input type="number" name="name" value="">
-   </td>
-   <td>
-    <input type="number" name="name" value="">
-   </td>
-   <td>
-    <input type="text" name="name" value="">
-   </td>
-   <td>
-    <select class="" name="">
-     <option value="option">lunes</option>
-     <option value="option">martes</option>
-     <option value="option">miercoles</option>
-     <option value="option">jueves</option>
-     <option value="option">viernes</option>
-    </select>
-   </td>
-   <td>
-    <select class="" name="">
-      <option value="option">6:20-8:00</option>
-     <option value="option">8:05-9:45</option>
-    </select>
-   </td>
-   <td>
-    <select class="" name="">
-     <option value="option">lunes</option>
-     <option value="option">martes</option>
-     <option value="option">miercoles</option>
-     <option value="option">jueves</option>
-     <option value="option">viernes</option>
-    </select>
-   </td>
-   <td>
-    <select class="" name="">
-      <option value="option">6:20-8:00</option>
-     <option value="option">8:05-9:45</option>
-    </select>
-   </td>
-   <td>
-    <input class="btn btn-success" type="button" name="name" value="agregar">
-   </td>
-  </tr>
- </table>
- <button class=" btn btn-success"  type="button" name="button">Enviar a aprobacion</button>
+  <div class="panel panel-default" ng-if="opcion.hayHorario == true">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-10">
+          <h3>
+            Subir un nuevo horario
+          </h3>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-success" name="button" type="button">Agregar un nuevo grupo</button>
+        </div>
+      </div>
+    </div>
+    <div id="horarioDiv">
+      <table class="table table-condensed table-bordered table-hover" ng-form="tableForm" ng-table="tablaHorario">
+        <colgroup>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+        </colgroup>
+        <tr class="ng-table-group" ng-repeat-start="group in $groups">
+          <td colspan="8">
+            <a href="" ng-click="group.$hideRows = !group.$hideRows">
+              <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+              <strong>{{ group.value }}</strong>
+            </a>
+          </td>
+        </tr>
+        <tr ng-hide="group.$hideRows" ng-repeat-end ng-repeat="grupo in group.data">
+          <td data-title="'Código'" ng-if="false" sortable="'materia'">
+            {{grupo.materia.codigo}}
+          </td>
+          <td data-title="'Tipo'">
+            {{grupo.tipo}}
+          </td>
+          <td data-title="'#'">
+            {{grupo.numero}}
+          </td>
+          <td data-title="'Cupo'">
+            {{grupo.cupo}}
+          </td>
+          <td data-title="'Aula'">
+            {{grupo.aula.nombre}}
+          </td>
+          <td data-title="'Dia 1'">
+            {{grupo.dia1}}
+          </td>
+          <td data-title="'Franja'">
+            {{grupo.franja1.franja}}
+          </td>
+          <td data-title="'Dia 2'">
+            {{grupo.dia2}}
+          </td>
+          <td data-title="'Franja'">
+            {{grupo.franja2.franja}}
+          </td>
+          <td data-title="'Docente'">
+            {{grupo.docente.nombre}}
+          </td>
+          <td>
+            <button class="btn btn-warning btn-sm" ng-click="editarClase(grupo)">
+              <span class="glyphicon glyphicon-pencil"></span>
+              Editar
+            </button>
+            <button class="btn btn-danger btn-sm" ng-click="eliminar(grupo._id)">
+              <span class="glyphicon glyphicon-trash"></span>
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
+<script id="editar-clase.html" type="text/ng-template">
+  <div class="container-fluid">
+    <form class="form" novalidate>
 
+      <h2 class="text-center">
+        {{clasesx.materia.nombre}}
+        {{clasesx.tipo}}</h2>
+      <div class="form-group" ng-class="{'has-success': form.numero.$valid && submitted, 'has-error': form.numero.$invalid && submitted}">
+        <label>Número de grupo:</label>
+        <input class="form-control" max="100" min="1" name="numero" ng-model="clasesx.numero" required type="number">
+        <p class="help-block" ng-show="form.numero.$error.required && submitted">
+          El número es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.cupo.$valid && submitted, 'has-error': form.cupo.$invalid && submitted}">
+        <label>Cupo:</label>
+        <input class="form-control" max="200" min="10" name="cupo" ng-model="clasesx.cupo" required type="number">
+        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          El cupo es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.aula.$valid && submitted, 'has-error': form.aula.$invalid && submitted}">
+        <label>Aula:</label>
+        <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" max-tags="1" name="aula" ng-model="arrayAulas" placeholder="Agrega un aula" replace-spaces-with-dashes="false" required>
+          <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarAulas($query)"></auto-complete>
+        </tags-input>
+        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          El aula es requerida
+        </p>
+      </div>
+      <div class="form-group">
+        <label>Docente:</label>
+        <select class="form-control" name="docente" ng-model="clasesx.docente._id">
+          <option ng-repeat="docente in docentes" value="{{docente._id}}">{{docente.nombre}}</option>
+        </select>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.dia1.$valid && submitted, 'has-error': form.dia1.$invalid && submitted}">
+        <label>Dia 1:</label>
+        <select class="form-control" ng-model="clasesx.dia1">
+          <option value="lunes">Lunes</option>
+          <option value="martes">Martes</option>
+          <option value="miercoles">Miercoles</option>
+          <option value="jueves">Jueves</option>
+          <option value="viernes">Viernes</option>
+        </select>
+        <p class="help-block" ng-show="form.dia1.$error.required && submitted">
+          El dia es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.franja1.$valid && submitted, 'has-error': form.franja1.$invalid && submitted}">
+        <label>Franja:</label>
+        <select class="form-control" ng-model="clasesx.franja1._id">
+          <option ng-repeat="franja in franjas" value="{{franja._id}}">
+            {{franja.franja}}
+          </option>
+        </select>
+        <p class="help-block" ng-show="form.franja1.$error.required && submitted">
+          La franja es requerida
+        </p>
+      </div>
 
-</div>
+      <div ng-if="clasesx.dia2">
+        <div class="form-group" ng-class="{'has-success': form.dia2.$valid && submitted, 'has-error': form.dia2.$invalid && submitted}">
+          <label>Dia 2:</label>
+          <select class="form-control" ng-model="clasesx.dia2">
+            <option value="lunes">Lunes</option>
+            <option value="martes">Martes</option>
+            <option value="miercoles">Miercoles</option>
+            <option value="jueves">Jueves</option>
+            <option value="viernes">Viernes</option>
+          </select>
+          <p class="help-block" ng-show="form.dia2.$error.required && submitted">
+            El dia es requerido
+          </p>
+        </div>
+        <div class="form-group" ng-class="{'has-success': form.franja2.$valid && submitted, 'has-error': form.franja2.$invalid && submitted}">
+          <label>Franja:</label>
+          <select class="form-control" ng-model="clasesx.franja2._id">
+            <option ng-repeat="franja in franjas" value="{{franja._id}}">
+              {{franja.franja}}
+            </option>
+          </select>
+          <p class="help-block" ng-show="form.franja2.$error.required && submitted">
+            La franja es requerida
+          </p>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" ng-click="actualizar()" type="button">
+      Actualizar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
+  </div>
+</script>

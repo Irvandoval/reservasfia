@@ -2,5 +2,7 @@
 
 angular.module('reservasApp')
  .factory('Ciclo', function ($resource){
-   return $resource('/api/ciclos');
+  return $resource('/api/ciclos/:cicloId', {cicloId:'@id'},  {
+      'update': { method:'PUT' }
+  });
  });

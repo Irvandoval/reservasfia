@@ -2,7 +2,6 @@
 
 angular.module('reservasApp')
   .controller('AdminCtrl', function ($scope, $http, Auth, User) {
-         console.log(Auth.currentUser);
          $scope.isAdmin = Auth.isAdmin;
          $scope.isDocente = Auth.isDocente;
          $scope.isRepresentante = Auth.isRepresentante;

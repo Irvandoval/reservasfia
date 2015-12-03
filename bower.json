@@ -17,7 +17,7 @@
     "angular-ui-router": "~0.2.10",
     "angular-ui-calendar": "~1.0.1",
     "ng-tags-input": "3.0.0",
-    "ng-table": "~0.8.0",
+    "ng-table": "~0.8.3",
     "ng-file-upload": "~5.0.9",
     "ng-file-upload-shim": "~5.0.9",
     "angularjs-datepicker": "~0.2.5",

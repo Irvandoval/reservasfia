@@ -14,19 +14,27 @@ exports.index = function(req, res) {
   });
 };
 exports.showByUser = function(req, res) {
-  Representante.findOne({usuario: req.user._id },function (err, representantes) {
+  Representante.findOne({usuario: req.user._id })
+  .populate('escuela')
+  .populate('usuario')
+  .exec(function (err, representantes) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(representantes);
   });
 };
 // Get a single representante
 exports.show = function(req, res) {
-  Representante.findById(req.params.id, function (err, representante) {
+  Representante.findById(req.params.id)
+  .populate('escuela')
+  .populate('usuario')
+  .exec(function (err, representante) {
     if(err) { return handleError(res, err); }
     if(!representante) { return res.status(404).send('Not Found'); }
     return res.json(representante);
   });
 };
+
+
 
 // Creates a new representante in the DB.
 exports.create = function(req, res) {

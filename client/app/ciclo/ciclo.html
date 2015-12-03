@@ -1,5 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
+  <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
   <div class="panel panel-danger">
     <div class="panel-heading">
       <div class="row">
@@ -15,7 +16,7 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" template-pagination="custom/pager">
+      <table class="table table-striped" ng-table="tablaCiclos" show-filter="true" template-pagination="custom/pager">
 
         <tr ng-repeat='ciclo in $data'>
           <td class='text-center' data-title="'Ciclo'">
@@ -44,7 +45,7 @@
               <span aria-hidden="true" class="fa fa-pencil "></span>
               Editar
             </button>
-            <button class="btn btn-danger" type="button">
+            <button class="btn btn-danger" type="button" ng-click="eliminarCiclo(ciclo._id)">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -82,53 +83,50 @@
   <div class="container-fluid">
     <div class="form-group">
       <label>Ciclo</label>
-      <select class="form-control">
+      <select class="form-control" ng-model="ciclo.numero">
         <option value="1">I</option>
-        <option value="1">II</option>
+        <option value="2">II</option>
       </select>
     </div>
     <div class="form-group">
       <label>Año</label>
-      <input class="form-control" name="anio" type="number" value="">
+      <input class="form-control" name="anio" ng-model="ciclo.anio" type="number">
     </div>
 
     <div class="form-group">
       <label>Inicio de Ciclo</label>
-      <input class="form-control" name="inicioCiclo" type="date" value="">
+      <input class="form-control" name="inicioCiclo" ng-model="ciclo.inicioCiclo" type="date">
     </div>
 
     <div class="form-group">
       <label>Fin de Ciclo</label>
-      <input class="form-control" name="finCiclo" type="date" value="">
+      <input class="form-control" name="finCiclo" ng-model="ciclo.finCiclo" type="date">
     </div>
     <div class="form-group">
       <label>Inicio de Clases</label>
-      <input class="form-control" name="inicioClases" type="date" value="">
+      <input class="form-control" name="inicioClases" ng-model="ciclo.inicioClases" type="date">
     </div>
     <div class="form-group">
       <label>Fin de Clases</label>
-      <input class="form-control" name="finClases" type="date" value="">
+      <input class="form-control" name="finClases" ng-model="ciclo.finClases" type="date">
     </div>
     <div class="form-group">
-     <label>Inicio de subida de horarios</label>
-     <input class="form-control" type="date" name="inicioClases" value="">
+      <label>Inicio de subida de horarios</label>
+      <input class="form-control" name="inicioSubidaHorario" ng-model="ciclo.inicioSubidaHorario" type="date">
     </div>
     <div class="form-group">
-     <label>Fin de subida de horarios</label>
-     <label></label>
-     <input class="form-control" type="date" name="finClases" value="" >
+      <label>Fin de subida de horarios</label>
+      <label></label>
+      <input class="form-control" name="finSubidaHorario" ng-model="ciclo.finSubidaHorario" type="date">
     </div>
   </div>
-
   <div class="modal-footer">
-
-    <button class="btn btn-success" ng-click="" type="button">
+    <button class="btn btn-success" ng-click="enviar()" type="button">
       Agregar
     </button>
     <button class="btn btn-warning" ng-click="cancel()" type="button">
       Cancelar</button>
   </div>
-
 </script>
 
 <script id="editar-ciclo.html" type="text/ng-template">
@@ -167,13 +165,13 @@
       <input class="form-control" name="finClases" type="date" value="">
     </div>
     <div class="form-group">
-     <label>Inicio de subida de horarios</label>
-     <input class="form-control" type="date" name="inicioClases" value="">
+      <label>Inicio de subida de horarios</label>
+      <input class="form-control" name="inicioClases" type="date" value="">
     </div>
     <div class="form-group">
-     <label>Fin de subida de horarios</label>
-     <label></label>
-     <input class="form-control" type="date" name="finClases" value="" >
+      <label>Fin de subida de horarios</label>
+      <label></label>
+      <input class="form-control" name="finClases" type="date" value="">
     </div>
   </div>
 

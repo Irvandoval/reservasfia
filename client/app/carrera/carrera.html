@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
- <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
+  <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
   <div class="panel panel-danger">
     <div class="panel-heading">
       <div class="row">
@@ -8,7 +8,7 @@
           <h4>Carreras</h4>
         </div>
         <div class="col-md-2">
-          <button class="btn btn-success" ng-click="nuevaCarrera()" type="button" ng-if="esAdmin()">
+          <button class="btn btn-success" ng-click="nuevaCarrera()" ng-if="esAdmin()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nueva Carrera
           </button>
@@ -20,16 +20,16 @@
         <tr ng-repeat="carrera in $data">
           <td class="text-center" data-title="'Codigo'" filter="{ 'codigo': 'text' }">{{carrera.codigo}}</td>
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{carrera.nombre}}</td>
-           <td class="text-center" data-title="'Plan'" >{{carrera.plan}}</td>
-          <td class="text-center" data-title="'Escuela'" >
-           {{ carrera.escuela.nombre}}
+          <td class="text-center" data-title="'Plan'">{{carrera.plan}}</td>
+          <td class="text-center" data-title="'Escuela'">
+            {{ carrera.escuela.nombre}}
           </td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning" type="button" ng-click="editarCarrera(carrera)">
+            <button class="btn btn-warning" ng-click="editarCarrera(carrera)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger" type="button" ng-click="eliminarCarrera(carrera._id)">
+            <button class="btn btn-danger" ng-click="eliminarCarrera(carrera._id)" type="button">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -59,137 +59,100 @@
 </script>
 
 <script id="nueva-carrera.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Nueva Carrera</h3>
- </div>
- <div class="container-fluid">
-  <form class="form" name="form" ng-submit="nuevaCarrera(form)" novalidate>
-  <div class="form-group">
-    <label>Codigo:</label>
-    <input name="codigo" type="text" value=""  class="form-control" ng-model="carrera.codigo" required>
-    <p class="help-block" ng-show="form.codigo.$error.required && submitted">
+  <div class="modal-header">
+    <h3 class="modal-title">Nueva Carrera</h3>
+  </div>
+  <div class="container-fluid">
+    <form class="form" name="form" ng-submit="nuevaCarrera(form)" novalidate>
+      <div class="form-group">
+        <label>Codigo:</label>
+        <input class="form-control" name="codigo" ng-model="carrera.codigo" required type="text" value="">
+        <p class="help-block" ng-show="form.codigo.$error.required && submitted">
           El codigo de la carrera es requerido
         </p>
-  
-  </div>
-  
-  <div class="form-group">
-    <label>Nombre:</label>
-     <input name="nombre" type="text" value=""  class="form-control" ng-model="carrera.nombre" required>
-     <p class="help-block" ng-show="form.nombre.$error.required && submitted">
-          El nombre de la carrera es requerido
-    </p>
-  </div>
-  <div class="form-group">
-    <label>Plan:</label>
-     <input name="plan" type="number" min="1990"   class="form-control" ng-model="carrera.plan" required>
-    <p class="help-block" ng-show="form.plan.$error.required && submitted">
-          El plan de la carrera es requerido
-    </p>
-  </div>
-  <div class="form-group">
-  <label>Escuela:</label>
-<<<<<<< HEAD
-  <SELECT NAME="tescuela" SIZE=1 onChange=" " class= "form-control" ng-model="carrera.escuela" ng-repeat="escuela in escuelas" required>
-  <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
-  </SELECT>
-  <p class="help-block" ng-show="form.tescuela.$error.required && submitted">
-        seleccione la carrera a la que pertenece la carrera
-=======
-  <select NAME="tescuela" SIZE=1 onChange=" " class= "form-control" ng-model="carrera.escuela"  required>
-   <option value="">---Selecciona una escuela---</option>
-  <option ng-repeat="escuela in escuelas" value="{{escuela._id}} ">{{escuela.nombre}}</option>
- </select>
->>>>>>> 1b1bbec7f0a80d7794da2baa614e68a323574387
-  </div>
-</form>
-</div>
-  <div class="modal-footer">
-  <button class="btn btn-success" ng-click="nuevaCarrera(form)" type="button">
-   Agregar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
-  </div>
+      </div>
 
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input class="form-control" name="nombre" ng-model="carrera.nombre" required type="text" value="">
+        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          El nombre de la carrera es requerido
+        </p>
+      </div>
+      <div class="form-group">
+        <label>Plan:</label>
+        <input class="form-control" min="1990" name="plan" ng-model="carrera.plan" required type="number">
+        <p class="help-block" ng-show="form.plan.$error.required && submitted">
+          El plan de la carrera es requerido
+        </p>
+      </div>
+      <div class="form-group">
+        <label>Escuela:</label>
+        <SELECT NAME="tescuela" class="form-control" ng-model="carrera.escuela" required>
+          <option value="">---Seleccione una escuela---</option>
+          <OPTION VALUE="{{escuela._id}}" ng-repeat="escuela in escuelas">{{escuela.nombre}}</OPTION>
+        </SELECT>
+        <p class="help-block" ng-show="form.tescuela.$error.required && submitted">
+          seleccione la carrera a la que pertenece la carrera
+        </p>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" ng-click="nuevaCarrera(form)" type="button">
+      Agregar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
+  </div>
 </script>
-<<<<<<< HEAD
 
-=======
->>>>>>> 1b1bbec7f0a80d7794da2baa614e68a323574387
 <script id="editar-carrera.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Editar carrera</h3>
- </div>
- <div class="container-fluid">
-<<<<<<< HEAD
-   <form class="form" name="form" ng-submit="actualizarCarrera(form)" novalidate>
-  <div class="form-group">
-    <label>Codigo:</label>
-    <input name="codigo" type="text" value=""  class="form-control" ng-model="carrera.codigo" required>
-    <p class="help-block" ng-show="form.codigo.$error.required && submitted">
+  <div class="modal-header">
+    <h3 class="modal-title">Editar carrera</h3>
+  </div>
+  <div class="container-fluid">
+    <form class="form" name="form" ng-submit="actualizarCarrera(form)" novalidate>
+      <div class="form-group">
+        <label>Codigo:</label>
+        <input class="form-control" name="codigo" ng-model="carrera.codigo" required type="text" value="">
+        <p class="help-block" ng-show="form.codigo.$error.required && submitted">
           El codigo de la carrera es requerido
         </p>
-  
-=======
-  <form class="form" name="form" ng-submit="nuevaCarrera(form)" novalidate>
-  <div class="form-group">
-    <label>Codigo:</label>
-    <input name="codigo" type="text" value=""  class="form-control" ng-model="carrerax.codigo" required>
->>>>>>> 1b1bbec7f0a80d7794da2baa614e68a323574387
-  </div>
-  
-  <div class="form-group">
-    <label>Nombre:</label>
-<<<<<<< HEAD
-     <input name="nombre" type="text" value=""  class="form-control" ng-model="carrera.nombre" required>
-     <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+      </div>
+
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input class="form-control" name="nombre" ng-model="carrera.nombre" required type="text" value="">
+        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
           El nombre de la carrera es requerido
-    </p>
-  </div>
-  <div class="form-group">
-    <label>Plan:</label>
-     <input name="plan" type="number" min="1990"   class="form-control" ng-model="carrera.plan" required>
-    <p class="help-block" ng-show="form.plan.$error.required && submitted">
+        </p>
+      </div>
+      <div class="form-group">
+        <label>Plan:</label>
+        <input class="form-control" min="1990" name="plan" ng-model="carrera.plan" required type="number">
+        <p class="help-block" ng-show="form.plan.$error.required && submitted">
           El plan de la carrera es requerido
-    </p>
-  </div>
-  <div class="form-group">
-  <label>Escuela:</label>
-  <SELECT NAME="tescuela" SIZE=1 onChange=" " class= "form-control" ng-model="carrera.escuela" ng-repeat="escuela in escuelas" required>
-  <OPTION VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
-  </SELECT>
-  <p class="help-block" ng-show="form.tescuela.$error.required && submitted">
-        seleccione la carrera a la que pertenece la carrera
-  </div>
-</form>
-     </form>
- </div>
-=======
-     <input name="nombre" type="text" value=""  class="form-control" ng-model="carrerax.nombre" required>
-  </div>
-  <div class="form-group">
-    <label>Plan:</label>
-     <input name="plan" type="number" min="1990"   class="form-control" ng-model="carrerax.plan" required>
-  </div>
-  <div class="form-group">
-  <label>Escuela:</label>
-  <select name="tescuela"  class= "form-control" ng-model="carrerax.escuela"  required>
-    <option value="">---Selecciona una escuela---</option>
-  <option ng-repeat="escuela in escuelas" value="{{escuela._id}} ">{{escuela.nombre}}</option>
- </select>
-  </div>
-</form>
+        </p>
+      </div>
+      <div class="form-group">
+        <label>Escuela:</label>
+        <SELECT NAME="tescuela"  class="form-control" ng-model="carrera.escuela"  required>
+         <option value="">---Seleccione una escuela---</option>
+          <OPTION  ng-repeat="escuela in escuelas" VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+        </SELECT>
+        <p class="help-block" ng-show="form.tescuela.$error.required && submitted">
+          seleccione la carrera a la que pertenece la escuela
+        </p>
+      </div>
+    </form>
 </div>
-
->>>>>>> 1b1bbec7f0a80d7794da2baa614e68a323574387
-
-  <div class="modal-footer">
-  <button class="btn btn-success" ng-click="editar()" type="button">
-   Actualizar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
-  </div>
+<div class="modal-footer">
+<button class="btn btn-success" ng-click="editar()" type="button">
+Actualizar
+</button>
+<button class="btn btn-warning" ng-click="cancel()" type="button">
+Cancelar</button>
+</div>
 
 </script>

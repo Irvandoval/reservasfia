@@ -19,7 +19,6 @@
   <button type="button" class="btn btn-default" ng-click="crearHorario()"> Crear</button>
 </div>
 
-
 <div class="" ng-if="opcion.hayHorario == true && opcion.ciclo != ''">
  <label>Agregar materia al horario</label> <input type="checkbox" name="name" value="">
  <p class="input-group">
@@ -147,6 +146,20 @@
       <p class="help-block" ng-show="form.tipo.$error.required && submitted">
         El tipo de grupo es requerido
       </p>
+
+  <div class="panel panel-default" ng-if="opcion.hayHorario == true">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-10">
+          <h3>
+            Subir un nuevo horario
+          </h3>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-success btn-sm" name="button" type="button">Agregar un nuevo grupo</button>
+        </div>
+      </div>
+
     </div>
     <div class="form-group" ng-class="{'has-success': form.numero.$valid && submitted, 'has-error': form.numero.$invalid && submitted}">
       <label>Número de grupo:</label>

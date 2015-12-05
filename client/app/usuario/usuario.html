@@ -8,7 +8,7 @@
           <h4>Usuarios del sistema</h4>
         </div>
         <div class="col-md-2">
-          <button class="btn btn-success" ng-click="nuevoUsuario()" type="button">
+          <button class="btn btn-success btn-sm" ng-click="nuevoUsuario()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nuevo Usuario
           </button>
@@ -24,11 +24,11 @@
             {{usuario.role}}
           </td>
           <td class="text-center" data-title="'Acciones'">
-            <button class="btn btn-warning" ng-click="editarUsuario(usuario)" type="button">
+            <button class="btn btn-warning btn-sm" ng-click="editarUsuario(usuario)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger" type="button" ng-click="eliminarUsuario(usuario._id)" confirm="¿Estas seguro de eliminar el usuario {{usuario.name}}?">
+            <button class="btn btn-danger btn-sm" type="button" ng-click="eliminarUsuario(usuario._id)" confirm="¿Estas seguro de eliminar el usuario {{usuario.name}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>

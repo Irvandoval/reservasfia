@@ -18,11 +18,11 @@
           <td class="text-center" data-title="'Escuela'">{{representante.escuela.nombre}}</td>
           <td class="text-center" data-title="'Correo'">{{representante.correo}}</td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning" ng-click="editarRepresentante(representante)" type="button">
+            <button class="btn btn-warning btn-sm" ng-click="editarRepresentante(representante)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger" confirm="¿Estas seguro de eliminar el registro del Representante {{representante.nombre}}?" ng-click="EliminarRepresentante(representante._id)" type="button">
+            <button class="btn btn-danger btn-sm" confirm="¿Estas seguro de eliminar el registro del Representante {{representante.nombre}}?" ng-click="EliminarRepresentante(representante._id)" type="button">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>

@@ -8,7 +8,7 @@
           <h4>Aulas</h4>
         </div>
         <div class="col-md-2" ng-if="esAdmin()">
-          <button class="btn btn-success" ng-click="nuevaAula()" type="button">
+          <button class="btn btn-success btn-sm" ng-click="nuevaAula()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nueva Aula
           </button>
@@ -37,11 +37,11 @@
           </td>
           <td class="text-center" data-title="'Capacidad'">{{aula.capacidad}}</td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning" type="button" ng-click="editarAula(aula)">
+            <button class="btn btn-warning btn-sm" type="button" ng-click="editarAula(aula)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger" type="button" ng-click="eliminarAula(aula._id)" confirm="¿Estas seguro de eliminar el aula {{aula.nombre}}?">
+            <button class="btn btn-danger btn-sm" type="button" ng-click="eliminarAula(aula._id)" confirm="¿Estas seguro de eliminar el aula {{aula.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -84,7 +84,7 @@
      El nombre es requerido
     </p>
   </div>
-  
+
   <div class="form-group" ng-class="{ 'has-success': form.descripcion.$valid && submitted,
                                       'has-error': form.descripcion.$invalid && submitted }">
     <label>Descripción:</label>
@@ -92,7 +92,7 @@
       <p class="help-block" ng-show="form.descripcion.$error.required && submitted">
           La descripcion es requerida
       </p>
-     
+
   </div>
   <div class="form-group" ng-class="{ 'has-success': form.estado.$valid && submitted,
                                       'has-error': form.estado.$invalid && submitted }">

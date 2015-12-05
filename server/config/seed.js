@@ -20,7 +20,7 @@ var Franja =  require('../api/franja/franja.model');
 Clase.find({}).remove(function(){
 Clase.create({
  tipo: 'GT',
- numero: 1,
+ numero: 2,
  cupo: 100,
  dia1: 'lunes',
  dia2: 'miercoles',
@@ -33,8 +33,22 @@ Clase.create({
  horario: "565cce9a672f8e4a290865e5"
 },
 {
+ tipo: 'GD',
+ numero: 1,
+ cupo: 100,
+ dia1: 'lunes',
+ //dia2: 'miercoles',
+ franja1: "565cd41cff75b7fe2a602d12",
+ //franja2: "565cd41cff75b7fe2a602d12",
+ aula: "55c2e6fbd9de2ffc4ae4af47",
+ materia: "55c2e6fbd9de2ffc4ae4af55",
+ ciclo:  "565c88d8c6d684ed0dd81dc3",
+ docente: "55cd6ea6d53897eb56e12806",
+ horario: "565cce9a672f8e4a290865e5"
+},
+{
  tipo: 'GT',
- numero: 2,
+ numero: 1,
  cupo: 100,
  dia1: 'lunes',
  dia2: 'miercoles',

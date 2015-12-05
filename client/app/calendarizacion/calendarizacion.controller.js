@@ -241,14 +241,14 @@ angular.module('reservasApp')
         var representante = Representante.get({
           representanteId: usuario._id
         }, function() {
-          $scope.actividad.escuela = representante.escuela;
+          $scope.actividad.escuela = representante.escuela._id;
           // $scope.rellenarMaterias(representante.escuela);
           var docentesPorEscuela = $resource('/api/docentes/escuela/:escuelaId', {
             escuelaId: '@id'
           });
 
           var docentes = docentesPorEscuela.query({
-            escuelaId: representante.escuela
+            escuelaId: representante.escuela._id
           }, function() {
             //console.log(docente);
             $scope.docentes = docentes;

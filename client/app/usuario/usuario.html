@@ -18,7 +18,7 @@
     <div class="table-responsive">
       <table class="table table-striped" ng-table="tablaUsuarios" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="usuario in $data">
-          <td class="text-center" data-title="'Usuario'" filter="{ 'nombre': 'text' }">{{usuario.username}}</td>
+          <td class="text-center" data-title="'Usuario'" filter="{ 'username': 'text' }">{{usuario.username}}</td>
           <td class="text-center" data-title="'Nombre'">{{usuario.name}}</td>
           <td class="text-center" data-title="'Rol'">
             {{usuario.role}}

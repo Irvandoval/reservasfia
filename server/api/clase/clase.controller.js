@@ -11,7 +11,7 @@ exports.index = function(req, res) {
   .populate('franja1', 'franja')
   .populate('franja2', 'franja')
   .populate('aula', 'nombre')
-  .sort({'_id': 1, 'materia.nombre': -1, 'tipo': -1, 'numero': 1})
+  .sort({'_id': 1, 'materia.nombre': 1, 'tipo': -1, 'numero': 1})
   .exec(function (err, clases) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(clases);
@@ -25,7 +25,7 @@ exports.indexByHorario = function(req, res) {
   .populate('franja1', 'franja')
   .populate('franja2', 'franja')
   .populate('aula', 'nombre')
-  .sort({'materia.nombre': 1, 'tipo': -1, 'numero': 1})
+  .sort({'tipo': -1, 'numero': 1})
   .exec(function (err, clases) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(clases);

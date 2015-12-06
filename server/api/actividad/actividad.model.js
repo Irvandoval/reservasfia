@@ -33,14 +33,14 @@ var ActividadSchema = new Schema({
    fechaCreacion: {type: Date,required: true},
    fechaAprobacion:{type:Date,required: false},
    creadoPor: {type: Schema.Types.ObjectId, ref: 'User', required: true },
-   comentario: {type: String, required: false}
+   comentario: {type: String, required: false},
+   ciclo: {type: Schema.Types.ObjectId, ref: 'Ciclo'},
 }, schemaOptions);
 
 ActividadSchema.methods = {
   crearTurnos : function(turnos,callback){
      var k = 0;
      (function crear(actividad){
-      console.log(k);
       if(k < turnos.length){
          turnos[k].actividad = actividad._id;
          Turno.create(turnos[k],function(err,turno){

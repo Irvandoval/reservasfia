@@ -16,7 +16,7 @@ exports.index = function(req, res) {
 };
 // Get list of docentes
 exports.indexByMaterias = function(req, res) {
-  Docente.find({materias:[req.params.id]})
+  Docente.find({materias:req.params.id})
   .populate('materias')
   .populate('escuela')
   .exec(function (err, docentes) {

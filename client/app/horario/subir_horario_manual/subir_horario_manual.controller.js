@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('SubirHorarioManualCtrl', function($scope, $rootScope, ngTableParams, $filter, $modal, Ciclo, Escuela, $resource, Clase, ClaseByHorario, Franja, Auth) {
+  .controller('SubirHorarioManualCtrl', function($scope, $rootScope, ngTableParams, $filter, $modal, toaster,Ciclo, Escuela, $resource, Clase, ClaseByHorario, Franja, Auth) {
     var horarioActual = null;
     $scope.esAdmin = Auth.isAdmin;
     $scope.esRepresentante = Auth.isRepresentante;
     $scope.opcion = {};
+
+   var Materia =  $resource('/api/materias/escuela/:escuelaId', {escuelaId: '@id'});
+
     if (Auth.isAdmin()) {
       Escuela.query(function(escuelas) {
         $scope.escuelas = escuelas;
@@ -24,6 +27,7 @@ angular.module('reservasApp')
           $scope.opcion.hayHorario = false;
      }else{
       if (Auth.isRepresentante()) {
+
         $resource('/api/representantes/user/:userId', {
             userId: '@id'
           })
@@ -31,6 +35,9 @@ angular.module('reservasApp')
             userId: Auth.getCurrentUser()._id
           }, function(representante) {
             $scope.opcion.escuela = representante.escuela._id;
+             Materia.query({escuelaId: $scope.opcion.escuela}, function(materias){
+              $scope.materias = materias;
+             });
             $resource('/api/horarios/ciclo/escuela')
               .get({
                 ciclo: $scope.opcion.ciclo,
@@ -49,7 +56,29 @@ angular.module('reservasApp')
 
 
     };
-
+    $scope.materiaGrupoNuevo =  function(){
+     console.log($scope.opcion.materia);
+     $resource('/api/clases/horario/nuevo')
+     .save({
+      tipo: 'GT',
+      numero: 1,
+      cupo: 10,
+      dia1: 'lunes',
+      dia2: 'miercoles',
+      franja1: "565cd41cff75b7fe2a602d12",
+      franja2: "565cd41cff75b7fe2a602d12",
+      aula: "55c2e6fbd9de2ffc4ae4af47",
+      materia: $scope.opcion.materia,
+      ciclo: $rootScope.cicloActual._id,
+      horario: horarioActual._id
+     }, function(){
+      toaster.pop('success', "Grupo agregado", "Se ha agregado al horario la materia con un grupo de ejemplo");
+      $rootScope.tablaHorario.reload();
+     }, function(err){
+       console.log(err);
+       toaster.pop('error', "La materia ya esta agregada en el horario");
+     })
+    }
     $scope.nuevaClase = function(materia) {
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
@@ -108,18 +137,17 @@ angular.module('reservasApp')
     function cargarTabla(horario) {
       horarioActual = horario;
       $rootScope.tablaHorario = new ngTableParams({
-
+       sorting: {nmateria: 'asc'}
       }, {
         counts: [],
         groupBy: function(grupo) {
-          return grupo.materia.nombre + '       ( ' + grupo.materia.codigo + ' )';
+          return grupo.nmateria +'       (' + grupo.materia.codigo + ')';
         },
         getData: function($defer, params) {
           ClaseByHorario.query({
             horarioId: horario._id
           }, function(clases) {
            var clasesor =  agregarNombreMateria(clases);
-           console.log(clasesor);
             $defer.resolve($filter('orderBy')(clasesor, params.orderBy()));
             $defer.resolve(clasesor);
           })
@@ -128,7 +156,7 @@ angular.module('reservasApp')
     };
 
     function agregarNombreMateria(clases){
-      for(var a =1; a< clases.length; a++){
+      for(var a = 0; a < clases.length; a++){
        clases[a].nmateria = clases[a].materia.nombre;
      }
      return clases;
@@ -157,11 +185,25 @@ angular.module('reservasApp')
       console.log($scope.clase);
       $scope.submitted = true;
       if(form.$valid){
-       $scope.clase.materia =  materia._id;
-       $scope.clase.horario =  horario;
-       $scope.clase.aula = $scope.clase.aula[0]._id;
-       $scope.clase.ciclo =  ciclo;
-       Clase.save($scope.clase, function(clase) {
+      // $scope.clase.materia =  materia._id;
+    //   $scope.clase.horario =  horario;
+      // $scope.clase.aula = $scope.arrayAulas[0]._id;
+      // $scope.clase.ciclo =  ciclo;
+       Clase.save({
+        tipo: $scope.clase.tipo,
+        numero: $scope.clase.numero,
+        cupo: $scope.clase.cupo,
+        dia1: $scope.clase.dia1,
+        dia2: $scope.clase.dia2,
+        franja1: $scope.clase.franja1,
+        franja2: $scope.clase.franja2,
+        aula: $scope.arrayAulas[0]._id,
+        materia: materia._id,
+        docente: $scope.clase.docente,
+        ciclo: $rootScope.cicloActual._id,
+        horario: horario
+
+       }, function(clase) {
          toaster.pop('success', "Grupo agregado");
          $rootScope.tablaHorario.reload();
          $modalInstance.dismiss('cancel');

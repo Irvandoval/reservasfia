@@ -7,8 +7,8 @@ var ClaseSchema = new Schema({
    tipo: {type: String, required:true},// GT, GD, GL
    numero: {type: Number, required: true},//  01, 02, etc
    cupo: {type: Number, required: true},
-   dia1: {type: String, required:true},// si son lunes y miercoles las clases, este sería LUNES
-   dia2: { type: String, required: false},// este MIERCOLES
+   dia1: {type: Number, required:true},// si son lunes y miercoles las clases, este sería 1
+   dia2: { type: Number, required: false},// este 3
    franja1: { type: Schema.Types.ObjectId, ref: 'Franja', required: true },
    franja2: { type: Schema.Types.ObjectId, ref: 'Franja', required: false },
    aula:  { type: Schema.Types.ObjectId, ref: 'Aula', required: true},

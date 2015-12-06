@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig) {
+  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig, $rootScope) {
     var DIAS_HABILES = 3; // Dias anteriores al dia que se quiere reservar
     var H_MIN = 6;
     var M_MIN = 20;
     var H_MAX = 8;
     var M_MAX = 15;
     var dm = new Date();
+    $scope.cicloActual = $rootScope.cicloActual;
     dm.setHours(H_MIN);
     dm.setMinutes(M_MIN);
     $scope.hMin = dm;
@@ -225,7 +226,6 @@ angular.module('reservasApp')
           $scope.actividad.escuela = docente.escuela;
         });*/
       }
-
       if (Auth.isAdmin()) {
         $resource('/api/escuelas').query().$promise
           .then(function(escuelas) {
@@ -255,7 +255,6 @@ angular.module('reservasApp')
           });
         });
       }
-
     }
     $scope.datePicker = {};
     var hoy = new Date();
@@ -346,7 +345,8 @@ angular.module('reservasApp')
               estado: estado,
               creadoPor: Auth.getCurrentUser()._id,
               materia: $scope.actividad.materia,
-              escuela: $scope.actividad.escuela
+              escuela: $scope.actividad.escuela,
+              ciclo: $scope.cicloActual._id
             };
             aulas = obtenerAulas();
             console.log(dates);

@@ -152,7 +152,7 @@
               <div class="form-group">
                 <label>Materia</label>
                 <select class="form-control"  ng-model="actividad.materia">
-                  <option ng-if="materia.imparteEnCiclo == 2 || materia.imparteEnCiclo == 3" ng-repeat="materia in materias" value="{{materia._id}}">
+                  <option ng-if="materia.imparteEnCiclo == cicloActual.numero || materia.imparteEnCiclo == 3" ng-repeat="materia in materias" value="{{materia._id}}">
                     {{materia.nombre}}
                   </option>
                 </select>

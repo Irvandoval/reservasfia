@@ -20,6 +20,16 @@ exports.show = function(req, res) {
   });
 };
 
+// Get a single ciclo
+exports.showActual = function(req, res) {
+ var today = new Date();
+  Ciclo.findOne({  $and: [ {inicioCiclo: {$lte: today}}, {finCiclo: {$gte: today}}] }, function (err, ciclo) {
+    if(err) { return handleError(res, err); }
+    if(!ciclo) { return res.status(404).send('Not Found'); }
+    return res.json(ciclo);
+  });
+};
+
 // Creates a new ciclo in the DB.
 exports.create = function(req, res) {
   Ciclo.create(req.body, function(err, ciclo) {

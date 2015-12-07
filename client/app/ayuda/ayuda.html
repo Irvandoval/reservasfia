@@ -8,29 +8,29 @@
   <accordion>
     <accordion-group heading="Calendarización">
       <div class="list-group">
-        <a class="list-group-item" href="#enc1sub1">Vista General</a>
-        <a class="list-group-item" href="#enc1sub2">Búsqueda</a>
-        <a class="list-group-item" href="#enc1sub3">Reservar</a>
+        <a class="list-group-item" href="#vistageneral">Vista General</a>
+        <a class="list-group-item" href="#busqueda">Búsqueda</a>
+        <a class="list-group-item" href="#reservar">Reservar</a>
       </div>
     </accordion-group>
     <accordion-group heading="Administrar">
       <div class="list-group">
-        <a class="list-group-item" href="#enc2sub1">Solicitudes de reservas</a>
-        <a class="list-group-item" href="#enc2sub2">Aulas</a>
-        <a class="list-group-item" href="#enc2sub3">Materias</a>
-        <a class="list-group-item" href="#enc2sub4">Usuarios</a>
-        <a class="list-group-item" href="#enc2sub5">Ciclos</a>
-        <a class="list-group-item" href="#enc2sub6">Horarios de clase</a>
+        <a class="list-group-item" href="#admsolicitudesreservas">Solicitudes de reservas</a>
+        <a class="list-group-item" href="#admaulas">Aulas</a>
+        <a class="list-group-item" href="#admmaterias">Materias</a>
+        <a class="list-group-item" href="#admusuarios">Usuarios</a>
+        <a class="list-group-item" href="#admciclos">Ciclos</a>
+        <a class="list-group-item" href="#admhorariosclases">Horarios de clase</a>
       </div>
     </accordion-group>
     <accordion-group heading="Consultar">
 
       <div class="list-group">
-        <a class="list-group-item" href="#enc3sub1">Aulas</a>
-        <a class="list-group-item" href="#enc3sub2">Materias</a>
-        <a class="list-group-item" href="#enc3sub3">Usuarios</a>
-        <a class="list-group-item" href="#enc3sub4">Ciclos</a>
-        <a class="list-group-item" href="#enc3sub5">Horarios de clase</a>
+        <a class="list-group-item" href="#conaulas">Aulas</a>
+        <a class="list-group-item" href="#conmaterias">Materias</a>
+        <a class="list-group-item" href="#conusuarios">Usuarios</a>
+        <a class="list-group-item" href="#conciclos">Ciclos</a>
+        <a class="list-group-item" href="#conhorariosclases">Horarios de clase</a>
       </div>
     </accordion-group>
   </accordion>
@@ -40,12 +40,14 @@
   <!-- Default panel contents -->
   <div class="panel-heading">CALENDARIZACION</div>
   <div class="panel-body">
-    alguna descripcion
+    En esta sección, se encuentra el calendario que muestra las actividades solicitadas, existen diferentes
+    filtros de busqueda, y es en esta ventana donde se podran realizar reservas para otras actividades, a
+    contnuación se describen las diferentes opciones.
   </div>
 
   <!-- List group -->
   <ul class="list-group">
-    <li class="list-group-item"> <div id="enc1sub1">
+    <li class="list-group-item"> <div id="vistageneral">
          <h3>Vista General</h3>
          Es la primer vista que aparece al seleccionar la opción calendarización,
          consta de los siguientes componentes:
@@ -53,10 +55,12 @@
            Actividad es el principal componente de calendarización; ya que el sistema gira entorno a ella,
            dentro de actividad se encuentra:
              <h5>Estado</h5>
-             Una actividad puede tener un estado, el cual se encuentra diferenciado ademas de su nombre, por un color:
+             Una actividad tiene un estado, el cual se encuentra diferenciado además de su nombre, por un color:
            Aprobado
-           En Espera
-           Rechazado
+           En espera escuela
+           En espera Academica
+           En el calendario solo se mostraran actividades con los estados antes mencionados, los otros estados, por
+           no afectar las reservas a realizarse por los diferentes usuarios no serán mostradas.
              <h5>Detalle</h5>
              En detalle se puede observar toda la información de una actividad especifica
              para poder acceder a esta opción, basta con seleccionar la actividad deseada dentro del calendario.
@@ -76,16 +80,14 @@
                Para cambiar de mes que muestra la opción, debe dar clic en los botones de los cursores hacia adelante o hacia atras.
 
      </div></li>
-    <li class="list-group-item"> <div id="enc1sub2">
+    <li class="list-group-item"> <div id="busqueda">
        <h3>Busqueda</h3>
-         En esta opción se encuentran dos filtros de busqueda, para facilitar la visualización de la/s actividad/es que se desean observar.
-         Dichos filtros estan en la parte lateral derecha del calendario. y son:
-         <h4>Busqueda General</h4>
-         alguna descripción
+         Esta opción facilita la visualización de la/s actividad/es y las aulas que se desean observar.
          <h4>Aula especifica</h4>
-         alguna descripción.
+         En la parte lateral izquierda debe seleccionar la opción "busqueda" posteriormente ingresar las aulas que
+         desee conocer, al momento de ingresar aulas estas se agregaran en forma de etiqueta, y luego puede desplazarse con las diferentes opciones que ofrece el calendario y este buscará unicamente las actividades que contengan las aulas ingresadas
      </div></li>
-    <li class="list-group-item"><div id="enc1sub3">
+    <li class="list-group-item"><div id="reservar">
       <h3>Reservar</h3>
       Esta opción se encuentra en la parte lateral derecha del calendario, contiguo a la opción busqueda, dentro de la ventana calendarización
       <div class="alert alert-warning lista" role="alert">
@@ -113,7 +115,9 @@
                       <li>Dar clic en enviar.</li>
                     </ol>
             </li>
-
+            El estado inicial de la reserva por defecto será de acuerdo al usuario:
+            Cuando el administrador o el docente realice la reserva el estado será "En espera escuela".
+            Cuando el representante de escuela realiza la reserva su estado será "En espera academica".
            </ol>
        </div>
 
@@ -136,33 +140,84 @@
  <!-- Default panel contents -->
  <div class="panel-heading">Administrar</div>
  <div class="panel-body">
-   alguna descripcion
+   Esta opción se presenta unicamente para el administrador del sistema y cuenta con las siguientes opciones:
  </div>
 
  <!-- List group -->
  <ul class="list-group">
   <div>
-          <li class="list-group-item"><div id="enc2sub1">
+          <li class="list-group-item"><div id="admsolicitudesreservas">
             <h3>Solicitudes de reservas</h3>
-            Descripción
+            En este apartado, apareceran las solicitudes que ya han sido aprobadas por el representante de la
+            escuela al que pertenece la solicitud. Cuenta con una pestaña por estado, los cuales son:
+            <ol start="1">
+              <li>En espera: Una vez, el representante ha aprobado la reserva esta llegará al administrador, quien
+                debe asegurarse que la reserva se haya realizado correctamente, y en caso que exista mas de una reserva
+                en los mismos horarios y locales, deberá priorizar segun demanda o según la fecha en que se realizo
+                la solicitud. al seleccionar una de las actividades en este estado aparecerá una ventana con los datos de
+                dicha reserva, y el administrador podrá aprobar o rechazar la solicitud o cerrar la ventana y mantener
+                el estado de la reserva, en caso que la reserva sea rechazada, deberá realizar un comentario de porque
+                rechaza la solicitud y posteriormente confirmar la acción. Por otro lado si la aprueba, la solicitud esta
+                lista para imprimir o guardar (descargar) el comprobante.</li>
+              <li>Aprobados: estaran todas las solicitudes que han sido aprobadas, al seleccionar una de las actividades
+                en esta lista, aparecerá una ventana con el detalle de la reserva, además podrá imprimir el comprobante dando clic
+                en el boton mostrar comprobante se abrirá una pestaña nueva en el navegador donde se podrá imprimir el comprobante
+                o descargar. También puede Cancelar la reserva, dando clic en el boton cancelar, deberá agregar un comentario
+                describiendo la razon de la cancelación de la reserva. O bien, dar clic en cerrar, para cerrar la ventana y no hacer
+               ningun cambio en la solicitud</li>
+              <li>Enviados a escuelas: Son aquellas solicitudes realizadas por el administrador y deben tener el visto bueno del
+                representante de escuela, en esta sección al seleccionar una de las actividades, el administrador solo puede cancelar la
+                actividad o cerrar la ventana y mantener en espera de escuela.</li>
+              <li>Rechazados: Mostrará aquellas solicitudes que han sido rechazadas, se puede eliminar el registro si el usuario asi lo desea</li>
+              <li>Cancelados: Mostrará las solicitudes que han sido canceladas, estas pueden ser eliminadas del registro al seleccionar la actividad
+              y en la ventana dar clic en el boton eliminar registro.</li>
+            </ol>
+
+
         </div></li>
-          <li class="list-group-item"><div id="enc2sub2">
-          <h3>Aulas</h3>
-          Descripción
+          <li class="list-group-item"><div id="admaulas">
+            <h3>Aulas</h3>
+          En este apartado se muestran todas las aulas con las que cuenta la FIA-UES.
+          Las acciones que se pueden realizar son:
+          <ol start="1">
+            <li>Crear: se podrá crear un aula desde este apartado, y para ello el administrador, debe presionar
+            el boton "Crear aula" que se encuentra en la parte superior derecha de la pantalla de este apartado,
+            aparecerán los campos a llenar para la creación del aula y  una vez, llenos presionar el boton "agregar"
+          para que se realice la creación del aula.</li>
+          <li>Editar: Si desea editar una o varias caracteristicas de un aula, debe seleccionar el aula a editar y posterioremente
+          presionar el boton "editar" en la linea donde se encuentra el aula que desea editar, luego aparecerá una ventana con los campos
+          a editar, una vez realizados los cambios deseados debe dar clic en el boton actualizar.</li>
+          <li>Eliminar: Si desea eliminar un aula basta con dar clic en el boton "eliminar" que se encuentra en la fila
+          del aula a eliminar, posteriormente aparecerá un ventana para confimar la eliminación, luego de confirmar
+          el aula será eliminada.</li>
+          </ol>
         </div></li>
-          <li class="list-group-item"><div id="enc2sub3">
+          <li class="list-group-item"><div id="admmaterias">
           <h3>Materias</h3>
-          Descripción
+          En este apartado se muestran todas las materias que son impartidas en la FIA-UES.
+          Las acciones que se pueden realizar son:
+          <ol start="1">
+            <li>Crear: se podrá crear una materia nueva desde este apartado, y para ello el administrador, debe presionar
+            el boton "Crear materia" que se encuentra en la parte superior derecha de la pantalla de este apartado,
+            aparecerán los campos a llenar para la creación de la materia y  una vez, llenos presionar el boton "agregar"
+          para que se realice la creación de la materia.</li>
+          <li>Editar: Si desea editar uno o varias campos de una materia, debe seleccionar la materia a editar posterioremente
+          presionar el boton "editar" en la linea donde se encuentra la materia que desea editar, luego aparecerá una ventana con los campos
+          a editar, una vez realizados los cambios deseados debe dar clic en el boton actualizar.</li>
+          <li>Eliminar: Si desea eliminar una materia basta con dar clic en el boton "eliminar" que se encuentra en la fila
+          de la materia a eliminar, posteriormente aparecerá un ventana para confimar la eliminación, luego de confirmar
+          la materia será eliminada.</li>
+          </ol>
         </div></li>
-          <li class="list-group-item"><div id="enc2sub4">
+          <li class="list-group-item"><div id="admusuarios">
           <h3>Usuarios</h3>
           Descripción
         </div></li>
-          <li class="list-group-item"><div id="enc2sub5">
+          <li class="list-group-item"><div id="admciclos">
           <h3>Ciclos</h3>
           Descripción
         </div></li>
-          <li class="list-group-item"><div id="enc2sub6">
+          <li class="list-group-item"><div id="admhorariosclases">
           <h3>Horarios de Clase</h3>
           Descripción
         </div></li>
@@ -181,23 +236,23 @@
    <!-- List group -->
    <ul class="list-group">
     <div>
-            <li class="list-group-item"><div id="enc3sub1">
+            <li class="list-group-item"><div id="condescripcion">
             <h3>Aulas</h3>
             Descripción
           </div></li>
-            <li class="list-group-item"><div id="enc3sub2">
+            <li class="list-group-item"><div id="conmaterias">
             <h3>Materias</h3>
             Descripción
           </div></li>
-            <li class="list-group-item"><div id="enc3sub3">
+            <li class="list-group-item"><div id="conusuarios">
             <h3>Usuarios</h3>
             Descripción
           </div></li>
-            <li class="list-group-item"><div id="enc3sub4">
+            <li class="list-group-item"><div id="conciclos">
             <h3>Ciclos</h3>
             Descripción
           </div></li>
-            <li class="list-group-item"><div id="enc3sub5">
+            <li class="list-group-item"><div id="conhorariosclases">
             <h3>Horarios de Clase</h3>
             Descripción
           </div></li>

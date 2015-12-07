@@ -18,7 +18,7 @@
     <div class="table-responsive">
       <table class="table table-striped" ng-table="tablaUsuarios" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="usuario in $data">
-          <td class="text-center" data-title="'Usuario'" filter="{ 'nombre': 'text' }">{{usuario.username}}</td>
+          <td class="text-center" data-title="'Usuario'" filter="{ 'username': 'text' }">{{usuario.username}}</td>
           <td class="text-center" data-title="'Nombre'">{{usuario.name}}</td>
           <td class="text-center" data-title="'Rol'">
             {{usuario.role}}
@@ -120,14 +120,12 @@
                 </div>
                  <div class="form-group">
                     <label>Correo:</label>
-<<<<<<< HEAD
-                        <input name="correo" type="text" value=""  class="form-control"                            ng-model="representante.correo">
+
+                        <input name="correo" type="text" value=""  class="form-control"      ng-model="usuario.correo">
                         <p class="help-block" ng-show="form.correo.$error.required && submitted">
           El correo es requerido
     </p>
-=======
-                        <input name="correo" type="text" value=""  class="form-control"  ng-model="usuario.correo">
->>>>>>> 1b1bbec7f0a80d7794da2baa614e68a323574387
+
                  </div>
 
                 <div ng-if="user.role === 'docente'">

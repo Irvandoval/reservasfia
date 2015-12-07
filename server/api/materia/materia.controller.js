@@ -17,6 +17,7 @@ exports.indexByEscuela = function(req, res) {
   Materia.find({escuela: req.params.id})
   .populate('escuela')
   .populate('carreras')
+  .sort({'nombre': 1})
   .exec(function (err, materias) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(materias);

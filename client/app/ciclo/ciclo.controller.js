@@ -70,6 +70,7 @@ angular.module('reservasApp')
             form[field].$setValidity('mongoose', false);
             $scope.errors[field]= error.message;
         });
+<<<<<<< HEAD
             toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
         });
         }
@@ -78,6 +79,14 @@ angular.module('reservasApp')
     $modalInstance.dismiss('cancel');
   };
 })
+=======
+      }
+      $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+  })
+
+>>>>>>> e5d390409b1850df272e71a085fda521e20c97e3
   .controller('EditarCicloCtrl',function(ciclo, $scope, $modalInstance){
     $scope.ciclo = ciclo;
     $scope.cancel = function() {

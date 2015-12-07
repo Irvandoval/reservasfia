@@ -52,17 +52,32 @@ angular.module('reservasApp')
    };
   })
 
-  .controller('NuevoCicloCtrl', function($scope, $rootScope,toaster, $modalInstance, Ciclo){
-      $scope.enviar =  function(){
+  .controller('NuevoCicloCtrl', function($scope, $rootScope, toaster, $modalInstance, Ciclo, $resource){
+      
+    $scope.enviar =  function(form){
+        $scope.submitted= true;
+        console.log(form.$valid);
+        if(form.$valid){
         Ciclo.save($scope.ciclo, function(ciclo){
          $rootScope.tablaCiclos.reload();
          $modalInstance.dismiss('cancel');
          toaster.pop('success', "Ciclo Ingresado", "El ciclo se ha ingresado en el sistema'");
         }, function(err){
+            console.log(err);
+            $scope.errors = {};
+        //update validity of form fields that match the mongoose errors
+        angular.forEach(err.data.errors, function(error, field){
+            form[field].$setValidity('mongoose', false);
+            $scope.errors[field]= error.message;
         });
-      }
-  })
-
+            toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+        });
+        }
+    }
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
+})
   .controller('EditarCicloCtrl',function(ciclo, $scope, $modalInstance){
     $scope.ciclo = ciclo;
     $scope.cancel = function() {

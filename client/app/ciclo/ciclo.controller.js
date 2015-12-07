@@ -61,6 +61,9 @@ angular.module('reservasApp')
         }, function(err){
         });
       }
+      $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
   })
 
   .controller('EditarCicloCtrl',function(ciclo, $scope, $modalInstance){

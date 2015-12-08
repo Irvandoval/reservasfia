@@ -256,7 +256,8 @@ angular.module('reservasApp')
         });
       }
     }
-    $scope.datePicker = {};
+    $scope.datePicker = {
+    };
     var hoy = new Date();
     $scope.minDate = new Date(hoy);
     $scope.minDate.setDate(hoy.getDate() + DIAS_HABILES);

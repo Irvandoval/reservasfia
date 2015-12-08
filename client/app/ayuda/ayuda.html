@@ -5,7 +5,16 @@
   <h1>Ayuda de usuario</h1>
   </center>
   <h2>A continuación se presenta ayuda al usuario de acuerdo a las categorias en la pestaña principal</h2>
+
   <accordion>
+  <accordion-group heading="Instrucciones generales">
+      <div class="list-group">
+      <a class="list-group-item" href="#introduccion">Introducción</a>
+      <a class="list-group-item" href="#conceptosimportates">Conceptos Importantes</a>
+      <a class="list-group-item" href="#reglasdelnegocio">Indicaciones sobre las reservas</a>
+    </div>
+  </accordion-group>
+
     <accordion-group heading="Calendarización">
       <div class="list-group">
         <a class="list-group-item" href="#vistageneral">Vista General</a>
@@ -44,7 +53,109 @@
       </div>
     </accordion-group>
   </accordion>
+
+
   <div>
+       <div class="panel panel-success">
+    <div class="panel-heading"> <h2> Instrucciones generales </h2> </div>
+    <ul class="list-group">
+          <li class="list-group-item"> <div id="introduccion">
+           <h3>Introducción</h3>
+           El sistema de Gestión de Reservas de Aulas para la facultad de Ingenieria y Arquitectura de la Universidad
+           de El Salvador.
+       </div></li>
+       <li class="list-group-item"> <div id="conceptosimportates">
+        <h3></h3>
+        A continuación se presenta una tabla con los conceptos que facilitaran la comprensión del sistema.
+
+      <table class="table table-hover">
+      <caption> <h3> Conceptos Importantes </h3> </caption>
+         <tr class="success">
+            <td> <h4>Nombre</h4> </td>
+            <td> <center> <h4>Descripción</h4> </center> </td>
+       </tr>
+       <tr>
+          <td> <h5>Actividad</h5> </td>
+          <td> <h5>Clases teóricas, de discusión o laboratorio, así como parciales,
+            cortos que se realizan en una materia perteneciente a una escuela de la
+            facultad.</h5> </td>
+       </tr>
+       <tr>
+         <td><h5>Clase</h5></td>
+         <td>
+           <h5>Es un tipo de actividad que puede ser de tipo teórico, de discusión o
+             laboratorio.</h5>
+         </td>
+       </tr>
+       <tr>
+         <td> <h5>Aula</h5> </td>
+         <td>
+           <h5>Sala donde se realizan las actividades académicas.</h5>
+         </td>
+       </tr>
+
+       <tr>
+         <td> <h5>Horario</h5> </td>
+         <td>
+           <h5>Conjunto actividades de tipo clase, relacionadas con materias
+           pertenecientes a una escuela, en este se especifica hora, aula y días donde
+           serán impartidos.</h5>
+         </td>
+       </tr>
+
+       <tr>
+         <td> <h5>Reserva</h5> </td>
+         <td>
+           <h5>Destinar una aula en un determinado día y hora exclusivamente
+           para una actividad.</h5>
+         </td>
+       </tr>
+
+       <tr>
+         <td> <h5>Ciclo</h5> </td>
+         <td>
+           <h5>Periodo de 16 semanas (que puede alargarse por causas
+           extraordinarias) en el que se divide la realización de actividades
+           académicas de la facultad.</h5>
+         </td>
+       </tr>
+
+       <tr>
+         <td> <h5>Escuela</h5> </td>
+         <td>
+           <h5>Área de la facultad destinada a enseñar determinadas materias
+           especializadas y que están encargadas de determinadas carreras de la
+           facultad.</h5>
+         </td>
+       </tr>
+
+       <tr>
+         <td> <h5>Carrera</h5> </td>
+         <td> <h5>Estudios universitarios repartidos en una serie de años con los
+           que se obtiene un título profesional.</h5> </td>
+       </tr>
+
+       <tr>
+         <td> <h5>Pensum</h5> </td>
+         <td> <h5>Plan de estudios de una carrera.</h5> </td>
+       </tr>
+
+       <tr>
+         <td> <h5>Secretario de Escuela</h5> </td>
+         <td> <h5>Persona encargada por parte de la Escuela a la que
+           pertenece de tramitar las reservas de aula en el sistema.</h5> </td>
+       </tr>
+
+    </table>
+ </div></li>
+
+ <li class="list-group-item"> <div id="reglasdelnegocio">
+  <h3>Indicaciones sobre las reservas</h3>
+  A continuación se listan algunos aspectos importantes que se deben tomar en cuenta para
+  la realización de las reservas
+</div></li>
+
+
 
    <div class="panel panel-success">
   <!-- Default panel contents -->
@@ -387,7 +498,8 @@
               <ol start="1">
               El docente podrá consultar y gestionar las solicitudes que ha realizado, estaran dividas de acuerdo al estado:
               <li>En espera: se muestran aquellas solicitudes que han sido realizadas por el docente y que su estado aun no ha sido cambiado, es decir, el representante
-                no ha hecho ninguna gestión al respecto o en caso de haberla aceptado el administrador aun no ha realizado la gestión al respecto.
+                no ha hecho ninguna gestión al respecto o en caso de haberla aceptado el administrador aun no ha realizado la gestión al respecto. en cada fila aparecerá si la
+                reserva se encuentra en espera del representante o en espera de academica.
                al seleccionar una de las actividades en este estado aparecerá una ventana con los datos de
                 dicha reserva.</li>
               <li>Aprobados: estaran todas las solicitudes que han sido aprobadas por el administrador, al seleccionar una de las actividades

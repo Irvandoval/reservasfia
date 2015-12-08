@@ -233,7 +233,28 @@ angular.module('reservasApp')
    }
    $resource('/api/reservas/choque/detectarChoqueForHorario')
    .save(reservas, function(respuesta){
-   console.log(respuesta);
+    if(respuesta.choque){
+     var modalInstance = $modal.open({
+       animation: $scope.animationsEnabled,
+       templateUrl: 'confirmacion-choque.html',
+       controller: 'ConfirmacionChoqueCtrl',
+       size: 'lg',
+       resolve: {
+         actividad: function() {
+           return respuesta.actividad
+         }
+       }
+     });
+
+     modalInstance.result.then(function(actividad) {
+       console.log("entro al result");
+
+     }, function() {
+       //$log.info('Modal dismissed at: ' + new Date());
+
+     });
+
+    }
 
   });
   }
@@ -355,4 +376,7 @@ angular.module('reservasApp')
   }
 
 
+})
+.controller('ConfirmacionChoqueCtrl', function($scope, actividad){
+ $scope.actividad =  actividad;
 });

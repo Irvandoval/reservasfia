@@ -44,12 +44,15 @@ exports.choque = function(req, res) {
          if(reserva){
           console.log("entra choq");
           choq =  true;
-          Actividad.findById(reserva.actividad, function(err, actividad){
+          Actividad.findById(reserva.actividad)
+          .populate('escuela')
+          .populate('materia')
+          .exec(function(err, actividad){
            if(!err){
             i++;
              detectarChoque(i, rvs, choq, actividad);
            }
-          })
+          });
          }else{
            i++;
            detectarChoque(i, rvs, choq, achoq);

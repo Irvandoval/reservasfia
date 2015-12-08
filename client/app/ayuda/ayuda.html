@@ -17,18 +17,28 @@
         <a class="list-group-item" href="#admaulas">Aulas</a>
         <a class="list-group-item" href="#admmaterias">Materias</a>
         <a class="list-group-item" href="#admusuarios">Usuarios</a>
+        <a class="list-group-item" href="#admdocentes">Docentes</a>
         <a class="list-group-item" href="#admciclos">Ciclos</a>
+        <a class="list-group-item" href="#admescuelas">Escuelas</a>
         <a class="list-group-item" href="#admhorariosclases">Horarios de clase</a>
+        <a class="list-group-item" href="#admcarrera">Carreras</a>
+        <a class="list-group-item" href="#admrepresentanteescuela">Representantes</a>
       </div>
     </accordion-group>
     <accordion-group heading="Consultar">
 
       <div class="list-group">
+        <a class="list-group-item" href="#consolicitudesreservas">Solicitudes de reservas</a>
+        <a class="list-group-item" href="#consolicitudesreservas">Solicitudes de reservas</a>
         <a class="list-group-item" href="#conaulas">Aulas</a>
         <a class="list-group-item" href="#conmaterias">Materias</a>
-        <a class="list-group-item" href="#conusuarios">Usuarios</a>
+        <a class="list-group-item" href="#condocentes">Docentes</a>
         <a class="list-group-item" href="#conciclos">Ciclos</a>
+        <a class="list-group-item" href="#conescuelas">Escuelas</a>
         <a class="list-group-item" href="#conhorariosclases">Horarios de clase</a>
+        <a class="list-group-item" href="#conhorariosclasesd">Horarios de clase</a>
+        <a class="list-group-item" href="#concarreras">Carreras</a>
+        <a class="list-group-item" href="#conrepresentantes">Representantes</a>
       </div>
     </accordion-group>
   </accordion>
@@ -45,7 +55,7 @@
 
   <!-- List group -->
   <ul class="list-group">
-    <li class="list-group-item"> <div id="vistageneral">
+        <li class="list-group-item"> <div id="vistageneral">
          <h3>Vista General</h3>
          Es la primer vista que aparece al seleccionar la opción calendarización,
          consta de los siguientes componentes:
@@ -182,6 +192,7 @@
             el boton "Crear aula" que se encuentra en la parte superior derecha de la pantalla de este apartado,
             aparecerán los campos a llenar para la creación del aula y  una vez, llenos presionar el boton "agregar"
           para que se realice la creación del aula.</li>
+          <li>Buscar: se puede buscar los detalles de un aula por medio del cuadro que aparece en la parte superior segun el nombre del aula.</li>
           <li>Editar: Si desea editar una o varias caracteristicas de un aula, debe seleccionar el aula a editar y posterioremente
           presionar el boton "editar" en la linea donde se encuentra el aula que desea editar, luego aparecerá una ventana con los campos
           a editar, una vez realizados los cambios deseados debe dar clic en el boton actualizar.</li>
@@ -199,6 +210,7 @@
             el boton "Crear materia" que se encuentra en la parte superior derecha de la pantalla de este apartado,
             aparecerán los campos a llenar para la creación de la materia y  una vez, llenos presionar el boton "agregar"
           para que se realice la creación de la materia.</li>
+          <li>Buscar: se puede buscar una materia por medio del cuadro que aparece en la parte superior segun el codigo de la materia</li>
           <li>Editar: Si desea editar uno o varias campos de una materia, debe seleccionar la materia a editar posterioremente
           presionar el boton "editar" en la linea donde se encuentra la materia que desea editar, luego aparecerá una ventana con los campos
           a editar, una vez realizados los cambios deseados debe dar clic en el boton actualizar.</li>
@@ -209,16 +221,127 @@
         </div></li>
           <li class="list-group-item"><div id="admusuarios">
           <h3>Usuarios</h3>
-          Descripción
+          En este apartado se muestran todos los usuarios de este sistema.
+          Las acciones que se pueden realizar son:
+          <ol start="1">
+            <li>Crear: se podrá crear un nuevo usuario desde este apartado, y para ello el administrador, debe presionar
+            el boton "Nuevo usuario" que se encuentra en la parte superior derecha de la pantalla de este apartado,
+            aparecerán los campos:
+            <ol>
+            <li>Nombre, es el nombre de la persona que será el nuevo usuario</li>
+            <li>Nombre de usuario, este es el nombre con el que se identificara el usuario en el sistema, cada usuario deberá ser unico</li>
+            <li>contraseña, con esta contraseña el usuario podrá ingresar al sistema.</li>
+            Para el caso de la creación de un nuevo administrador estos son los unicos campos a llenar, sin embargo,
+            según el rol que se seleccione se desplegaran otros campos los cuales son necesarios segun el rol del nuevo usuario.
+            en el caso de un representante de escuela o un docente, será indispensable el campo correo y la escuela a la que pertenece.
+            Para el usuario docente se agregará otro campo el cual es Materias, donde se adicionaran las materias que imparte, estas
+            deben ser agregadas por codigo, en forma de etiquetas.
+            </ol>
+          Una vez llenos todos los campos, presionar el boton "agregar" y el usuario será creado.</li>
+
+        <li>Buscar: se puede buscar un usuario por medio del cuadro que aparece en la parte superior segun el nombre del usuario</li>
+
+          <li>Editar: Si desea editar uno o varias campos de un usuario, debe seleccionar el usuario a editar posterioremente
+          presionar el boton "editar" en la linea donde se encuentra el usuario que desea editar, luego aparecerá una ventana con
+          los campos permitidos a para editar, una vez realizados los cambios deseados debe dar clic en el boton actualizar.</li>
+
+          <li>Eliminar: Si desea eliminar un usuario basta con dar clic en el boton "eliminar" que se encuentra en la fila
+          del usuario a eliminar, posteriormente aparecerá un ventana para confimar la eliminación, luego de confirmar
+          el usuario será eliminado.</li>
+          </ol>
         </div></li>
+        <li class="list-group-item"><div id="admdocentes">
+        <h3>Docentes</h3>
+        En este apartado se muestran todos los usuarios de este sistema.
+        Las acciones que se pueden realizar son:
+        <ol start="1">
+          <li>Crear: Para crear un nuevo docente desde este apartado el administrador, debe presionar
+          el boton "Nuevo docente" que se encuentra en la parte superior derecha de la pantalla de este apartado,
+          aparecerán los campos a llenar, tales como el nombre del docente, escuela a la que pertenece, materia, etc.
+          una vez llenos todos los campos, presionar el boton "agregar" y el docente será creado.</li>
+
+        <li>Buscar: se puede buscar un docente por medio del cuadro que aparece en la parte superior segun el nombre del docente</li>
+
+        <li>Editar: Si desea editar uno o varias campos de un docente, debe seleccionar el usuario a editar posterioremente
+        presionar el boton "editar" en la linea donde se encuentra el docente que desea editar, luego aparecerá una ventana con
+        los campos permitidos a para editar, una vez realizados los cambios deseados debe dar clic en el boton actualizar.</li>
+
+        <li>Eliminar: Si desea eliminar un docente basta con dar clic en el boton "eliminar" que se encuentra en la fila
+        del docente a eliminar, posteriormente aparecerá un ventana para confimar la eliminación, luego de confirmar
+        el docente será eliminado.</li>
+      </div></li>
+    </ol>
           <li class="list-group-item"><div id="admciclos">
           <h3>Ciclos</h3>
-          Descripción
+          En este apartado se muestran los detalles de los ciclos registrados en el sistema.
+          Las acciones que se pueden realizar son:
+          <ol start="1">
+          <li>Crear: se podrá crear un ciclo nuevo desde este apartado, y para ello el administrador, debe presionar
+            el boton "Nuevo ciclo" que se encuentra en la parte superior derecha de la pantalla de este apartado,
+            aparecerán los campos a llenar para la creación del nuevo ciclo y  una vez llenos presionar el boton "agregar"
+          para que se realice la creación del nuevo ciclo.</li>
+          <li>Editar: Si desea editar uno o varias campos del ciclo, debe seleccionar el ciclo a editar posterioremente
+          presionar el boton "editar" en la linea donde se encuentra el ciclo que desea editar, luego aparecerá una ventana con los campos
+          a editar, una vez realizados los cambios deseados debe dar clic en el boton actualizar.</li>
+          <li>Eliminar: Si desea eliminar un ciclo basta con dar clic en el boton "eliminar" que se encuentra en la fila
+          del ciclo a eliminar, posteriormente aparecerá un ventana para confimar la eliminación, luego de confirmar
+          el ciclo será eliminado.</li>
+          </ol>
         </div></li>
+        <li class="list-group-item"><div id="admescuelas">
+        <h3>Escuelas</h3>
+        El administrador, puede gestionar las escuelas en esta sección, cuenta con las opciones:
+        <ol start="1">
+          <li>Crear: se podrá crear una nueva escuela desde este apartado, y para ello el administrador, debe presionar
+            el boton "Nuevo escuela" que se encuentra en la parte superior derecha de la pantalla de este apartado,
+            aparecerá el campo de la nueva escuela el cual deberá llenarse luego presionar el boton "agregar"
+          para que se realice la creación de la nueva escuela.</li>
+          <li>Buscar: se puede buscar una escuela por medio del cuadro que aparece en la parte superior segun el nombre</li>
+          <li>Editar: Si desea editar el nombre de la escuela, debe seleccionar la escuela a editar posterioremente
+          presionar el boton "editar" en la linea donde se encuentra la escuela que desea editar, luego aparecerá una ventana para que modifique el campo
+          nombre, una vez realizado el cambios deseado debe dar clic en el boton actualizar.</li>
+          <li>Eliminar: Si desea eliminar una escuela basta con dar clic en el boton "eliminar" que se encuentra en la fila
+          de la escuela a eliminar, posteriormente aparecerá un ventana para confimar la eliminación, luego de confirmar
+          la escuela será eliminada.</li>
+        </ol>
+      </div></li>
           <li class="list-group-item"><div id="admhorariosclases">
           <h3>Horarios de Clase</h3>
-          Descripción
+          PENDIENTE
         </div></li>
+        <li class="list-group-item"><div id="admcarrera">
+        <h3>Carreras</h3>
+        El administrador, puede gestionar las carreras dentro del sistema en esta sección, cuenta con las opciones:
+        <ol start="1">
+          <li>Crear: se podrá crear una nueva carrera desde este apartado, y para ello el administrador, debe presionar
+            el boton "Nueva carrera" que se encuentra en la parte superior derecha de la pantalla de este apartado,
+            aparecerán los campo necesarios para la creación de la nueva carrera los cuales deberán llenarse y luego presionar el boton "agregar"
+          para que se realice la creación de la nueva carrera.</li>
+          <li>Buscar: se puede buscar una carrera por medio del cuadro que aparece en la parte superior segun el nombre o el codigo de la carrera</li>
+          <li>Editar: Si desea editar el nombre de la carrera u otros campos, debe seleccionar la carrera a editar posterioremente
+             presionar el boton "editar" en la linea donde se encuentra la carrera que desea modificar, luego aparecerá una ventana para que modifique el campo
+             que desea, una vez realizado los cambios deseados debe dar clic en el boton actualizar.</li>
+          <li>Eliminar: Si desea eliminar una carrera basta con dar clic en el boton "eliminar" que se encuentra en la fila
+              de la carrera a eliminar, posteriormente aparecerá un ventana para confimar la eliminación, luego de confirmar
+              la carrera será eliminada.</li>
+        </ol>
+      </div></li>
+      <li class="list-group-item"><div id="admrepresentanteescuela">
+      <h3>Representantes</h3>
+      En este apartado se muestran todos los representantes de escuela en el sistema.
+      Las acciones que se pueden realizar son:
+      <ol start="1">
+      <li>Buscar: se puede buscar un representante por medio del cuadro que aparece en la parte superior segun el nombre del representante de la escuela.</li>
+
+      <li>Editar: Si desea editar uno o varios campos de un representante, debe seleccionar el representante a editar posterioremente
+      presionar el boton "editar" en la linea donde se encuentra el representante que desea editar, luego aparecerá una ventana con
+      los campos permitidos para modificar, una vez realizados los cambios deseados debe dar clic en el boton actualizar.</li>
+
+      <li>Eliminar: Si desea eliminar un representante basta con dar clic en el boton "eliminar" que se encuentra en la fila
+      del representante a eliminar, posteriormente aparecerá un ventana para confimar la eliminación, luego de confirmarlo,
+      el representante será eliminado.</li>
+  </ol>
+    </div></li>
 
       </ul>
 </div>
@@ -228,32 +351,98 @@
    <!-- Default panel contents -->
    <div class="panel-heading">Consultar</div>
    <div class="panel-body">
-     alguna descripcion
+     En esta opción se podran consultar diferentes componentes del sistema, los cuales se describen a continuación:
    </div>
 
    <!-- List group -->
    <ul class="list-group">
     <div>
-            <li class="list-group-item"><div id="condescripcion">
-            <h3>Aulas</h3>
-            Descripción
-          </div></li>
+            <li class="list-group-item"><div id="consolicitudesreservas">
+              <h3>solicitudes de reservas</h3>
+              El representante podrá consultar y gestionar las solicitudes que han sido realizadas por los docentes de la escuela a la que pertenece,
+              estaran dividas de acuerdo al estado:
+              <li>En espera: en el caso del representante, son aquellas solicitudes realizadas por los docentes que han sido enviadas,
+              para que el representante de su aprobación y posteriormente seran enviadas al administrador, quien también deberá aprobar la reserva,
+              al seleccionar una de las actividades en este estado aparecerá una ventana con los datos de
+                dicha reserva, y el representante podrá aprobar o rechazar la solicitud o cerrar la ventana y mantener
+                el estado de la reserva, en caso que la reserva sea rechazada, deberá realizar un comentario de porque
+                rechaza la solicitud y posteriormente confirmar la acción. Por otro lado si la aprueba, la solicitud se enviará al administrador
+                quien también debe aprobarla para que la reserva se pueda realizar con exito..</li>
+              <li>Aprobados por escuela: estaran todas las solicitudes que han sido aprobadas, al seleccionar una de las actividades
+                en esta lista, aparecerá una ventana con el detalle de la reserva, y también puede Cancelar la reserva,
+                dando clic en el boton cancelar, deberá agregar un comentario describiendo la razon de la cancelación de la reserva.
+                O bien, dar clic en cerrar, para cerrar la ventana y no hacer ningun cambio en la solicitud</li>
+              <li>Rechazados por escuela: Mostrará aquellas solicitudes que han sido rechazadas, se puede eliminar el registro si el usuario asi lo desea o verificar la razón
+              por la que se rechazó, al seleccionar la actividad deseada en la lista</li>
+              <li>Cancelados: Mostrará las solicitudes que han sido canceladas, al seleccionar la actividad en la lista pueden observarse los detalles de la reserva y la razón
+                de la cancelación también estas pueden ser eliminadas del registro al dar clic en el boton eliminar registro dentro de la ventana donde se muestran los detalles.</li>
+            </ol>
+            </div></li>
+
+            <li class="list-group-item"><div id="consolicitudesreservasd">
+              <h3>solicitudes de reservas</h3>
+              El docente podrá consultar y gestionar las solicitudes que ha realizado, estaran dividas de acuerdo al estado:
+              <li>En espera: se muestran aquellas solicitudes que han sido realizadas por el docente y que su estado aun no ha sido cambiado, es decir, el representante
+                no ha hecho ninguna gestión al respecto o en caso de haberla aceptado el administrador aun no ha realizado la gestión al respecto.
+               al seleccionar una de las actividades en este estado aparecerá una ventana con los datos de
+                dicha reserva.</li>
+              <li>Aprobados: estaran todas las solicitudes que han sido aprobadas por el administrador, al seleccionar una de las actividades
+                en esta lista, aparecerá una ventana con el detalle de la reserva, puede imprimir el comprobante (o guardarlo), también puede Cancelar la reserva,
+                dando clic en el boton cancelar, deberá agregar un comentario describiendo la razon de la cancelación de la reserva.
+                O bien, dar clic en cerrar, para cerrar la ventana y no hacer ningun cambio en la solicitud</li>
+              <li>Rechazados: Mostrará aquellas solicitudes que han sido rechazadas, se puede eliminar el registro si el usuario asi lo desea o verificar la razón
+              por la que se rechazó, al seleccionar la actividad deseada en la lista</li>
+              <li>Cancelados: Mostrará las solicitudes que han sido canceladas, al seleccionar la actividad en la lista pueden observarse los detalles de la reserva y la razón
+                de la cancelación también estas pueden ser eliminadas del registro al dar clic en el boton eliminar registro dentro de la ventana donde se muestran los detalles.</li>
+            </ol>
+            </div></li>
+
+            <li class="list-group-item"><div id="conaulas">
+              <h3>Aulas</h3>
+              En esta sección se podrán observar todas las aulas con las que cuenta la FIA-UES, se encuentran listadas por secciones, y puede desplazarse por medio de las flechas
+              cursoras o por medio de los iconos con numeros que indican el numero de pagina en la que se encuentran, en la parte inferior de la ventana. O si desea conocer los detalles
+              de un aula en especifíco puede ingresarla en el cuadro de busqueda.
+            </div></li>
             <li class="list-group-item"><div id="conmaterias">
             <h3>Materias</h3>
-            Descripción
+            En esta sección se podrán observar todas las materias que son impartidas en la FIA-UES, se encuentran listadas por secciones, y puede desplazarse por medio de las flechas
+            cursoras o por medio de los iconos con numeros que indican el numero de pagina en la que se encuentran, en la parte inferior de la ventana. O si desea conocer los detalles
+            de una materia en especifíco puede ingresarla en el cuadro de busqueda ya sea por medio del codigo de la materia (cuadro de búsqueda izquierdo) o por el nombre de la materia
+            (Cuadro de busqueda izquierdo).
           </div></li>
-            <li class="list-group-item"><div id="conusuarios">
-            <h3>Usuarios</h3>
-            Descripción
+          <li class="list-group-item"><div id="condocentes">
+            <h3>Docentes</h3>
+            En esta sección se podrán observar todas los docentes que imparten asignaturas en la FIA-UES, se encuentran listados por secciones, y puede desplazarse por medio de las flechas
+            cursoras o por medio de los iconos con numeros que indican el numero de pagina en la que se encuentran, en la parte inferior de la ventana. O si desea conocer los detalles
+            de un docente en especifíco puede ingresar el nombre del docente en el cuadro de busqueda.
           </div></li>
-            <li class="list-group-item"><div id="conciclos">
+          <li class="list-group-item"><div id="conciclos">
             <h3>Ciclos</h3>
-            Descripción
+            En esta sección se podrán observar los ciclos que han sido registrados en el sistema y se podrá observar toda la información del ciclo, tal como la fecha de inicio del ciclo,
+            inicio de clases, fin de ciclo, etc.
           </div></li>
-            <li class="list-group-item"><div id="conhorariosclases">
+            <li class="list-group-item"><div id="conescuelas">
+            <h3>Escuelas</h3>
+            En esta sección se podrán observar todas las escuelas con las que cuenta la FIA-UES, si desea conocer los detalles
+            de una escuela en especifíco puede ingresarla en el cuadro de busqueda.
+          </div></li>
+          <li class="list-group-item"><div id="conhorariosclases">
             <h3>Horarios de Clase</h3>
-            Descripción
+            El representante
           </div></li>
+          <li class="list-group-item"><div id="conhorariosclasesd">
+            <h3>Horarios de Clase</h3>
+            El docente podrá consultar los horarios de cada escuela, para ello debe dar clic en la escuela y luego en el cuadro de busqueda editar el codigo de la materia que
+            desea ver los horarios, o desplazarse por medio de la barra espaciadora.
+          </div></li>
+          <li class="list-group-item"><div id="concarreras">
+          <h3>Carreras</h3>
+          En esta sección se podrán consultar todas las carreras que son ofrecidas por la FIA-UES.
+        </div></li>
+        <li class="list-group-item"><div id="conrepresentantes">
+        <h3>Representantes</h3>
+        Se pueden consultar todos los representantes que se encuentran en el sistemas en las escuelas, y se pueden buscar por nombre dentro del cuadro de busqueda.
+      </div></li>
 
         </ul>
   </div>

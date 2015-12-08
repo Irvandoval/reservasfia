@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Actividad = require('./actividad.model');
 var Representante = require('../representante/representante.model');
 var Reserva = require('../reserva/reserva.model');
+var Docente = require('../docente/docente.model');
 var Turno = require('../turno/turno.model')
 
 
@@ -14,6 +15,7 @@ exports.index = function(req, res) {
     .populate('materia')
     .populate('creadoPor')
     .populate('encargado')
+    .populate('escuela')
     .exec(function(err, docs) {
       if (err) {
         return handleError(res, err);
@@ -39,6 +41,7 @@ exports.indexAprobados = function(req, res) {
     })
     .populate('materia', 'nombre')
     .populate('encargado')
+     .populate('escuela')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -57,6 +60,7 @@ exports.indexMisAprobados = function(req, res) {
     })
     .populate('materia', 'nombre')
     .populate('encargado')
+     .populate('escuela')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -73,6 +77,7 @@ exports.indexMisCancelados = function(req, res) {
     })
     .populate('materia', 'nombre')
     .populate('encargado')
+    .populate('escuela')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -90,6 +95,7 @@ exports.indexDesaprobados = function(req, res) {
     // .populate('aulas')
     .populate('materia', 'nombre')
     .populate('encargado')
+    .populate('escuela')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -107,6 +113,7 @@ exports.indexCancelados = function(req, res) {
     // .populate('aulas')
     .populate('materia', 'nombre')
     .populate('encargado')
+    .populate('escuela')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -121,6 +128,7 @@ exports.indexToEscuelaAdmin = function(req, res) {
     // .populate('aulas')
     .populate('materia', 'nombre')
     .populate('encargado')
+    .populate('escuela')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -147,6 +155,7 @@ exports.indexMisDesaprobados = function(req, res) {
     })
     .populate('materia', 'nombre')
     .populate('encargado')
+     .populate('escuela')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -163,6 +172,7 @@ exports.indexEspera = function(req, res) {
     })
     .populate('materia', 'nombre')
     .populate('encargado')
+     .populate('escuela')
     .exec(function(err, actividades) {
       if (err) {
         return handleError(res, err);
@@ -203,6 +213,7 @@ exports.indexEsperaEscuelaB = function(req, res) {
         })
         .populate('materia', 'nombre')
         .populate('encargado')
+        .populate('escuela')
         .exec(function(err, actividades) {
           if (err) {
             return handleError(res, err);
@@ -225,6 +236,7 @@ exports.indexDesaprobadosByEscuela = function(req, res) {
         })
         .populate('materia', 'nombre')
         .populate('encargado')
+         .populate('escuela')
         .exec(function(err, actividades) {
           if (err) {
             return handleError(res, err);
@@ -248,6 +260,7 @@ exports.indexCanceladosByEscuela = function(req, res) {
         })
         .populate('materia', 'nombre')
         .populate('encargado')
+         .populate('escuela')
         .exec(function(err, actividades) {
           if (err) {
             return handleError(res, err);
@@ -281,6 +294,7 @@ exports.indexByEscuela = function(req, res) {
         })
         .populate('materia', 'nombre')
         .populate('encargado')
+        .populate('escuela')
         .exec(function(err, actividades) {
           if (err) {
             return handleError(res, err);
@@ -293,15 +307,18 @@ exports.indexByEscuela = function(req, res) {
 
 // obtiene las actividades que estan en espera (en escuela o en administracion) y pertenecen a x usuario
 exports.indexMisEspera = function(req, res) {
-  console.log(req.user);
+ Docente.findOne({usuario: req.user.id}, function(err, docente){
   Actividad
     .find({
+     $and: [ {
       $or: [{
         estado: 'espera_escuela'
       }, {
         estado: 'espera_admin'
-      }],
-      encargado: req.user._id
+      }]
+     }, {
+      $or:[ { creadoPor: req.user._id }, { encargado: docente._id}]
+     }]
     })
     .populate('materia', 'nombre')
     .populate('encargado')
@@ -311,6 +328,9 @@ exports.indexMisEspera = function(req, res) {
       }
       return res.status(200).json(actividades);
     });
+
+ })
+
 };
 
 //Renderiza HTML de un comprobante  de una actividad

@@ -17,7 +17,7 @@ angular.module('reservasApp')
             idActividad: 'espera'
           }).$promise
           .then(function(actividadesProm) {
-            actividades = actividadesProm;
+            actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -40,7 +40,8 @@ angular.module('reservasApp')
         Actividad.query({
             idActividad: 'aprobados'
           }).$promise
-          .then(function(actividades) {
+          .then(function(actividadesProm) {
+            var actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -63,7 +64,8 @@ angular.module('reservasApp')
         Actividad.query({
             idActividad: 'cancelados'
           }).$promise
-          .then(function(actividades) {
+          .then(function(actividadesProm) {
+           var  actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -110,8 +112,8 @@ angular.module('reservasApp')
         Actividad.query({
             idActividad: 'desaprobados'
           }).$promise
-          .then(function(actividades) {
-
+          .then(function(actividadesProm) {
+            var  actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -146,7 +148,12 @@ angular.module('reservasApp')
       });
     };
 
-
+    function rellenarEscuela(actividades){
+     for(var i = 0;  i < actividades.length;  i++){
+      actividades[i].nescuela =  actividades[i].escuela.nombre;
+     }
+     return actividades;
+    }
   })
 
 .controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
@@ -196,8 +203,39 @@ angular.module('reservasApp')
       });
 
   };
+
   $scope.cancelacion = function(){
    $scope.cancelar = true;
+  }
+
+  $scope.aprobarSolicitudClase =  function(){
+   $modalInstance.close(actividad);
+   var reservas = {};
+   reservas.data = [];
+   var turnos = [];
+   var actividadEditada = {};
+   var cont = 0;
+   for (var i =0 ; i< $scope.turnos.length; i++) { // creamos los objetos reservas
+     var turno = $scope.turnos[i];
+     for (var j =0;j<turno.aulas.length;j++) {
+       var aula = turno.aulas[j];
+       var nuevaReserva = {
+         inicio: turno.inicio,
+         fin: turno.fin,
+         aula: aula._id,
+         actividad: actividad._id
+       }
+       reservas.data[cont] = nuevaReserva;
+       cont++;
+     }
+     turnos[i] = turno._id;
+
+   }
+   $resource('/api/reservas/choque/detectarChoqueForHorario')
+   .save(reservas, function(respuesta){
+   console.log(respuesta);
+
+  });
   }
   $scope.aprobarSolicitud = function() {
     $modalInstance.close(actividad);
@@ -245,7 +283,7 @@ angular.module('reservasApp')
           });
       }, function(err) {
         console.log("ERROR");
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar array");
+        toaster.pop('error', "Error", "Se ha detectado choque");
       });
   };
   $resource('/api/turnos/actividad/:idActividad', {
@@ -315,4 +353,6 @@ angular.module('reservasApp')
     actividadEdit.fechaCreacion = actividad.fechaCreacion;
     return actividadEdit;
   }
+
+
 });

@@ -2,18 +2,16 @@
 
 var _ = require('lodash');
 var Reserva = require('./reserva.model');
-
+var Actividad = require('../actividad/actividad.model');
 //detecta choque de horarios recibe un array de reservas en req.body.data
 exports.choque = function(req, res) {
  var reservas = req.body.data; //
  var choque = false;
- console.log(reservas);
  var k = 0;
    for(var i = 0; i < reservas.length; i++){
      (function(iteracion){
         var nuevaReserva = new Reserva(reservas[iteracion]);
         nuevaReserva.detectarChoque(function(err,reserva){
-         console.log(choque);
           if(reserva){
             choque = true;
           } // si existe reserva
@@ -32,6 +30,36 @@ exports.choque = function(req, res) {
      })(i,choque);
    }
  }
+
+ //detecta choque de horarios recibe un array de reservas en req.body.data
+ exports.choqueForHorario = function(req, res) {
+  var reservas = req.body.data; //
+  var choque = false;
+  var actividadChoque = {};
+  var k = 0;
+  (function detectarChoque(i, rvs, choq,achoq){
+   if(choq === false &&  i < rvs.length){
+      var nuevaReserva =  new Reserva(rvs[i]);
+      nuevaReserva.detectarChoque(function(err, reserva){
+         if(reserva){
+          console.log("entra choq");
+          choq =  true;
+          Actividad.findById(reserva.actividad, function(err, actividad){
+           if(!err){
+            i++;
+             detectarChoque(i, rvs, choq, actividad);
+           }
+          })
+         }else{
+           i++;
+           detectarChoque(i, rvs, choq, achoq);
+       }
+      });
+   }else{
+    return res.status(200).json({choque: choq, actividad: achoq});
+   }
+  }(k, reservas, choque, actividadChoque));
+ };
   // Get list of reservas de un rango especifico de dias /api/reservas?inicio=aaaa-mm-dd&fin=aaaa-mm-dd
 exports.index = function(req, res) {
   Reserva
@@ -86,6 +114,37 @@ exports.create = function(req, res) {
       return handleError(res, "Error: Se ha producido un choque");
     }
   });
+};
+
+exports.createByHorario =  function(req, res){
+ Horario.findById(req.params.id, function(err, horario){
+  Clase.find({horario: horario._id}, function(err, clases){
+   var i = 0;
+    (function ingresarReservas(cls){
+     if(i < cls.length){
+      Actividad.findById(cls[i].actividad._id, function(err, actividad){
+       Turno.find({actividad: actividad._id}, function(err, turnos){
+          for(var u = 0; u < turnos.length; u++){
+            (function(v, trnos){
+             var auxReserva = {
+              aula: trnos[v].aulas[0],
+              inicio: trnos[v].inicio,
+              fin: trnos[v].fin,
+              actividad: trnos[v].actividad
+             };
+             Reserva.create(auxReserva);
+            }(u, turnos));
+          }
+          i++;
+          ingresarReservas(cls);
+       })
+      })
+     }else{
+      return res.status(201).json({exito: true});
+     }
+    }(clases));
+  })
+ })
 };
 
 // Updates an existing reserva in the DB.

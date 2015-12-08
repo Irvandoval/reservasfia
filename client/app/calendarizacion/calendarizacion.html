@@ -68,8 +68,8 @@
               <label>Fecha</label>
               <p class="input-group" ng-class="{ 'has-success': form.fecha.$valid && submitted,
                                                   'has-error': form.fecha.$invalid && submitted }">
-                <input class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="cicloActual.finCiclo" min-date="minDate" name="fecha" ng-model="actividad.fecha" readonly="true" required type="text"/>
-
+                <input class="form-control" clear-text="Limpiar" close-text="Cerrar" datepicker-popup="fullDate" is-open="datePicker.opened" max-date="cicloActual.finCiclo" min-date="minDate" name="fecha"
+                ng-model="actividad.fecha" readonly="true" show-button-bar="false" required type="text"/>
                 <span class="input-group-btn">
                   <button class="btn btn-success" ng-click="open($event)" type="button">
                     <i class="glyphicon glyphicon-calendar"></i>

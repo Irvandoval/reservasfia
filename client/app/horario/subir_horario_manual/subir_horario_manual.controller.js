@@ -22,6 +22,19 @@ angular.module('reservasApp')
       $rootScope.franjas = franjas
     });
 
+
+    $scope.enviarHorarioAdmin =  function(){
+     console.log("entra");
+      $resource('/api/horarios/enviar-aprobacion')
+      .save({horario: horarioActual._id, ciclo: $rootScope.cicloActual._id},
+       function(){
+       toaster.pop('success', "Se ha enviado el horario al admin");
+      }, function(err){
+       console.log(err);
+       toaster.pop('error', "Error al agregar grupo");
+      })
+    };
+
     $scope.ciclo = function() {
      if($scope.opcion.ciclo === ''){
           $scope.opcion.hayHorario = false;
@@ -222,7 +235,10 @@ angular.module('reservasApp')
      return false;
     return true;
    };
+
   })
+
+
   .controller('EditarClaseCtrl', function($scope, $rootScope, $resource, $modalInstance, toaster, clase, Clase, Franja) {
     $scope.arrayAulas = [];
 
@@ -263,8 +279,9 @@ angular.module('reservasApp')
         toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
       });
     };
-    $scope.evaluarAula = function(){
-     if($scope.arrayAulas.length > 0)
+    $scope.evaluarAula = function(array){
+     console.log(array);
+     if(array.length > 0)
       return false;
      return true;
     };

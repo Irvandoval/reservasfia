@@ -103,20 +103,12 @@ exports.show = function(req, res) {
 
 // Creates a new reserva in the DB.
 exports.create = function(req, res) {
-  var newReserva = new Reserva(req.body);
-  newReserva.detectarChoque(function(err, reser) {
-    if (!reser) { //si no hay reserva no hay choque
-
       Reserva.create(req.body, function(err, reserva) {
         if (err) {
           return handleError(res, err);
         }
         return res.status(201).json(reserva);
       });
-    } else {
-      return handleError(res, "Error: Se ha producido un choque");
-    }
-  });
 };
 
 exports.createByHorario =  function(req, res){

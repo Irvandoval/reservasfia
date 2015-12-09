@@ -82,7 +82,7 @@ angular.module('reservasApp')
 
     $scope.escuela = {
       _id: escuela._id,
-      name: escuela.name
+      nombre: escuela.nombre
     };
     console.log($scope.escuela);
     $scope.cancel = function() {

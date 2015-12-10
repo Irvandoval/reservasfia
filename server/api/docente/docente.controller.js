@@ -8,11 +8,34 @@ exports.index = function(req, res) {
   Docente.find()
   .populate('materias')
   .populate('escuela')
+  .populate('usuario')
   .exec(function (err, docentes) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(docentes);
   });
 };
+// Get list of docentes
+exports.indexByMaterias = function(req, res) {
+  Docente.find({materias:req.params.id})
+  .populate('materias')
+  .populate('escuela')
+  .exec(function (err, docentes) {
+    if(err) { return handleError(res, err); }
+    return res.status(200).json(docentes);
+  });
+};
+
+
+// Get list of docentes search by regular Expression
+exports.regexNombreByMateria = function(req, res) {
+  var regex = new RegExp(req.params.nombre, "i")
+  ,   query = { nombre: regex, materias: [req.query.materia] };
+  Docente.find(query,function (err, aulas) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, aulas);
+  });
+};
+
 //get a single docente by user id
 exports.byuser = function(req, res) {
   Docente

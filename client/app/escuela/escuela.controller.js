@@ -57,21 +57,31 @@ angular.module('reservasApp')
 
  })
 
-  .controller('NuevaEscuelaCtrl', function($scope, $rootScope, $modalInstance, toaster, Escuela, $window) {
+  .controller('NuevaEscuelaCtrl', function($scope, $rootScope, $modalInstance, toaster, Escuela, $window, $resource ) {
+    
     $scope.escuela = {};
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
 
-    $scope.enviar = function() {
-     console.log($scope.escuela);
+    $scope.enviar = function(form) {
+        $scope.submitted= true;
+        if (form.$valid) {
       Escuela.save($scope.escuela, function() {
         $rootScope.tablaEscuelas.reload();
         $modalInstance.dismiss('cancel');
         toaster.pop('success', "Escuela ingresada", "La escuela se ha ingresado en el sistema");
-      }, function() {
-        console.log("error");
-      })
+      }, function(err) {
+        $scope.errors={};
+          //Update validity of form fields that match the mongoose errors
+          angular.forEach(err.data.errors, function(error, field){
+              form[field].setValidity('mongoose',false);
+              $scope.errors[field]=error.message;
+          });
+          toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+      });
+              
+      }
     }
 
   })

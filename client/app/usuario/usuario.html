@@ -8,7 +8,7 @@
           <h4>Usuarios del sistema</h4>
         </div>
         <div class="col-md-2">
-          <button class="btn btn-success" ng-click="nuevoUsuario()" type="button">
+          <button class="btn btn-success btn-sm" ng-click="nuevoUsuario()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nuevo Usuario
           </button>
@@ -18,17 +18,17 @@
     <div class="table-responsive">
       <table class="table table-striped" ng-table="tablaUsuarios" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="usuario in $data">
-          <td class="text-center" data-title="'Usuario'" filter="{ 'nombre': 'text' }">{{usuario.username}}</td>
+          <td class="text-center" data-title="'Usuario'" filter="{ 'username': 'text' }">{{usuario.username}}</td>
           <td class="text-center" data-title="'Nombre'">{{usuario.name}}</td>
           <td class="text-center" data-title="'Rol'">
             {{usuario.role}}
           </td>
           <td class="text-center" data-title="'Acciones'">
-            <button class="btn btn-warning" ng-click="editarUsuario(usuario)" type="button">
+            <button class="btn btn-warning btn-sm" ng-click="editarUsuario(usuario)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger" type="button" ng-click="eliminarUsuario(usuario._id)" confirm="¿Estas seguro de eliminar el usuario {{usuario.name}}?">
+            <button class="btn btn-danger btn-sm" type="button" ng-click="eliminarUsuario(usuario._id)" confirm="¿Estas seguro de eliminar el usuario {{usuario.name}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -120,14 +120,12 @@
                 </div>
                  <div class="form-group">
                     <label>Correo:</label>
-<<<<<<< HEAD
-                        <input name="correo" type="text" value=""  class="form-control"                            ng-model="representante.correo">
+
+                        <input name="correo" type="text" value=""  class="form-control"      ng-model="usuario.correo">
                         <p class="help-block" ng-show="form.correo.$error.required && submitted">
           El correo es requerido
     </p>
-=======
-                        <input name="correo" type="text" value=""  class="form-control"  ng-model="usuario.correo">
->>>>>>> 1b1bbec7f0a80d7794da2baa614e68a323574387
+
                  </div>
 
                 <div ng-if="user.role === 'docente'">

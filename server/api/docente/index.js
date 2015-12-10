@@ -6,7 +6,9 @@ var cascade = require('../../components/cascade/docente.cascade');
 var router = express.Router();
 
 router.get('/', controller.index);
+router.get('/materia/:id', controller.indexByMaterias);
 router.get('/user/:id',controller.byuser);
+router.get('/nombre/:nombre', controller.regexNombreByMateria);
 router.get('/escuela/:id',controller.byEscuela);
 router.get('/:id', controller.show);
 router.post('/', controller.create);

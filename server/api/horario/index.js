@@ -22,9 +22,14 @@ var upload = multer({storage: storage});
 router.get('/', controller.index);
 router.post('/xlsjson',upload.single('excel'),controller.xlstojson);
 router.get('/:id', controller.show);
-router.post('/', auth.hasRole('admin'),auth.hasRole('representante'),controller.create);
+router.get('/ciclo/escuela', controller.showByCicloAndEscuela);
+router.get('/:id', controller.showByCicloAndEscuela);
+router.post('/', auth.hasRole('admin'),controller.create);
+router.post('/enviar-aprobacion', auth.hasRole('representante'), controller.mandarHorario);
+router.post('/crear-horario/plantilla',controller.createPlantilla);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
+
 
 module.exports = router;

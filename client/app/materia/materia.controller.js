@@ -71,14 +71,20 @@ angular.module('reservasApp')
     $scope.submitted = true;
     console.log(form.$valid);
      if(form.$valid){
-      $scope.materia.carreras = obtenerCarreras();
-       Materia.save($scope.materia, function(materia) {
+       Materia.save({
+        codigo: $scope.materia.codigo,
+        nombre: $scope.materia.nombre,
+        escuela: $scope.materia.escuela,
+        carreras: obtenerCarreras(),
+        tipo: $scope.materia.tipo,
+        imparteEnCiclo: $scope.materia.imparteEnCiclo
+       }, function(materia) {
         $rootScope.tablaMaterias.reload();
         $modalInstance.dismiss('cancel');
          toaster.pop('success', "Materia ingresada", "La materia se ha ingresado al sistema");
          $modalInstance.dismiss('cancel');
        }, function(err) {
-        $scope.materia.carreras = undefined;
+        console.log(err);
         $scope.errors = {};
         // Update validity of form fields that match the mongoose errors
         angular.forEach(err.data.errors, function(error, field) {
@@ -88,9 +94,8 @@ angular.module('reservasApp')
          toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
        });
      }
-
-
   }
+  
   function obtenerCarreras() {
     var carrerasAux = [];
     for (var i = 0; i < $scope.materia.carreras.length; i++) {

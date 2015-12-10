@@ -35,11 +35,11 @@ TurnoSchema
 .path('inicio')
 .validate(function(inicio){
   var self = this;
-  var date = new Date();
+  var date = new Date(inicio);
   date.setHours(20);
   date.setMinutes(14);
-  date.setDate(inicio.getDate());
-  date.setMonth(inicio.getMonth());
+ // date.setDate(inicio.getDate());
+ // date.setMonth(inicio.getMonth());
   return date >= inicio;
 }, 'Inicio incorrecto');
 
@@ -47,11 +47,11 @@ TurnoSchema
 .path('fin')
 .validate(function(fin){
   var self = this;
-  var date = new Date();
+  var date = new Date(fin);
   date.setHours(20);
   date.setMinutes(15);
-  date.setDate(fin.getDate());
-  date.setMonth(fin.getMonth());
+ // date.setDate(fin.getDate());
+  //date.setMonth(fin.getMonth());
   return fin <= date;
 }, 'Fin incorrecto');
 

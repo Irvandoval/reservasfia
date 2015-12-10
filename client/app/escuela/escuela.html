@@ -22,11 +22,11 @@
         <tr ng-repeat="escuela in $data">
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{escuela.nombre}}</td>
           <td  ng-if="esAdmin()" class="text-center" data-title="'Acciones'">
-            <button class="btn btn-warning" type="button" ng-click="editarEscuela(escuela)">
+            <button class="btn btn-warning  btn-sm" type="button" ng-click="editarEscuela(escuela)">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger" type="button" ng-click="eliminarEscuela(escuela._id)" confirm="¿Estas seguro de eliminar la escuela {{escuela.nombre}}?">
+            <button class="btn btn-danger  btn-sm" type="button" ng-click="eliminarEscuela(escuela._id)" confirm="¿Estas seguro de eliminar la escuela {{escuela.nombre}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -61,14 +61,31 @@
    <h3 class="modal-title">Nueva Escuela</h3>
  </div>
  <div class="container-fluid">
+<<<<<<< HEAD
   <div class="form-group">
     <label>Nombre:</label>
     <input name="nombre" type="text"  class="form-control" ng-model="escuela.nombre">
   </div>
+=======
+     <form class="form" name="form" novalidate>
+      <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted,
+                                        'has-error': form.nombre.$invalid && submitted }">
+        <label>Nombre:</label>
+        <input name="nombre" type="text" value=""  class="form-control" ng-model="escuela.nombre" required>
+          <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          Campo requerido
+        </p>
+        <p class="help-block" ng-show="form.nombre.$error.mongoose">
+          {{ errors.nombre }}
+        </p>
+        
+      </div>
+    </form>
+>>>>>>> e9c6de83521bfe9f839df2006f4932072751e575
  </div>
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="enviar()" type="button">
+  <button class="btn btn-success" ng-click="enviar(form)" type="button">
    Agregar
   </button>
   <button class="btn btn-warning" ng-click="cancel()" type="button">

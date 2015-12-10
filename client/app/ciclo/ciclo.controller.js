@@ -1,9 +1,8 @@
 'use strict';
-
 angular.module('reservasApp')
-  .controller('CicloCtrl', function ($scope, $resource, ngTableParams, $filter, Ciclo, $modal, Auth) {
+  .controller('CicloCtrl', function ($scope, $rootScope, $resource, ngTableParams, toaster, $filter, Ciclo, $modal, Auth) {
    $scope.esAdmin = Auth.isAdmin;
-   $scope.tableParams = new ngTableParams({
+   $rootScope.tablaCiclos = new ngTableParams({
          page: 1,            // show first page
          count: 5          // count per page
      }, {
@@ -21,17 +20,15 @@ angular.module('reservasApp')
          }
      });
 
-
    $scope.nuevoCiclo = function(){
-
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'nuevo-ciclo.html',
       controller: 'NuevoCicloCtrl',
       size: 'lg'
     });
+   };
 
-   }
    $scope.editarCiclo = function(ciclo){
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
@@ -40,22 +37,55 @@ angular.module('reservasApp')
       size: 'lg',
       resolve: {
      ciclo: function() {
-
           return ciclo;
         }
       }
     });
    }
+   $scope.eliminarCiclo =  function(id){
+    Ciclo.delete({cicloId: id}, function(ciclo){
+     $rootScope.tablaCiclos.reload();
+       toaster.pop('success', "Ciclo Eliminado", "El ciclo se ha eliminado en el sistema'");
+    }, function(err){
 
-   })
-
-  .controller('NuevoCicloCtrl', function(){
-
+    });
+   };
   })
 
-  .controller('EditarCicloCtrl',function(ciclo, $scope, $modalInstance){
-    $scope.ciclo = ciclo;
-    console.log($scope.ciclo);
+  .controller('NuevoCicloCtrl', function($scope, $rootScope, toaster, $modalInstance, Ciclo, $resource){
+
+    $scope.enviar =  function(form){
+        $scope.submitted= true;
+        console.log(form.$valid);
+        if(form.$valid){
+        Ciclo.save($scope.ciclo, function(ciclo){
+         $rootScope.tablaCiclos.reload();
+         $modalInstance.dismiss('cancel');
+         toaster.pop('success', "Ciclo Ingresado", "El ciclo se ha ingresado en el sistema'");
+        }, function(err){
+            console.log(err);
+            $scope.errors = {};
+        //update validity of form fields that match the mongoose errors
+        angular.forEach(err.data.errors, function(error, field){
+            form[field].$setValidity('mongoose', false);
+            $scope.errors[field]= error.message;
+        });
+            toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+        });
+        }
+    }
+    $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
+})
+
+
+  .controller('EditarCicloCtrl',function(ciclo, $scope, $modalInstance, Ciclo){
+    Ciclo.get({cicloId: ciclo._id}, function(ciclon)
+    {
+      $scope.ciclox = ciclon
+      $scope.ciclox.inicioCiclo =  new Date($scope.ciclox.inicioCiclo);
+    })
 
     $scope.cancel = function() {
     $modalInstance.dismiss('cancel');

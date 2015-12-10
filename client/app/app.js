@@ -48,10 +48,14 @@ angular.module('reservasApp', [
   };
 })
 
-.run(function($rootScope, $location, Auth, $state, $stateParams, $timeout, $confirmModalDefaults) {
+.run(function($rootScope, $location, $resource, Auth, $state, $stateParams, $timeout, $confirmModalDefaults) {
   $confirmModalDefaults.defaultLabels.title = 'Confirmar Acción';
   $confirmModalDefaults.defaultLabels.ok = 'Si';
   $confirmModalDefaults.defaultLabels.cancel = 'No';
+  $resource('/api/ciclos/por_fecha/actual')
+  .get(function(ciclo){
+   $rootScope.cicloActual = ciclo;
+  })
   // Redirect to login if route requires auth and you're not logged in
   $rootScope.$on('$stateChangeStart', function(event, next, toState, toStateParams) {
     $rootScope.toState = toState;

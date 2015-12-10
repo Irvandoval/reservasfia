@@ -58,20 +58,30 @@ angular.module('reservasApp')
   })
 
 
-.controller('NuevaAulaCtrl', function($scope, $modalInstance, toaster, Aula, $window) {
+.controller('NuevaAulaCtrl', function($scope, $rootScope, $modalInstance, $resource, toaster, Aula, $window) {
   $scope.aula = {};
+    
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
 
-  $scope.enviar = function() {
+  $scope.enviar = function(form) {
+      $scope.submitted=true;
+      if (form.$valid){
     Aula.save($scope.aula, function() {
-      $scope.tablaAulas.reload();
+      $rootScope.tablaAulas.reload();
       $modalInstance.dismiss('cancel');
       toaster.pop('success', "Aula Ingresada", "El aula se ha ingresado en el sistema'");
-    }, function() {
-      console.log("error");
-    })
+    }, function(err) {
+      $scope.errors={}
+      //upadate validity of form fields that match the mongoose errors
+      angular.forEach(err.data.errors, function(error, field){
+          form[field].setValidity('mongoose', false);
+          $scope.errors[field]= error.message;
+    });
+    toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+  });
+}
   }
 
 })

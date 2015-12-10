@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig) {
+  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig, $rootScope) {
     var DIAS_HABILES = 3; // Dias anteriores al dia que se quiere reservar
     var H_MIN = 6;
     var M_MIN = 20;
     var H_MAX = 8;
     var M_MAX = 15;
     var dm = new Date();
+    $scope.cicloActual = $rootScope.cicloActual;
     dm.setHours(H_MIN);
     dm.setMinutes(M_MIN);
     $scope.hMin = dm;
@@ -225,7 +226,6 @@ angular.module('reservasApp')
           $scope.actividad.escuela = docente.escuela;
         });*/
       }
-
       if (Auth.isAdmin()) {
         $resource('/api/escuelas').query().$promise
           .then(function(escuelas) {
@@ -241,23 +241,23 @@ angular.module('reservasApp')
         var representante = Representante.get({
           representanteId: usuario._id
         }, function() {
-          $scope.actividad.escuela = representante.escuela;
+          $scope.actividad.escuela = representante.escuela._id;
           // $scope.rellenarMaterias(representante.escuela);
           var docentesPorEscuela = $resource('/api/docentes/escuela/:escuelaId', {
             escuelaId: '@id'
           });
 
           var docentes = docentesPorEscuela.query({
-            escuelaId: representante.escuela
+            escuelaId: representante.escuela._id
           }, function() {
             //console.log(docente);
             $scope.docentes = docentes;
           });
         });
       }
-
     }
-    $scope.datePicker = {};
+    $scope.datePicker = {
+    };
     var hoy = new Date();
     $scope.minDate = new Date(hoy);
     $scope.minDate.setDate(hoy.getDate() + DIAS_HABILES);
@@ -346,7 +346,8 @@ angular.module('reservasApp')
               estado: estado,
               creadoPor: Auth.getCurrentUser()._id,
               materia: $scope.actividad.materia,
-              escuela: $scope.actividad.escuela
+              escuela: $scope.actividad.escuela,
+              ciclo: $scope.cicloActual._id
             };
             aulas = obtenerAulas();
             console.log(dates);

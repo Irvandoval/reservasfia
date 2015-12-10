@@ -17,7 +17,7 @@ angular.module('reservasApp')
             idActividad: 'espera'
           }).$promise
           .then(function(actividadesProm) {
-            actividades = actividadesProm;
+            actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -40,7 +40,8 @@ angular.module('reservasApp')
         Actividad.query({
             idActividad: 'aprobados'
           }).$promise
-          .then(function(actividades) {
+          .then(function(actividadesProm) {
+            var actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -63,7 +64,8 @@ angular.module('reservasApp')
         Actividad.query({
             idActividad: 'cancelados'
           }).$promise
-          .then(function(actividades) {
+          .then(function(actividadesProm) {
+           var  actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -110,8 +112,8 @@ angular.module('reservasApp')
         Actividad.query({
             idActividad: 'desaprobados'
           }).$promise
-          .then(function(actividades) {
-
+          .then(function(actividadesProm) {
+            var  actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -146,10 +148,15 @@ angular.module('reservasApp')
       });
     };
 
-
+    function rellenarEscuela(actividades){
+     for(var i = 0;  i < actividades.length;  i++){
+      actividades[i].nescuela =  actividades[i].escuela.nombre;
+     }
+     return actividades;
+    }
   })
 
-.controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
+.controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, $modal,actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
   $scope.cancelar = false;
   $scope.mensaje = {};
@@ -196,8 +203,59 @@ angular.module('reservasApp')
       });
 
   };
+
   $scope.cancelacion = function(){
    $scope.cancelar = true;
+  }
+
+  $scope.aprobarSolicitudClase =  function(){
+   $modalInstance.close(actividad);
+   var reservas = {};
+   reservas.data = [];
+   var turnos = [];
+   var actividadEditada = {};
+   var cont = 0;
+   for (var i =0 ; i< $scope.turnos.length; i++) { // creamos los objetos reservas
+     var turno = $scope.turnos[i];
+     for (var j =0;j<turno.aulas.length;j++) {
+       var aula = turno.aulas[j];
+       var nuevaReserva = {
+         inicio: turno.inicio,
+         fin: turno.fin,
+         aula: aula._id,
+         actividad: actividad._id
+       }
+       reservas.data[cont] = nuevaReserva;
+       cont++;
+     }
+     turnos[i] = turno._id;
+
+   }
+   $resource('/api/reservas/choque/detectarChoqueForHorario')
+   .save(reservas, function(respuesta){
+    if(respuesta.choque){
+     var modalInstance = $modal.open({
+       animation: $scope.animationsEnabled,
+       templateUrl: 'confirmacion-choque.html',
+       controller: 'ConfirmacionChoqueCtrl',
+       size: 'lg',
+       resolve: {
+         actividad: function() {
+           return respuesta.actividad
+         }
+       }
+     });
+
+     modalInstance.result.then(function(resp) {
+       if(resp)
+       enviarReservaClase(reservas, cont);
+     });
+
+    }else{
+      enviarReservaClase(reservas, cont);
+    }
+
+  });
   }
   $scope.aprobarSolicitud = function() {
     $modalInstance.close(actividad);
@@ -245,7 +303,7 @@ angular.module('reservasApp')
           });
       }, function(err) {
         console.log("ERROR");
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar array");
+        toaster.pop('error', "Error", "Se ha detectado choque");
       });
   };
   $resource('/api/turnos/actividad/:idActividad', {
@@ -279,11 +337,33 @@ angular.module('reservasApp')
     $modalInstance.dismiss('cancel');
   };
 
+  function enviarReservaClase(reservas ,c){
+   var actividadEditada = {};
+   for (var i = 0; i < c; i++) {
+     $resource('/api/reservas').save(reservas.data[i]);
+   }
+   actividadEditada = nuevaActividad(actividad,'aprobado');
+   actividadEditada.fechaAprobacion = new Date();
+   Actividad.update({
+       idActividad: actividad._id
+     }, actividadEditada).$promise
+     .then(function() {
+      // actividad.estado = 'aprobado';
+       $rootScope.enEspera.reload();
+       $rootScope.aprobados.reload();
+       $rootScope.desaprobados.reload();
+       //actualizarTurnos(actividadEditada,respuesta);
+         toaster.pop('success', "Actividad aprobada", "Las reservas se han cargado en el sistema");
+     }, function(err) {
+       //error al actualizar
+     });
+  }
+
    function actualizarTurnos(actividad,respuesta){
     var aulaAux = [];
     for (var g = 0;  g < $scope.turnos.length; g++){
     actividad.estado = respuesta;
-     console.log("entra al for g");
+
           for (var s in $scope.turnos[g].aulas){
              aulaAux[s] = $scope.turnos[g].aulas[s]._id;
           }
@@ -315,4 +395,16 @@ angular.module('reservasApp')
     actividadEdit.fechaCreacion = actividad.fechaCreacion;
     return actividadEdit;
   }
+
+
+})
+.controller('ConfirmacionChoqueCtrl', function($scope, actividad, $modalInstance){
+ $scope.actividad =  actividad;
+
+ $scope.aprobar =  function(){
+  $modalInstance.close(true);
+ };
+ $scope.cancel = function () {
+   $modalInstance.dismiss('cancel');
+ };
 });

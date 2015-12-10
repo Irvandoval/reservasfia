@@ -14,15 +14,15 @@
       <table class="table table-striped" ng-table="tablaRepresentantes" show-filter="true" template-pagination="custom/pager">
         <tr ng-repeat="representante in $data">
           <td class="text-center" data-title="'Nombre'" filter="{ 'nombre': 'text' }">{{representante.nombre}}</td>
-           <td class="text-center" data-title="'Usuario'">{{representante.usuario.username}}</td>
+          <td class="text-center" data-title="'Usuario'">{{representante.usuario.username}}</td>
           <td class="text-center" data-title="'Escuela'">{{representante.escuela.nombre}}</td>
-        <td class="text-center" data-title="'Correo'" >{{representante.correo}}</td>
+          <td class="text-center" data-title="'Correo'">{{representante.correo}}</td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning" type="button" ng-click="editarRepresentante(representante)">
+            <button class="btn btn-warning btn-sm" ng-click="editarRepresentante(representante)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger" type="button" ng-click="EliminarRepresentante(representante._id)" confirm="¿Estas seguro de eliminar el registro del Representante {{representante.nombre}}?">
+            <button class="btn btn-danger btn-sm" confirm="¿Estas seguro de eliminar el registro del Representante {{representante.nombre}}?" ng-click="EliminarRepresentante(representante._id)" type="button">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -53,38 +53,38 @@
 </script>
 
 <script id="nuevo-Representante.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Nuevo Representante</h3>
- </div>
-<div class="container-fluid">
+  <div class="modal-header">
+    <h3 class="modal-title">Nuevo Representante</h3>
+  </div>
+  <div class="container-fluid">
     <form class="form" name="form" ng-submit="NuevoRepresentante(form)" novalidate>
-        <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid &&    submitted, 'has-error': form.nombre.$invalid && submitted }">
-    <label>Nombre:</label>
-    <input name="nombre" type="text" value=""  class="form-control" ng-model="representante.nombre" required>
+      <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid &&    submitted, 'has-error': form.nombre.$invalid && submitted }">
+        <label>Nombre:</label>
+        <input class="form-control" name="nombre" ng-model="representante.nombre" required type="text" value="">
         <p class="help-block" ng-show="form.nombre.$error.required && submitted">
           El nombre es requerido
         </p>
-        </div>
+      </div>
 
       <div class="form-group" ng-class="{ 'has-success': form.usuario.$valid && submitted,'has-error': form.usuario.$invalid && submitted }">
         <label>Usuario:</label>
         <div>
-        <SELECT NAME="Usuario" class="form-control" ng-model="representante.usuario" ng-repeat="user in users" required >
-          <OPTION VALUE="{user._id}} ">{{user.username}}</OPTION>
-        </SELECT>
-        <p class="help-block" ng-show="form.Usuario.$error.required && submitted">
-          El usuario es requerido
-        </p>
+          <SELECT NAME="Usuario" class="form-control" ng-model="representante.usuario" ng-repeat="user in users" required >
+            <OPTION VALUE="{user._id}} ">{{user.username}}</OPTION>
+          </SELECT>
+          <p class="help-block" ng-show="form.Usuario.$error.required && submitted">
+            El usuario es requerido
+          </p>
         </div>
-    <div class="form-group">
-    <label>Correo:</label>
-    <input name="correo" type="text" value="" class="form-control" ng-model="representante.correo">
-       <p class="help-block" ng-show="form.correo.$error.required && submitted">
-          El Correo es requerido
-        </p>
+        <div class="form-group">
+          <label>Correo:</label>
+          <input class="form-control" name="correo" ng-model="representante.correo" type="text" value="">
+          <p class="help-block" ng-show="form.correo.$error.required && submitted">
+            El Correo es requerido
+          </p>
         </div>
       </div>
-    <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
+      <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                       'has-error': form.escuela.$invalid && submitted }">
         <label>Escuela:</label>
         <SELECT NAME="escuela" class="form-control" ng-model="representante.escuela" ng-repeat="escuela in escuelas" required>
@@ -94,61 +94,59 @@
           La escuela es requerida
         </p>
       </div>
-   </form>
-</div>
+    </form>
+  </div>
 
-      <div class="modal-footer">
-          <button class="btn btn-success" ng-click="NuevoRepresentante(form)" type="button">
-           Agregar
-          </button>
-      <button class="btn btn-warning" ng-click="cancel()" type="button">
-        Cancelar
-        </button>
-      </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" ng-click="NuevoRepresentante(form)" type="button">
+      Agregar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar
+    </button>
+  </div>
 </script>
 
-
 <script id="editar-representante.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Editar representante</h3>
- </div>
- <div class="container-fluid">
- <form class="form" name="form" ng-submit="actualizarRepresentante(form)" novalidate>
-  <div class="form-group"  ng-class="{ 'has-success': form.name.$valid && submitted,
-                                              'has-error': form.name.$invalid && submitted }">
-
-  <label>Nombre:</label>
-  <input name="nombre" type="text" value=""  class="form-control" ng-model="representantex.nombre" required>
-   <p class="help-block" ng-show="form.nombre.$error.required && submitted">
-          El nombre es requerido
-    </p>
+  <div class="modal-header">
+    <h3 class="modal-title">Editar representante</h3>
   </div>
-   <div class="form-group"ng-class="{ 'has-success': form.escuela.$valid && submitted,
+  <div class="container-fluid">
+    <form class="form" name="form" ng-submit="actualizarRepresentante(form)" novalidate>
+      <div class="form-group" ng-class="{ 'has-success': form.name.$valid && submitted,
+                                              'has-error': form.name.$invalid && submitted }">
+        <label>Nombre:</label>
+        <input class="form-control" name="nombre" ng-model="representantex.nombre" required type="text" value="">
+        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          El nombre es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                               'has-error': form.escuela.$invalid && submitted }">
         <label>Escuela:</label>
-        <SELECT NAME="escuela" class="form-control" ng-model="representantex.escuela"  required>
+        <SELECT NAME="escuela" class="form-control" ng-model="representantex.escuela" required>
           <option value="">---Selecciona Escuela---</option>
-          <OPTION ng-repeat="escuela in escuelas" VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
+          <OPTION VALUE="{{escuela._id}} " ng-repeat="escuela in escuelas">{{escuela.nombre}}</OPTION>
         </SELECT>
         <p class="help-block" ng-show="form.escuela.$error.required && submitted">
           La escuela es requerida
         </p>
       </div>
-<div class="form-group">
-    <label>Correo:</label>
-    <input name="correo" type="text" value=""  class="form-control" ng-model="representantex.correo" required>
+      <div class="form-group">
+        <label>Correo:</label>
+        <input class="form-control" name="correo" ng-model="representantex.correo" required type="text" value="">
         <p class="help-block" ng-show="form.correo.$error.required && submitted">
           El correo es requerido
         </p>
-        </div>
-  </div>
-  <div class="modal-footer">
+      </div>
+    </div>
+    <div class="modal-footer">
       <button class="btn btn-success" ng-click="actualizarRepresentante()" type="button">
-           Actualizar
+        Actualizar
       </button>
       <button class="btn btn-warning" ng-click="cancel()" type="button">
-          Cancelar
+        Cancelar
       </button>
-  </div>
+    </div>
 
-</script>
+  </script>

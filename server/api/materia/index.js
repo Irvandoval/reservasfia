@@ -8,6 +8,7 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.get('/nombre/:nombre', controller.regexNombre);
+router.get('/escuela/:id', controller.indexByEscuela);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);

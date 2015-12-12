@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    <title>Horario <%= horario.escuela.nombre%></title>
+    <style type="text/css">
+      @media print {
+        @page {
+          size: letter landscape;
+         margin:2cm  auto;
+        }
+        body {
+         {font-family:arial, times, serif;}
+        }
+        table, td{
+         font-size: 7pt;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-md-4">
+       <strong>
+        UNIVERSIDAD DE EL SALVADOR   <br>
+        FACULTAD DE INGENIERÌA Y ARQUITECTURA <br>
+        UNIDAD DE PLANIFICACIÓN
+       </strong>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-4">
+       <strong>
+       Horarios correspondientes al ciclo <%= horario.ciclo.numero %> - <%= horario.ciclo.anio %>  <br>
+      <%= horario.escuela.nombre %>
+       </strong>
+      </div>
+    </div>
+    <br><br>
+    <table class="table table-bordered">
+     <colgroup>
+       <col width="1%"/>
+       <col width="1%"/>
+       <col width="15%"/>
+       <col width="1%"/>
+       <col width="1%"/>
+       <col width="1%"/>
+       <col width="5%"/>
+       <col width="5%"/>
+       <col width="10%"/>
+       <col width="10%"/>
+       <col width="10%"/>
+       <col width="10%"/>
+       <col width="10%"/>
+       <col width="10%"/>
+       <col width="10%"/>
+     </colgroup>
+      <tr>
+        <td>#</td>
+        <td>Código</td>
+        <td>Asignatura</td>
+        <td>G.T</td>
+        <td>G.D</td>
+        <td>G.L</td>
+        <td>Cupo</td>
+        <td>Aula</td>
+        <td>Lunes</td>
+        <td>Martes</td>
+        <td>Miércoles</td>
+        <td>Jueves</td>
+        <td>Viernes</td>
+        <td>Sábado</td>
+        <td>Docente</td>
+      </tr>
+      <% for(var i = 0; i < clases.length; i++) {%>
+         <tr>
+            <td>
+             <% if(clases[i-1]){ %>
+                 <% if(clases[i].materia.nombre !== clases[i-1].materia.nombre){ %>
+                    <%= k%>
+                    <% k++%>
+                 <% } %>
+              <% }else{ %>
+                    <% if(i === 0){ %>
+                       <%= k%>
+                       <% k++%>
+                    <% } %>
+                <% } %>
+            </td>
+            <td>
+             <% if(clases[i-1]){ %>
+                 <% if(clases[i].materia.codigo !== clases[i-1].materia.codigo){ %>
+                    <%= clases[i].materia.codigo %>
+                 <% } %>
+              <% } else{ %>
+               <%= clases[i].materia.codigo %>
+              <% } %>
+            </td>
+            <td>
+             <% if(clases[i-1]){ %>
+                 <% if(clases[i].materia.nombre !== clases[i-1].materia.nombre){ %>
+                    <%= clases[i].materia.nombre %>
+                 <% } %>
+              <% } else{ %>
+               <%= clases[i].materia.nombre %>
+              <% } %>
+            </td>
+            <td>
+              <% if(clases[i].tipo == 'GT'){ %>
+                <%= clases[i].numero %>
+               <% } %>
+            </td>
+            <td>
+              <% if(clases[i].tipo === 'GD'){ %>
+                <%= clases[i].numero %>
+               <% } %>
+            </td>
+            <td>
+              <% if(clases[i].tipo == 'GL'){ %>
+                <%= clases[i].numero %>
+              <% } %>
+            </td>
+            <td>
+             <%= clases[i].cupo %>
+            </td>
+            <td>
+             <%= clases[i].aula.nombre %>
+            </td>
+            <td>
+              <% if(clases[i].dia1 == '1'){ %>
+               <%= clases[i].franja1.franja %>
+              <% } %>
+              <% if(clases[i].dia2 == '1'){ %>
+                <%= clases[i].franja2.franja %>
+              <% } %>
+            </td>
+            <td>
+              <% if(clases[i].dia1 == '2'){ %>
+               <%= clases[i].franja1.franja %>
+              <% } %>
+              <% if(clases[i].dia2 == '2'){ %>
+                <%= clases[i].franja2.franja %>
+              <% } %>
+            </td>
+            <td>
+              <% if(clases[i].dia1 == '3'){ %>
+               <%= clases[i].franja1.franja %>
+              <% } %>
+              <% if(clases[i].dia2 == '3'){ %>
+                <%= clases[i].franja2.franja %>
+              <% } %>
+            </td>
+            <td>
+              <% if(clases[i].dia1 == '4'){ %>
+               <%= clases[i].franja1.franja %>
+              <% } %>
+              <% if(clases[i].dia2 == '4'){ %>
+                <%= clases[i].franja2.franja %>
+              <% } %>
+            </td>
+            <td>
+              <% if(clases[i].dia1 == '5'){ %>
+               <%= clases[i].franja1.franja %>
+              <% } %>
+              <% if(clases[i].dia2 == '5'){ %>
+                <%= clases[i].franja2.franja %>
+              <% } %>
+            </td>
+            <td>
+              <% if(clases[i].dia1 == '6'){ %>
+               <%= clases[i].franja1.franja %>
+              <% } %>
+              <% if(clases[i].dia2 == '6'){ %>
+                <%= clases[i].franja2.franja %>
+              <% } %>
+            </td>
+            <td>
+              <% if(clases[i].docente){ %>
+              <%= clases[i].docente.nombre %>
+              <% } %>
+            </td>
+         </tr>
+        <% } %>
+      </table>
+   <script type="text/javascript">
+      window.print();
+   </script>
+  </body>
+</html>

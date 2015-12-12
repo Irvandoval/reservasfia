@@ -67,10 +67,15 @@ angular.module('reservasApp')
        $modalInstance.dismiss('cancel');
         toaster.pop('success', "Carrera ingresada", "La carrera se ha agregado al sistema");
       }, function(err) {
-        $rootScope.tablaCarreras.reload();
-        $modalInstance.dismiss('cancel');
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-      });
+        console.log(err);
+        $scope.errors = {};
+        // Update validity of form fields that match the mongoose errors
+        angular.forEach(err.data.errors, function(error, field) {
+          form[field].$setValidity('mongoose', false);
+          $scope.errors[field] = error.message;
+        });
+         toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+       });
     }
   }
   $scope.cancel = function() {

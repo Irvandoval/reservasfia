@@ -31,7 +31,10 @@ exports.xlstojson = function(req, res) {
 
 // Get list of horarios
 exports.index = function(req, res) {
-  Horario.find(function (err, horarios) {
+  Horario.find({estado: {$ne: 'plantilla'}})
+  .populate('escuela')
+  .populate('ciclo')
+  .exec(function (err, horarios) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(horarios);
   });
@@ -51,7 +54,7 @@ exports.reporte =  function(req, res) {
   .populate('escuela')
   .populate('ciclo')
   .exec(function(err,horario){
-    Clase.find({horario: horario._id})
+    Clase.find({horario: horario._id, aprobado: true})
     .populate('materia')
     .populate('docente')
     .populate('franja1')
@@ -59,6 +62,7 @@ exports.reporte =  function(req, res) {
     .populate('aula')
     .sort({'tipo': -1, 'numero': 1})
     .exec(function(err, clases){
+      if(!clases) { return res.status(404).send('Not Found'); }
      var clas=  clases.sort(function(a, b){
        if(a.materia.nombre < b.materia.nombre) return -1;
        if(a.materia.nombre > b.materia.nombre) return 1;

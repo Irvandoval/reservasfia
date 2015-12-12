@@ -260,6 +260,8 @@ angular.module('reservasApp')
     };
     var hoy = new Date();
     $scope.minDate = new Date(hoy);
+    if(Auth.isAdmin()) $scope.minDate.setDate(hoy.getDate());
+    else
     $scope.minDate.setDate(hoy.getDate() + DIAS_HABILES);
     $scope.open = function($event) {
       $event.preventDefault();

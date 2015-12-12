@@ -5,6 +5,7 @@ var controller = require('./actividad.controller');
 var auth = require('../../auth/auth.service');
 var comprobar = require('../../components/middleware/actividad.mw');
 var envioCorreo = require('../../components/middleware/correo.mw');
+var cascade = require('../../components/cascade/actividad.cascade');
 var router = express.Router();
 
 router.get('/', controller.index);
@@ -26,6 +27,6 @@ router.get('/comprobante/:id',controller.comprobante);
 router.post('/', controller.create);
 router.put('/:id', auth.isAuthenticated(), comprobar.actividadCancelada(), envioCorreo.cambioEstado(), controller.update);
 router.patch('/:id', auth.isAuthenticated(), comprobar.actividadCancelada(), envioCorreo.cambioEstado(), controller.update);
-router.delete('/:id', controller.destroy);
+router.delete('/:id', cascade.actividad(), controller.destroy);
 
 module.exports = router;

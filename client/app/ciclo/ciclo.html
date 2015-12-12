@@ -102,7 +102,7 @@
       <input class="form-control" name="anio" ng-model="ciclo.anio" type="number" required>
        <p class="help-block" ng-show="form.anio.$error.required && submitted">
           El anio es requerido
-        </p>  
+        </p>
     </div>
 
     <div class="form-group" ng-class="{ 'has-success': form.inicioCiclo.$valid && submitted,
@@ -115,7 +115,7 @@
         <p class="help-block" ng-show="form.inicioCiclo.$error.mongoose">
           {{ errors.inicioCiclo}}
         </p>
-      
+
     </div>
 
     <div class="form-group" ng-class="{ 'has-success': form.finCiclo.$valid && submitted,
@@ -139,7 +139,7 @@
         <p class="help-block" ng-show="form.inicioClases.$error.mongoose">
           {{ errors.inicioClases}}
         </p>
-      
+
     </div>
     <div class="form-group" ng-class="{ 'has-success': form.finClases.$valid && submitted,
                                         'has-error': form.finClases.$invalid && submitted }">
@@ -151,9 +151,9 @@
         <p class="help-block" ng-show="form.finClases.$error.mongoose">
           {{ errors.finClases }}
         </p>
-      
+
     </div>
-    
+
     <div class="form-group" ng-class="{ 'has-success': form.inicioSubidaHorario.$valid && submitted,
                                         'has-error': form.inicioSubidaHorario.$invalid && submitted }">
       <label>Inicio de subida de horarios</label>
@@ -179,7 +179,7 @@
       </div>
     </form>
   </div>
-  
+
   <div class="modal-footer">
     <button class="btn btn-success" ng-click="enviar(form)" type="button">
       Agregar
@@ -191,7 +191,7 @@
 
 <script id="editar-ciclo.html" type="text/ng-template">
   <div class="modal-header">
-    <h3 class="modal-title">Nuevo Ciclo</h3>
+    <h3 class="modal-title">Editar Ciclo</h3>
   </div>
 
   <div class="container-fluid">
@@ -214,30 +214,30 @@
 
     <div class="form-group">
       <label>Fin de Ciclo</label>
-      <input class="form-control" name="finCiclo" type="date" value="">
+      <input class="form-control" name="finCiclo" type="date" ng-model="ciclox.finCiclo">
     </div>
     <div class="form-group">
       <label>Inicio de Clases</label>
-      <input class="form-control" name="inicioClases" type="date" value="">
+      <input class="form-control" name="inicioClases" type="date" value="" ng-model="ciclox.inicioClases">
     </div>
     <div class="form-group">
       <label>Fin de Clases</label>
-      <input class="form-control" name="finClases" type="date" value="">
+      <input class="form-control" name="finClases" type="date" value="" ng-model="ciclox.finClases">
     </div>
     <div class="form-group">
       <label>Inicio de subida de horarios</label>
-      <input class="form-control" name="inicioClases" type="date" value="">
+      <input class="form-control" name="inicioClases" type="date" value="" ng-model="ciclox.inicioSubidaHorario">
     </div>
     <div class="form-group">
       <label>Fin de subida de horarios</label>
       <label></label>
-      <input class="form-control" name="finClases" type="date" value="">
+      <input class="form-control" name="finClases" type="date" value="" ng-model="ciclox.finSubidaHorario">
     </div>
   </div>
 
   <div class="modal-footer">
 
-    <button class="btn btn-success" ng-click="" type="button">
+    <button class="btn btn-success" ng-click="editar()" type="button">
       Agregar
     </button>
     <button class="btn btn-warning" ng-click="cancel()" type="button">

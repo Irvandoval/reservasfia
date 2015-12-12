@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('SubirHorarioManualCtrl', function($scope, $rootScope, $location,ngTableParams, $filter, $modal, toaster,Ciclo, Escuela, $resource, Clase, ClaseByHorario, Franja, Auth) {
+  .controller('SubirHorarioManualCtrl', function($scope, $rootScope, $location,ngTableParams,Actividad, $filter, $modal, toaster,Ciclo, Escuela, $resource, Clase, ClaseByHorario, Franja, Auth) {
     $scope.horarioActual = {};
     $scope.esAdmin = Auth.isAdmin;
     $scope.esRepresentante = Auth.isRepresentante;
@@ -125,6 +125,20 @@ angular.module('reservasApp')
       });
     };
 
+   $scope.verMensaje  = function(clase){
+    console.log(clase);
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'comentario.html',
+      controller: 'ComentarioCtrl',
+      size: 'sm',
+      resolve: {
+        actividad: function() {
+         return clase.actividad
+        }
+      }
+    });
+   }
     $scope.crearHorario = function() {
       $resource('/api/horarios/crear-horario/plantilla')
         .save({
@@ -246,7 +260,7 @@ angular.module('reservasApp')
           //   form[field].setValidity('mongoose', false);
              $scope.errors[field]= error.message;
        });
-          toaster.pop('error', "Error al agregar grupo");
+          toaster.pop('error', "Numero de grupo ya existe");
         });
       }
     };
@@ -296,9 +310,11 @@ angular.module('reservasApp')
   })
 
 
-  .controller('EditarClaseCtrl', function($scope, $rootScope, $resource, $modalInstance, toaster, clase, Clase, Franja) {
-    $scope.arrayAulas = [];
+  .controller('EditarClaseCtrl', function($scope, $rootScope, $resource, $modalInstance, toaster,Aula, clase, Clase, Franja, Actividad) {
 
+   Aula.query(function(aulas){
+    $scope.aulas =  aulas;
+   });
     $resource('/api/docentes/materia/:materiaId', {
         materiaId: '@id'
       })
@@ -311,7 +327,7 @@ angular.module('reservasApp')
       claseId: clase._id
     }, function(clas) {
       $scope.clasesx = clas;
-      $scope.arrayAulas.push($scope.clasesx.aula);
+
 
     });
     $scope.cancel = function() {
@@ -337,8 +353,40 @@ angular.module('reservasApp')
       });
     };
 
+  $scope.enviarRechazado =  function(form){
+   $scope.submitted = true;
+   if(form.$valid){
+    $scope.clasesx.materia = $scope.clasesx.materia._id;
+    $scope.clasesx.docente = $scope.clasesx.docente._id;
+    $scope.clasesx.aula = $scope.clasesx.aula._id;
+    $scope.clasesx.franja1 = $scope.clasesx.franja1._id;
+    if ($scope.clasesx.franja2)
+      $scope.clasesx.franja2 = $scope.clasesx.franja2._id;
+    Clase.update({claseId: clase._id}, $scope.clasesx ,function(claseg){
+     $resource('/api/clases/crearActividad/:claseId', {claseId: '@id'})
+     .save({claseId: claseg._id},{ciclo: $rootScope.cicloActual._id}, function(res){
+      $rootScope.tablaHorario.reload();
+      $modalInstance.dismiss('cancel');
+        toaster.pop('success', "Grupo enviado");
+     }, function(err){
+
+         toaster.pop('error', "Error al enviar grupo");
+     })
+    }, function(err){console.log(err);})
+  }
+  }
     /*$scope.cargarDocentes = function(query) {
       var res = $resource('/api/docentes/nombre/' + query+'?materia='+clase.materia._id);
       return res.query().$promise
     };*/
+  })
+
+
+  .controller('ComentarioCtrl', function($scope, $modalInstance, actividad, Actividad){
+   Actividad.get({idActividad: actividad}, function(actividad){
+     $scope.comentario =  actividad.comentario;
+   })
+   $scope.cancel = function() {
+     $modalInstance.dismiss('cancel');
+   };
   })

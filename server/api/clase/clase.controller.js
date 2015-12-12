@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Clase = require('./clase.model');
 var Actividad = require('../actividad/actividad.model');
+var Horario =  require('../horario/horario.model');
 var Ciclo = require('../ciclo/ciclo.model');
 // Get list of clases
 exports.index = function(req, res) {
@@ -18,7 +19,29 @@ exports.index = function(req, res) {
     return res.status(200).json(clases);
   });
 };
-
+exports.indexAprobadosByHorario =  function(req, res) {
+  Horario.findById(req.params.id)
+  .populate('escuela')
+  .populate('ciclo')
+  .exec(function(err,horario){
+    Clase.find({horario: horario._id, aprobado: true})
+    .populate('materia')
+    .populate('docente')
+    .populate('franja1')
+    .populate('franja2')
+    .populate('aula')
+    .sort({'tipo': -1, 'numero': 1})
+    .exec(function(err, clases){
+      if(!horario) { return res.status(404).send('Not Found'); }
+     var clas=  clases.sort(function(a, b){
+       if(a.materia.nombre < b.materia.nombre) return -1;
+       if(a.materia.nombre > b.materia.nombre) return 1;
+       return 0;
+   })
+     return res.status(200).json(clases);
+    });
+  })
+};
 exports.crearActividad =  function(req, res){
  Ciclo.findById(req.body.ciclo, function(err, ciclo){
  if(err) { return handleError(res, err); }

@@ -81,11 +81,27 @@ angular.module('reservasApp')
 
 
   .controller('EditarCicloCtrl',function(ciclo, $scope, $modalInstance, Ciclo){
+   $scope.ciclox = {};
     Ciclo.get({cicloId: ciclo._id}, function(ciclon)
     {
-      $scope.ciclox = ciclon
-      $scope.ciclox.inicioCiclo =  new Date($scope.ciclox.inicioCiclo);
+     console.log(ciclon);
+     $scope.ciclox.anio = parseInt(ciclon.anio)
+    $scope.ciclox.inicioCiclo=  new Date(ciclon.inicioCiclo);
+     $scope.ciclox.inicioClases=  new Date(ciclon.inicioClases);
+     $scope.ciclox.finClases=  new Date(ciclon.finClases);
+     $scope.ciclox.inicioSubidaHorario=  new Date(ciclon.inicioSubidaHorario);
+     $scope.ciclox.finSubidaHorario=  new Date(ciclon.finSubidaHorario);
+      $scope.ciclox.finCiclo=  new Date(ciclon.finCiclo);
     })
+
+    $scope.editar =  function(){
+     Ciclo.update({cicloId: ciclo._id}, $scope.ciclox, function(){
+      $modalInstance.dismiss('cancel');
+      $rootScope.tablaCiclos.reload();
+     }, function(){
+      console.log('err');
+     })
+    }
 
     $scope.cancel = function() {
     $modalInstance.dismiss('cancel');

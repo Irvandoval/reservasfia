@@ -150,6 +150,9 @@
              <div ng-if="grupo.aprobado">
               Aprobado
              </div>
+             <div ng-if="grupo.aprobado === false">
+              <button class="btn btn-warning btn-sm" ng-click="verMensaje(grupo)"> ver comentario</button>
+             </div>
 
             </td>
           </tr>
@@ -283,7 +286,7 @@
 
 <script id="editar-clase.html" type="text/ng-template">
   <div class="container-fluid">
-    <form class="form" novalidate>
+    <form class="form" name="form" novalidate>
       <h2 class="text-center">
         {{clasesx.materia.nombre}}
         {{clasesx.tipo}}</h2>
@@ -375,10 +378,25 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-success" ng-click="actualizar()" type="button">
+    <button  class="btn btn-success" ng-click="actualizar()" type="button">
       Actualizar
     </button>
+    <button ng-if="clasesx.aprobado === false" class="btn btn-success" ng-click="enviarRechazado(form)"> Enviar a revision</button>
     <button class="btn btn-warning" ng-click="cancel()" type="button">
       Cancelar</button>
+  </div>
+</script>
+
+<script id="comentario.html" type="text/ng-template">
+  <div class="modal-header">
+  <h3 class="modal-title">Comentario del admininstrador</h3>
+  </div>
+  <div class="modal-body">
+   {{comentario}}
+  </div>
+  <div class="modal-footer">
+
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+     Cerrar</button>
   </div>
 </script>

@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var ClaseSchema = new Schema({
    tipo: {type: String, required:true},// GT, GD, GL
-   numero: {type: Number, required: true, validate:[validarIndex,'Ya existe ese número de grupo']},//  01, 02, etc
+   numero: {type: Number, required: true},//  01, 02, etc
    cupo: {type: Number, required: true},
    dia1: {type: Number, required:true},// si son lunes y miercoles las clases, este sería 1
    dia2: { type: Number, required: false},// este 3

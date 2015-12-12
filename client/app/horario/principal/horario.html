@@ -7,7 +7,7 @@
           <h4>Horario</h4>
         </div>
         <div class="col-md-2">
-          <a class="btn btn-success" href="/horario/subir_horario_manual" type="button">
+          <a ng-if="esRepresentante() && periodoHorarios()" class="btn btn-success" href="/horario/subir_horario_manual" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nuevo horario
           </a>
@@ -15,32 +15,20 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tableParams" show-filter="true" >
-        <tr>
-          <td class="text-center" data-title="'Escuela'" filter="{ 'nombre': 'text' }"> Ingeniería de Sistemas Informáticos</td>
-          <td class="text-center" data-title="'Ciclo'">II</td>
-          <td class="text-center" data-title="'Año'">2015
-
+      <table class="table table-striped" ng-table="tablaHorarios" show-filter="true" >
+        <tr ng-repeat="horario in $data">
+          <td class="text-center" data-title="'Escuela'" filter="{ 'nombre': 'text' }"> {{horario.escuela.nombre}}</td>
+          <td class="text-center" data-title="'Ciclo'">{{horario.ciclo.numero}}</td>
+          <td class="text-center" data-title="'Año'">
+           {{horario.ciclo.anio}}
           </td>
-
-
-          <td class="text-center" data-title="'Estado'"> <span aria-hidden="true" class="fa fa-circle amarillo"> </span> En Espera</td>
           <td class="text-center" data-title="'Acciones'">
-           <button class="btn btn-success  btn-sm" type="button" ng-click="abrir()">
+           <button class="btn btn-success  btn-sm" type="button" ng-click="abrir(horario)">
               <span aria-hidden="true" class="fa fa-info-circle "></span>
-              Mostar
-            </button>
-            <button class="btn btn-warning  btn-sm" type="button" ng-click="">
-              <span aria-hidden="true" class="fa fa-pencil-square "></span>
-              Editar
-            </button>
-            <button class="btn btn-danger  btn-sm" type="button">
-              <span aria-hidden="true" class="fa fa-minus-circle"></span>
-              Eliminar
+              Mostrar
             </button>
           </td>
         </tr>
-
           </td>
         </tr>
       </table>
@@ -54,92 +42,78 @@
    <h3 class="modal-title">Detalle Horario</h3>
  </div>
  <div class="container-fluid">
-   <table class="table table-striped">
+  <div class="table-responsive" id="horarioDiv">
+    <table class="table table-condensed table-bordered table-hover table" ng-form="tableForm" ng-table="tablaHorarioDetalle">
+      <colgroup>
+        <col width="10%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+      </colgroup>
+      <tr class="ng-table-group" ng-repeat-start="group in $groups">
+        <td colspan="10">
+          <a href="" ng-click="group.$hideRows = !group.$hideRows">
+            <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+            <strong>{{ group.value }}</strong>
+          </a>
+        </td>
+      </tr>
+      <tr ng-hide="group.$hideRows" ng-repeat-end ng-repeat="grupo in group.data">
+        <td data-title="'Código'" ng-if="false">
+          {{grupo.materia.nombre}}
+        </td>
+        <td data-title="'Materia'" sortable="'nmateria'">
+          {{grupo.tipo}}
+        </td>
+        <td data-title="'#'">
+          {{grupo.numero}}
+        </td>
+        <td data-title="'Cupo'">
+          {{grupo.cupo}}
+        </td>
+        <td data-title="'Aula'">
+          {{grupo.aula.nombre}}
+        </td>
+        <td data-title="'Dia 1'">
+          <span ng-if="grupo.dia1 == 1">Lunes</span>
+          <span ng-if="grupo.dia1 == 2">Martes</span>
+          <span ng-if="grupo.dia1 == 3">Miércoles</span>
+          <span ng-if="grupo.dia1 == 4">Jueves</span>
+          <span ng-if="grupo.dia1 == 5">Viernes</span>
+          <span ng-if="grupo.dia1 == 6">Sábado</span>
+        </td>
+        <td data-title="'Franja'">
+          {{grupo.franja1.franja}}
+        </td>
+        <td data-title="'Dia 2'">
+          <span ng-if="grupo.dia2 == 1">Lunes</span>
+          <span ng-if="grupo.dia2 == 2">Martes</span>
+          <span ng-if="grupo.dia2 == 3">Miércoles</span>
+          <span ng-if="grupo.dia2 == 4">Jueves</span>
+          <span ng-if="grupo.dia2 == 5">Viernes</span>
+          <span ng-if="grupo.dia2 == 6">Sábado</span>
+        </td>
+        <td data-title="'Franja'">
+          {{grupo.franja2.franja}}
+        </td>
+        <td data-title="'Docente'">
+          {{grupo.docente.nombre}}
+        </td>
 
-          <tr>
-           <th>Código</th>
-           <th>Tipo</th>
-           <th>Número</th>
-           <th>Cupo</th>
-           <th>Aula</th>
-           <th>Día 1</th>
-           <th>Franja</th>
-           <th>Día 2</th>
-           <th>Franja</th>
-          </tr>
-            <tr>
-           <td><input type="text" value="PRN115"/></td>
-           <td></td>
+      </tr>
+    </table>
 
-           <td></td>
-           <td></td>
-           <td></td>
-           <td></td>
-           <td></td>
-
-           <td></td>
-          </tr>
-           <tr>
-           <td>PRN115</td>
-           <td>GT</td>
-
-           <td>01</td>
-           <td>100</td>
-           <td>B11</td>
-           <td>Lunes</td>
-            <td>8:05 - 9:45</td>
-           <td >Miercoles</td>
-
-           <td>8:05 - 9:45</td>
-          </tr>
-
-           <tr>
-           <td>PRN115</td>
-           <td>GT</td>
-
-           <td>02</td>
-           <td>100</td>
-           <td>B11</td>
-           <td>Martes</td>
-           <td>8:05 - 9:45</td>
-           <td >Viernes</td>
-
-           <td>8:05 - 9:45</td>
-          </tr>
-           <tr>
-           <td>PRN115</td>
-           <td>GT</td>
-
-           <td>03</td>
-           <td>100</td>
-           <td>B11</td>
-           <td>Martes</td>
-           <td>8:05 - 9:45</td>
-           <td >Viernes</td>
-
-           <td>9:45-11:30</td>
-          </tr>
-           <tr>
-           <td>PRN115</td>
-           <td>GL</td>
-
-           <td>02</td>
-           <td>100</td>
-           <td>LCOMP1</td>
-           <td>Martes</td>
-           <td>8:05 - 9:45</td>
-           <td ></td>
-
-
-          </tr>
-         </table>
 </div>
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="" type="button">
-    Aprobar
-  </button>
+    <a class="btn btn-success" href="/api/horarios/reporte/{{horario._id}}" ng-click="" target="_blank" type="button">
+     Mostrar Reporte Horarios</a>
   <button class="btn btn-warning" ng-click="cancel()" type="button">
   Cerrar</button>
   </div>
-
 </script>

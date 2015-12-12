@@ -79,9 +79,12 @@
   <form class="form" name="form" ng-submit="enviar(form)" novalidate>
   <div class="form-group" ng-class="{'has-success': form.nombre.$valid && submitted, 'has-error': form.nombre.$invalid && submitted}">
     <label>Nombre:</label>
-    <input class="form-control" name="nombre" ng-model="aula.nombre" required type="text" value="">
+    <input class="form-control" mongoose-error name="nombre" ng-model="aula.nombre" required type="text" >
     <p class="help-block" ng-show="form.nombre.$error.required && submitted">
      El nombre es requerido
+    </p>
+    <p class="help-block" ng-show="form.nombre.$error.mongoose">
+          {{ errors.nombre }}
     </p>
   </div>
 

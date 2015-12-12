@@ -73,8 +73,9 @@ angular.module('reservasApp')
       $modalInstance.dismiss('cancel');
       toaster.pop('success', "Aula Ingresada", "El aula se ha ingresado en el sistema'");
     }, function(err) {
+        console.log(err);
       $scope.errors={}
-      //upadate validity of form fields that match the mongoose errors
+      //update validity of form fields that match the mongoose errors
       angular.forEach(err.data.errors, function(error, field){
           form[field].setValidity('mongoose', false);
           $scope.errors[field]= error.message;

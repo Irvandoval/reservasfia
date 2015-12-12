@@ -52,14 +52,14 @@
             </h3>
           </div>
           <div class="col-md-2">
-            <button class="btn btn-success" name="button" type="button" ng-click="enviarHorarioAdmin()">
+            <button ng-if="horarioActual.estado == 'borrador'" class="btn btn-success" name="button" ng-click="enviarHorarioAdmin()" type="button">
               <i class="fa fa-arrow-circle-right"></i>
               Enviar a Admin
             </button>
           </div>
         </div>
       </div>
-      <div id="horarioDiv" class="table-responsive">
+      <div class="table-responsive" id="horarioDiv">
         <table class="table table-condensed table-bordered table-hover table" ng-form="tableForm" ng-table="tablaHorario">
           <colgroup>
             <col width="10%"/>
@@ -85,7 +85,7 @@
               </button>
             </td>
           </tr>
-          <tr ng-hide="group.$hideRows" ng-repeat-end ng-repeat="grupo in group.data">
+          <tr ng-hide="group.$hideRows" ng-repeat-end ng-repeat="grupo in group.data"   ng-class="{'success': grupo.aprobado === true, 'danger': grupo.aprobado === false && horarioActual.estado == 'enviado_admin'}">
             <td data-title="'Código'" ng-if="false">
               {{grupo.materia.nombre}}
             </td>
@@ -113,12 +113,12 @@
               {{grupo.franja1.franja}}
             </td>
             <td data-title="'Dia 2'">
-             <span ng-if="grupo.dia2 == 1">Lunes</span>
-             <span ng-if="grupo.dia2 == 2">Martes</span>
-             <span ng-if="grupo.dia2 == 3">Miércoles</span>
-             <span ng-if="grupo.dia2 == 4">Jueves</span>
-             <span ng-if="grupo.dia2 == 5">Viernes</span>
-             <span ng-if="grupo.dia2 == 6">Sábado</span>
+              <span ng-if="grupo.dia2 == 1">Lunes</span>
+              <span ng-if="grupo.dia2 == 2">Martes</span>
+              <span ng-if="grupo.dia2 == 3">Miércoles</span>
+              <span ng-if="grupo.dia2 == 4">Jueves</span>
+              <span ng-if="grupo.dia2 == 5">Viernes</span>
+              <span ng-if="grupo.dia2 == 6">Sábado</span>
             </td>
             <td data-title="'Franja'">
               {{grupo.franja2.franja}}
@@ -127,6 +127,7 @@
               {{grupo.docente.nombre}}
             </td>
             <td>
+             <div ng-if="grupo.aprobado == false && horarioActual.estado == 'enviado_admin'">
               <button class="btn btn-warning btn-sm" ng-click="editarClase(grupo)">
                 <span class="glyphicon glyphicon-pencil"></span>
                 Editar
@@ -135,6 +136,21 @@
                 <span class="glyphicon glyphicon-trash"></span>
                 Eliminar
               </button>
+             </div>
+             <div ng-if="horarioActual.estado == 'borrador'">
+              <button class="btn btn-warning btn-sm" ng-click="editarClase(grupo)">
+                <span class="glyphicon glyphicon-pencil"></span>
+                Editar
+              </button>
+              <button class="btn btn-danger btn-sm" ng-click="eliminar(grupo._id)">
+                <span class="glyphicon glyphicon-trash"></span>
+                Eliminar
+              </button>
+             </div>
+             <div ng-if="grupo.aprobado">
+              Aprobado
+             </div>
+
             </td>
           </tr>
         </table>
@@ -146,7 +162,7 @@
 
 <script id="nueva-clase.html" type="text/ng-template">
   <div class="container-fluid">
-    <form class="form" name="form" novalidate>
+    <form class="form" name="form" ng-submit="enviarClase(form)" novalidate>
       <h3 class="text-center">
         Nuevo grupo
         {{materia.nombre}}</h3>
@@ -161,202 +177,208 @@
         <p class="help-block" ng-show="form.tipo.$error.required && submitted">
           El tipo de grupo es requerido
         </p>
-       </div>
-          <div class="form-group" ng-class="{'has-success': form.numero.$valid && submitted, 'has-error': form.numero.$invalid && submitted}">
-            <label>Número de grupo:</label>
-            <input class="form-control" max="100" min="1" name="numero" ng-model="clase.numero" required type="number">
-            <p class="help-block" ng-show="form.numero.$error.required && submitted">
-              El número es requerido
-            </p>
-          </div>
-          <div class="form-group" ng-class="{'has-success': form.cupo.$valid && submitted, 'has-error': form.cupo.$invalid && submitted}">
-            <label>Cupo:</label>
-            <input class="form-control" max="200" min="10" name="cupo" ng-model="clase.cupo" required type="number">
-            <p class="help-block" ng-show="form.cupo.$error.required && submitted">
-              El cupo es requerido
-            </p>
-          </div>
-          <div class="form-group" ng-class="{'has-success': form.aula.$valid && submitted, 'has-error': form.aula.$invalid && submitted}">
-            <label>Aula:</label>
-            <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" max-tags="1" name="aula" ng-model="arrayAulas" on-tag-adding="evaluarAula()" placeholder="Agrega un aula" replace-spaces-with-dashes="false" required>
-              <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarAulas($query)"></auto-complete>
-            </tags-input>
-            <p class="help-block" ng-show="form.aula.$error.required && submitted">
-              El aula es requerida
-            </p>
-          </div>
-          <div class="form-group">
-            <label>Docente:</label>
-            <select class="form-control" name="docente" ng-model="clase.docente">
-              <option value="">---Selecciona un tipo de docente---</option>
-              <option ng-repeat="docente in docentes" value="{{docente._id}}">{{docente.nombre}}</option>
-            </select>
-          </div>
-          <div class="form-group" ng-class="{'has-success': form.dia1.$valid && submitted, 'has-error': form.dia1.$invalid && submitted}">
-            <label>Dia 1:</label>
-            <select class="form-control" ng-model="clase.dia1">
-              <option value="">---Selecciona un día---</option>
-              <option value="1">Lunes</option>
-              <option value="2">Martes</option>
-              <option value="3">Miércoles</option>
-              <option value="4">Jueves</option>
-              <option value="5">Viernes</option>
-               <option value="6">Sábado</option>
-            </select>
-            <p class="help-block" ng-show="form.dia1.$error.required && submitted">
-              El dia es requerido
-            </p>
-          </div>
-          <div class="form-group" ng-class="{'has-success': form.franja1.$valid && submitted, 'has-error': form.franja1.$invalid && submitted}">
-            <label>Franja:</label>
-            <select class="form-control" name="franja1" ng-model="clase.franja1">
-              <option value="">---Selecciona una franja---</option>
-              <option ng-repeat="franja in franjas" value="{{franja._id}}">
-                {{franja.franja}}
-              </option>
-            </select>
-            <p class="help-block" ng-show="form.franja1.$error.required && submitted">
-              La franja es requerida
-            </p>
-          </div>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.numero.$valid && submitted, 'has-error': form.numero.$invalid && submitted}">
+        <label>Número de grupo:</label>
+        <input class="form-control" max="100" min="1" mongoose-error name="numero" ng-model="clase.numero" required type="number" >
+        <p class="help-block" ng-show="form.numero.$error.required && submitted">
+          El número es requerido
+        </p>
+        <p class="help-block" ng-show="form.numero.$error.mongoose">
+          {{ errors.numero }}
+        </p>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.cupo.$valid && submitted, 'has-error': form.cupo.$invalid && submitted}">
+        <label>Cupo:</label>
+        <input class="form-control" max="200" min="10" name="cupo" ng-model="clase.cupo" required type="number">
+        <p class="help-block" ng-show="form.cupo.$error.required && submitted">
+          El cupo es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.aula.$valid && submitted, 'has-error': form.aula.$invalid && submitted}">
+        <label>Aula:</label>
+         <select class="form-control" name="aula" ng-model="clase.aula" required>
+          <option value="">---Selecciona un aula---</option>
+          <option ng-repeat="aula in aulas" value="{{aula._id}}">{{aula.nombre}}</option>
+         </select>
+        <p class="help-block" ng-show="form.aula.$error.required && submitted">
+          El aula es requerida
+        </p>
+      </div>
+      <div class="form-group">
+        <label>Docente:</label>
+        <select class="form-control" name="docente" ng-model="clase.docente">
+          <option value="">---Selecciona un tipo de docente---</option>
+          <option ng-repeat="docente in docentes" value="{{docente._id}}">{{docente.nombre}}</option>
+        </select>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.dia1.$valid && submitted, 'has-error': form.dia1.$invalid && submitted}">
+        <label>Dia 1:</label>
+        <select class="form-control" name="dia1" ng-model="clase.dia1" required>
+          <option value="">---Selecciona un día---</option>
+          <option value="1">Lunes</option>
+          <option value="2">Martes</option>
+          <option value="3">Miércoles</option>
+          <option value="4">Jueves</option>
+          <option value="5">Viernes</option>
+          <option value="6">Sábado</option>
+        </select>
+        <p class="help-block" ng-show="form.dia1.$error.required && submitted">
+          El dia es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.franja1.$valid && submitted, 'has-error': form.franja1.$invalid && submitted}">
+        <label>Franja:</label>
+        <select class="form-control" name="franja1" ng-model="clase.franja1" required>
+          <option value="">---Selecciona una franja---</option>
+          <option ng-repeat="franja in franjas" value="{{franja._id}}">
+            {{franja.franja}}
+          </option>
+        </select>
+        <p class="help-block" ng-show="form.franja1.$error.required && submitted">
+          La franja es requerida
+        </p>
+      </div>
 
-          <div ng-if="clase.tipo === 'GT'">
-            <div class="form-group" ng-class="{'has-success': form.dia2.$valid && submitted, 'has-error': form.dia2.$invalid && submitted}">
-              <label>Dia 2:</label>
-              <select class="form-control" name="dia2" ng-model="clase.dia2">
-               <option value="">---Selecciona un día---</option>
-               <option value="1">Lunes</option>
-               <option value="2">Martes</option>
-               <option value="3">Miércoles</option>
-               <option value="4">Jueves</option>
-               <option value="5">Viernes</option>
-                <option value="6">Sábado</option>
-              </select>
-              <p class="help-block" ng-show="form.dia2.$error.required && submitted">
-                El dia es requerido
-              </p>
-            </div>
-            <div class="form-group" ng-class="{'has-success': form.franja2.$valid && submitted, 'has-error': form.franja2.$invalid && submitted}">
-              <label>Franja:</label>
-              <select class="form-control" name="franja2" ng-model="clase.franja2">
-                <option value="">---Selecciona una franja---</option>
-                <option ng-repeat="franja in franjas" value="{{franja._id}}">
-                  {{franja.franja}}
-                </option>
-              </select>
-              <p class="help-block" ng-show="form.franja2.$error.required && submitted">
-                La franja es requerida
-              </p>
-            </div>
-           </div>
-          </form>
+      <div ng-if="clase.tipo === 'GT'">
+        <div class="form-group" ng-class="{'has-success': form.dia2.$valid && submitted, 'has-error': form.dia2.$invalid && submitted}">
+          <label>Dia 2:</label>
+          <select class="form-control" name="dia2" ng-model="clase.dia2">
+            <option value="">---Selecciona un día---</option>
+            <option value="1">Lunes</option>
+            <option value="2">Martes</option>
+            <option value="3">Miércoles</option>
+            <option value="4">Jueves</option>
+            <option value="5">Viernes</option>
+            <option value="6">Sábado</option>
+          </select>
+          <p class="help-block" ng-show="form.dia2.$error.required && submitted">
+            El dia es requerido
+          </p>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-success" ng-click="enviarClase(form)" type="button">
-            Actualizar
-          </button>
-          <button class="btn btn-warning" ng-click="cancel()" type="button">
-            Cancelar</button>
+        <div class="form-group" ng-class="{'has-success': form.franja2.$valid && submitted, 'has-error': form.franja2.$invalid && submitted}">
+          <label>Franja:</label>
+          <select class="form-control" name="franja2" ng-model="clase.franja2">
+            <option value="">---Selecciona una franja---</option>
+            <option ng-repeat="franja in franjas" value="{{franja._id}}">
+              {{franja.franja}}
+            </option>
+          </select>
+          <p class="help-block" ng-show="form.franja2.$error.required && submitted">
+            La franja es requerida
+          </p>
         </div>
-      </script>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button ng-if="horarioActual.estado == 'borrador'" class="btn btn-success" ng-click="enviarClase(form)" type="button">
+      Crear
+    </button>
+    <button class="btn btn-success">Enviar a aprobación</button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
+  </div>
+</script>
 
-      <script id="editar-clase.html" type="text/ng-template">
-        <div class="container-fluid">
-          <form class="form" novalidate>
-            <h2 class="text-center">
-              {{clasesx.materia.nombre}}
-              {{clasesx.tipo}}</h2>
-            <div class="form-group" ng-class="{'has-success': form.numero.$valid && submitted, 'has-error': form.numero.$invalid && submitted}">
-              <label>Número de grupo:</label>
-              <input class="form-control" max="100" min="1" name="numero" ng-model="clasesx.numero" required type="number">
-              <p class="help-block" ng-show="form.numero.$error.required && submitted">
-                El número es requerido
-              </p>
-            </div>
-            <div class="form-group" ng-class="{'has-success': form.cupo.$valid && submitted, 'has-error': form.cupo.$invalid && submitted}">
-              <label>Cupo:</label>
-              <input class="form-control" max="200" min="10" name="cupo" ng-model="clasesx.cupo" required type="number">
-              <p class="help-block" ng-show="form.cupo.$error.required && submitted">
-                El cupo es requerido
-              </p>
-            </div>
-            <div class="form-group" ng-class="{'has-success': form.aula.$valid && submitted, 'has-error': form.aula.$invalid && submitted}">
-              <label>Aula:</label>
-              <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre" max-tags="1" name="aula" ng-model="array.arrayAulas" on-tag-adding="evaluarAula(array.arrayAulas)" placeholder="Agrega un aula" replace-spaces-with-dashes="false" required>
-                <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarAulas($query)"></auto-complete>
-              </tags-input>
-              <p class="help-block" ng-show="form.nombre.$error.required && submitted">
-                El aula es requerida
-              </p>
-            </div>
-            <div class="form-group">
-              <label>Docente:</label>
-              <select class="form-control" name="docente" ng-model="clasesx.docente._id">
-                <option ng-repeat="docente in docentes" value="{{docente._id}}">{{docente.nombre}}</option>
-              </select>
-            </div>
-            <div class="form-group" ng-class="{'has-success': form.dia1.$valid && submitted, 'has-error': form.dia1.$invalid && submitted}">
-              <label>Dia 1:</label>
-              <select class="form-control" ng-model="clasesx.dia1">
+<script id="editar-clase.html" type="text/ng-template">
+  <div class="container-fluid">
+    <form class="form" novalidate>
+      <h2 class="text-center">
+        {{clasesx.materia.nombre}}
+        {{clasesx.tipo}}</h2>
+      <div class="form-group" ng-class="{'has-success': form.numero.$valid && submitted, 'has-error': form.numero.$invalid && submitted}">
+        <label>Número de grupo:</label>
+        <input class="form-control" max="100" min="1" name="numero" ng-model="clasesx.numero" required type="number">
+        <p class="help-block" ng-show="form.numero.$error.required && submitted">
+          El número es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.cupo.$valid && submitted, 'has-error': form.cupo.$invalid && submitted}">
+        <label>Cupo:</label>
+        <input class="form-control" max="200" min="10" name="cupo" ng-model="clasesx.cupo" required type="number">
+        <p class="help-block" ng-show="form.cupo.$error.required && submitted">
+          El cupo es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.aula.$valid && submitted, 'has-error': form.aula.$invalid && submitted}">
+        <label>Aula:</label>
+        <select class="form-control" name="aula" ng-model="clasesx.aula._id">
+         <option value="">---Selecciona un aula---</option>
+         <option ng-repeat="aula in aulas" value="{{aula._id}}">{{aula.nombre}}</option>
+        </select>
+        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          El aula es requerida
+        </p>
+      </div>
+      <div class="form-group">
+        <label>Docente:</label>
+        <select class="form-control" name="docente" ng-model="clasesx.docente._id">
+          <option ng-repeat="docente in docentes" value="{{docente._id}}">{{docente.nombre}}</option>
+        </select>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.dia1.$valid && submitted, 'has-error': form.dia1.$invalid && submitted}">
+        <label>Dia 1:</label>
+        <select class="form-control" ng-model="clasesx.dia1">
 
-              <option value="1">Lunes</option>
-              <option value="2">Martes</option>
-              <option value="3">Miércoles</option>
-              <option value="4">Jueves</option>
-              <option value="5">Viernes</option>
-               <option value="6">Sábado</option>
-              </select>
-              <p class="help-block" ng-show="form.dia1.$error.required && submitted">
-                El dia es requerido
-              </p>
-            </div>
-            <div class="form-group" ng-class="{'has-success': form.franja1.$valid && submitted, 'has-error': form.franja1.$invalid && submitted}">
-              <label>Franja:</label>
-              <select class="form-control" ng-model="clasesx.franja1._id">
-                <option ng-repeat="franja in franjas" value="{{franja._id}}">
-                  {{franja.franja}}
-                </option>
-              </select>
-              <p class="help-block" ng-show="form.franja1.$error.required && submitted">
-                La franja es requerida
-              </p>
-            </div>
+          <option value="1">Lunes</option>
+          <option value="2">Martes</option>
+          <option value="3">Miércoles</option>
+          <option value="4">Jueves</option>
+          <option value="5">Viernes</option>
+          <option value="6">Sábado</option>
+        </select>
+        <p class="help-block" ng-show="form.dia1.$error.required && submitted">
+          El dia es requerido
+        </p>
+      </div>
+      <div class="form-group" ng-class="{'has-success': form.franja1.$valid && submitted, 'has-error': form.franja1.$invalid && submitted}">
+        <label>Franja:</label>
+        <select class="form-control" ng-model="clasesx.franja1._id">
+          <option ng-repeat="franja in franjas" value="{{franja._id}}">
+            {{franja.franja}}
+          </option>
+        </select>
+        <p class="help-block" ng-show="form.franja1.$error.required && submitted">
+          La franja es requerida
+        </p>
+      </div>
 
-            <div ng-if="clasesx.dia2">
-              <div class="form-group" ng-class="{'has-success': form.dia2.$valid && submitted, 'has-error': form.dia2.$invalid && submitted}">
-                <label>Dia 2:</label>
-                <select class="form-control" ng-model="clasesx.dia2">
-                <option value="1">Lunes</option>
-                <option value="2">Martes</option>
-                <option value="3">Miércoles</option>
-                <option value="4">Jueves</option>
-                <option value="5">Viernes</option>
-                 <option value="6">Sábado</option>
-                </select>
-                <p class="help-block" ng-show="form.dia2.$error.required && submitted">
-                  El dia es requerido
-                </p>
-              </div>
-              <div class="form-group" ng-class="{'has-success': form.franja2.$valid && submitted, 'has-error': form.franja2.$invalid && submitted}">
-                <label>Franja:</label>
-                <select class="form-control" ng-model="clasesx.franja2._id">
-                  <option ng-repeat="franja in franjas" value="{{franja._id}}">
-                    {{franja.franja}}
-                  </option>
-                </select>
-                <p class="help-block" ng-show="form.franja2.$error.required && submitted">
-                  La franja es requerida
-                </p>
-              </div>
-
-            </div>
-          </form>
+      <div ng-if="clasesx.dia2">
+        <div class="form-group" ng-class="{'has-success': form.dia2.$valid && submitted, 'has-error': form.dia2.$invalid && submitted}">
+          <label>Dia 2:</label>
+          <select class="form-control" ng-model="clasesx.dia2">
+            <option value="1">Lunes</option>
+            <option value="2">Martes</option>
+            <option value="3">Miércoles</option>
+            <option value="4">Jueves</option>
+            <option value="5">Viernes</option>
+            <option value="6">Sábado</option>
+          </select>
+          <p class="help-block" ng-show="form.dia2.$error.required && submitted">
+            El dia es requerido
+          </p>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-success" ng-click="actualizar()" type="button">
-            Actualizar
-          </button>
-          <button class="btn btn-warning" ng-click="cancel()" type="button">
-            Cancelar</button>
+        <div class="form-group" ng-class="{'has-success': form.franja2.$valid && submitted, 'has-error': form.franja2.$invalid && submitted}">
+          <label>Franja:</label>
+          <select class="form-control" ng-model="clasesx.franja2._id">
+            <option ng-repeat="franja in franjas" value="{{franja._id}}">
+              {{franja.franja}}
+            </option>
+          </select>
+          <p class="help-block" ng-show="form.franja2.$error.required && submitted">
+            La franja es requerida
+          </p>
         </div>
-      </script>
+
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" ng-click="actualizar()" type="button">
+      Actualizar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
+  </div>
+</script>

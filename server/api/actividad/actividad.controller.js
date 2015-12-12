@@ -5,7 +5,8 @@ var Actividad = require('./actividad.model');
 var Representante = require('../representante/representante.model');
 var Reserva = require('../reserva/reserva.model');
 var Docente = require('../docente/docente.model');
-var Turno = require('../turno/turno.model')
+var Turno = require('../turno/turno.model');
+var Clase = require('../clase/clase.model');
 
 
 // Obtiene Lista de todas las actividades
@@ -431,6 +432,21 @@ exports.update = function(req, res) {
       if (err) {
         return handleError(res, err);
       }
+      if(actividad.tipo == 1){
+       console.log("entra clase");
+        Clase.findOne({actividad: actividad._id}, function(err, clase){
+           if(!err && clase){
+               if(actividad.estado == 'aprobado'){
+                 Clase.update({_id: clase._id}, {aprobado: true}, function(err){
+                  if(err) console.log(err);
+                 })
+               }
+               else { Clase.update({_id: clase._id}, {aprobado: false}, function(err){
+                if(err) console.log(err);
+               });}
+           }
+        });
+      }
       return res.status(200).json(actividad);
     });
   });
@@ -459,7 +475,6 @@ exports.destroy = function(req, res) {
           return res.status(204).send('No Content');
         });
       });
-
     })
   });
 

@@ -58,7 +58,7 @@ angular.module('reservasApp')
  })
 
   .controller('NuevaEscuelaCtrl', function($scope, $rootScope, $modalInstance, toaster, Escuela, $window, $resource ) {
-    
+
     $scope.escuela = {};
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
@@ -80,7 +80,7 @@ angular.module('reservasApp')
           });
           toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
       });
-              
+
       }
     }
 

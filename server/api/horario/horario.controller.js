@@ -45,10 +45,35 @@ exports.show = function(req, res) {
     return res.json(horario);
   });
 };
-
+// send a render with the clases from a horario
+exports.reporte =  function(req, res) {
+  Horario.findById(req.params.id)
+  .populate('escuela')
+  .populate('ciclo')
+  .exec(function(err,horario){
+    Clase.find({horario: horario._id})
+    .populate('materia')
+    .populate('docente')
+    .populate('franja1')
+    .populate('franja2')
+    .populate('aula')
+    .sort({'tipo': -1, 'numero': 1})
+    .exec(function(err, clases){
+     var clas=  clases.sort(function(a, b){
+       if(a.materia.nombre < b.materia.nombre) return -1;
+       if(a.materia.nombre > b.materia.nombre) return 1;
+       return 0;
+   })
+     res.render('horario', {
+       clases: clases,
+       horario: horario,
+       k: 1
+     });
+    });
+  })
+};
 // Get a single horario
 exports.showByCicloAndEscuela = function(req, res) {
- console.log("entra mmm");
   Horario.findOne({escuela: req.query.escuela, ciclo: req.query.ciclo, estado: {$ne: 'plantilla'}}, function (err, horario) {
     if(err) { return handleError(res, err); }
     if(!horario) { return res.status(404).send('Not Found'); }
@@ -88,7 +113,8 @@ exports.createPlantilla =  function(req, res){
                    materia: clases[it].materia,
                    ciclo: req.body.ciclo,
                    docente: clases[it].docente,
-                   horario: hr._id
+                   horario: hr._id,
+                   aprobado: clases[it].aprobado
                  }, function(err, clase){
                         if (err) console.log(err);
                  });
@@ -118,6 +144,7 @@ exports.mandarHorario =  function(req, res) {
   .populate('materia')
   .exec(function(err, clases){
      if(err) { return handleError(res, err); }
+     if(!clases) { return res.status(404).send('Not Found'); }
      var i = 0;
     (function crearActividad(cls){
      if(i < cls.length){
@@ -136,13 +163,18 @@ exports.mandarHorario =  function(req, res) {
            for (var d = new Date(ai, mi, di); d <= new Date(af, mf, df); d.setDate(d.getDate() + 1)) {
                  (function(diya){
                   Clase.crearTurnoClase(diya, cls[i], actividad);
-                  Clase.update({_id: cls[i]._id},{actividad: actividad._id});
+                  Clase.update({_id: cls[i]._id},{actividad: actividad._id}, function(err){
+                   if(err) console.log(err);
+                  });
                  }(d));
            }
           i++;
           crearActividad(cls);
       });
      }else{
+        Horario.update({_id: req.body.horario},{estado: 'enviado_admin'}, function(err){
+         if(err) console.log(err);
+        })
         return res.status(200).json({exito: true});
      }
     }(clases));

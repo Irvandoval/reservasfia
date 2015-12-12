@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var ClaseSchema = new Schema({
    tipo: {type: String, required:true},// GT, GD, GL
-   numero: {type: Number, required: true},//  01, 02, etc
+   numero: {type: Number, required: true, validate:[validarIndex,'Ya existe ese número de grupo']},//  01, 02, etc
    cupo: {type: Number, required: true},
    dia1: {type: Number, required:true},// si son lunes y miercoles las clases, este sería 1
    dia2: { type: Number, required: false},// este 3
@@ -13,13 +13,24 @@ var ClaseSchema = new Schema({
    franja2: { type: Schema.Types.ObjectId, ref: 'Franja', required: false },
    aula:  { type: Schema.Types.ObjectId, ref: 'Aula', required: true},
    materia: { type: Schema.Types.ObjectId, ref: 'Materia', required: true },// materia a la que pertenece la clase
-   ciclo: { type: Schema.Types.ObjectId, ref: 'Ciclo'},// ciclo en que es impartida la clase
-   docente: { type: Schema.Types.ObjectId, ref: 'Docente'}, //docente encargado de la clase
-   actividad: { type: Schema.Types.ObjectId, ref: 'Actividad'}, //actividad de la que forma parte la clase
-   horario: { type: Schema.Types.ObjectId, ref: 'Horario', required:true}
+   ciclo: { type: Schema.Types.ObjectId, ref: 'Ciclo' },// ciclo en que es impartida la clase
+   docente: { type: Schema.Types.ObjectId, ref: 'Docente' }, //docente encargado de la clase
+   actividad: { type: Schema.Types.ObjectId, ref: 'Actividad' }, //actividad de la que forma parte la clase
+   horario: { type: Schema.Types.ObjectId, ref: 'Horario', required: true },
+   aprobado: { type: Boolean }
 });
 
-ClaseSchema.index({ _id: 1, materia: 1, tipo: 1, numero: 1}, {unique: true});
+ClaseSchema.index({materia: 1, tipo: -1, numero: 1, horario: 1}, {unique: true});
+
+// valida si el index ya existe
+function validarIndex(value, respond){
+ var self = this;
+ this.constructor.findOne({materia: this.materia, tipo: this.tipo,  numero: value, horario: this.horario}, function(err, clase){
+  if(err) console.log(err);
+  if(clase) return respond(false);
+  return respond(true);
+ });
+}
 
 ClaseSchema.statics.crearTurnoClase = function crearTurnoClase(dia, clase, actividad){
 

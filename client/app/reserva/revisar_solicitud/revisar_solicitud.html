@@ -215,8 +215,8 @@
           </div>
           <div class="modal-footer" ng-if="tipo == 1">
             <button class="btn btn-success" ng-click="aprobarSolicitud()" ng-if="!cancelar && actividad.tipo === 2" type="button">
-              Aprobarsol</button>
-            <button class="btn btn-success" ng-click="aprobarSolicitudClase()" ng-if="actividad.tipo === 1" type="button">
+              Aprobar</button>
+            <button class="btn btn-success" ng-click="aprobarSolicitudClase()" ng-if="!cancelar && actividad.tipo === 1" type="button">
               Aprobar</button>
             <button class="btn btn-danger" name="bun" ng-click="cancelacion()" ng-if="!cancelar" type="button">Rechazar actividad</button>
             <button class="btn btn-danger" ng-click="rechazarSolicitud()" ng-if="cancelar" type="button">

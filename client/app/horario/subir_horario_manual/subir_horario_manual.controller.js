@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('SubirHorarioManualCtrl', function($scope, $rootScope, ngTableParams, $filter, $modal, toaster,Ciclo, Escuela, $resource, Clase, ClaseByHorario, Franja, Auth) {
-    var horarioActual = null;
+  .controller('SubirHorarioManualCtrl', function($scope, $rootScope, $location,ngTableParams, $filter, $modal, toaster,Ciclo, Escuela, $resource, Clase, ClaseByHorario, Franja, Auth) {
+    $scope.horarioActual = {};
     $scope.esAdmin = Auth.isAdmin;
     $scope.esRepresentante = Auth.isRepresentante;
     $scope.opcion = {};
@@ -24,10 +24,11 @@ angular.module('reservasApp')
 
 
     $scope.enviarHorarioAdmin =  function(){
-     console.log("entra");
       $resource('/api/horarios/enviar-aprobacion')
-      .save({horario: horarioActual._id, ciclo: $rootScope.cicloActual._id},
+      .save({horario: $scope.horarioActual._id, ciclo: $rootScope.cicloActual._id},
        function(){
+       $scope.horarioActual.estado = 'enviado_admin';
+        $rootScope.tablaHorario.reload();
        toaster.pop('success', "Se ha enviado el horario al admin");
       }, function(err){
        console.log(err);
@@ -75,15 +76,15 @@ angular.module('reservasApp')
      .save({
       tipo: 'GT',
       numero: 1,
-      cupo: 10,
-      dia1: 'lunes',
-      dia2: 'miercoles',
-      franja1: "565cd41cff75b7fe2a602d12",
-      franja2: "565cd41cff75b7fe2a602d12",
-      aula: "55c2e6fbd9de2ffc4ae4af47",
+      cupo: 50,
+      dia1: 1,
+      dia2: 3,
+      franja1: '565cd41cff75b7fe2a602d13',
+      franja2:'565cd41cff75b7fe2a602d13',
+      aula: "55c2e6fbd9de2ffc4ae4af51",
       materia: $scope.opcion.materia,
       ciclo: $rootScope.cicloActual._id,
-      horario: horarioActual._id
+      horario: $scope.horarioActual._id
      }, function(){
       toaster.pop('success', "Grupo agregado", "Se ha agregado al horario la materia con un grupo de ejemplo");
       $rootScope.tablaHorario.reload();
@@ -91,7 +92,8 @@ angular.module('reservasApp')
        console.log(err);
        toaster.pop('error', "La materia ya esta agregada en el horario");
      })
-    }
+    };
+
     $scope.nuevaClase = function(materia) {
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
@@ -103,7 +105,8 @@ angular.module('reservasApp')
             return materia;
           },
           ciclo: function(){ return $scope.opcion.ciclo},
-          horario: function(){ return horarioActual._id}
+          horario: function(){ return $scope.horarioActual},
+
         }
       });
     };
@@ -148,7 +151,7 @@ angular.module('reservasApp')
 
 
     function cargarTabla(horario) {
-      horarioActual = horario;
+      $scope.horarioActual = horario;
       $rootScope.tablaHorario = new ngTableParams({
        sorting: {nmateria: 'asc'}
       }, {
@@ -180,10 +183,13 @@ angular.module('reservasApp')
       return res.query().$promise
     };
   })
-  .controller('NuevaClaseCtrl', function($scope, $rootScope, $resource, materia, ciclo, horario, Clase, $modalInstance, toaster) {
+  .controller('NuevaClaseCtrl', function($scope, $rootScope, $resource, materia, ciclo, horario, Clase, $modalInstance,Aula, toaster) {
     $scope.materia = materia;
+    $scope.horarioActual = horario;
     $scope.arrayAulas = [];
-    console.log(horario);
+    Aula.query(function(aulas){
+     $scope.aulas =  aulas;
+    })
     $scope.clase = {};
     $resource('/api/docentes/materia/:materiaId', {
         materiaId: '@id'
@@ -194,9 +200,48 @@ angular.module('reservasApp')
         $scope.docentes = docentes;
       });
 
+
+      $scope.enviarClaseDirecto = function(){
+       $scope.submitted = true;
+
+       if(form.$valid){
+       // $scope.clase.materia =  materia._id;
+     //   $scope.clase.horario =  horario;
+       // $scope.clase.aula = $scope.arrayAulas[0]._id;
+       // $scope.clase.ciclo =  ciclo;
+        Clase.save({
+         tipo: $scope.clase.tipo,
+         numero: $scope.clase.numero,
+         cupo: $scope.clase.cupo,
+         dia1: $scope.clase.dia1,
+         dia2: $scope.clase.dia2,
+         franja1: $scope.clase.franja1,
+         franja2: $scope.clase.franja2,
+         aula: $scope.clase.aula,
+         materia: materia._id,
+         docente: $scope.clase.docente,
+         ciclo: $rootScope.cicloActual._id,
+         horario: horario._id
+
+        }, function(clase) {
+          toaster.pop('success', "Grupo agregado");
+          $rootScope.tablaHorario.reload();
+          $modalInstance.dismiss('cancel');
+        }, function(err) {
+
+         $scope.errors={}
+         //update validity of form fields that match the mongoose errors
+         angular.forEach(err.data.errors, function(error, field){
+          //   form[field].setValidity('mongoose', false);
+             $scope.errors[field]= error.message;
+       });
+          toaster.pop('error', "Error al agregar grupo");
+        });
+      }
+    };
     $scope.enviarClase = function(form) {
-      console.log($scope.clase);
       $scope.submitted = true;
+
       if(form.$valid){
       // $scope.clase.materia =  materia._id;
     //   $scope.clase.horario =  horario;
@@ -210,18 +255,24 @@ angular.module('reservasApp')
         dia2: $scope.clase.dia2,
         franja1: $scope.clase.franja1,
         franja2: $scope.clase.franja2,
-        aula: $scope.arrayAulas[0]._id,
+        aula: $scope.clase.aula,
         materia: materia._id,
         docente: $scope.clase.docente,
         ciclo: $rootScope.cicloActual._id,
-        horario: horario
+        horario: horario._id
 
        }, function(clase) {
          toaster.pop('success', "Grupo agregado");
          $rootScope.tablaHorario.reload();
          $modalInstance.dismiss('cancel');
        }, function(err) {
-         console.log(err);
+
+        $scope.errors={}
+        //update validity of form fields that match the mongoose errors
+        angular.forEach(err.data.errors, function(error, field){
+         //   form[field].setValidity('mongoose', false);
+            $scope.errors[field]= error.message;
+      });
          toaster.pop('error', "Error al agregar grupo");
        });
      }
@@ -230,11 +281,6 @@ angular.module('reservasApp')
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
-   $scope.evaluarAula = function(){
-    if($scope.arrayAulas.length > 0)
-     return false;
-    return true;
-   };
 
   })
 
@@ -264,7 +310,7 @@ angular.module('reservasApp')
     $scope.actualizar = function() {
       $scope.clasesx.materia = $scope.clasesx.materia._id;
       $scope.clasesx.docente = $scope.clasesx.docente._id;
-      $scope.clasesx.aula = $scope.arrayAulas[0]._id;
+      $scope.clasesx.aula = $scope.clasesx.aula._id;
       $scope.clasesx.franja1 = $scope.clasesx.franja1._id;
       if ($scope.clasesx.franja2)
         $scope.clasesx.franja2 = $scope.clasesx.franja2._id;
@@ -279,13 +325,6 @@ angular.module('reservasApp')
         toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
       });
     };
-    $scope.evaluarAula = function(array){
-     console.log(array);
-     if(array.length > 0)
-      return false;
-     return true;
-    };
-
 
     /*$scope.cargarDocentes = function(query) {
       var res = $resource('/api/docentes/nombre/' + query+'?materia='+clase.materia._id);

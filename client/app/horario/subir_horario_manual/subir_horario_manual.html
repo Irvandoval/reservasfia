@@ -275,7 +275,7 @@
     <button ng-if="horarioActual.estado == 'borrador'" class="btn btn-success" ng-click="enviarClase(form)" type="button">
       Crear
     </button>
-    <button class="btn btn-success">Enviar a aprobación</button>
+    <button class="btn btn-success" ng-click="enviarClaseDirecto(form)">Enviar a aprobación</button>
     <button class="btn btn-warning" ng-click="cancel()" type="button">
       Cancelar</button>
   </div>

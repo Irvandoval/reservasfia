@@ -152,6 +152,7 @@ angular.module('reservasApp')
 
     function cargarTabla(horario) {
       $scope.horarioActual = horario;
+      console.log(horario._id);
       $rootScope.tablaHorario = new ngTableParams({
        sorting: {nmateria: 'asc'}
       }, {
@@ -201,10 +202,12 @@ angular.module('reservasApp')
       });
 
 
-      $scope.enviarClaseDirecto = function(){
+      $scope.enviarClaseDirecto = function(form){
+       console.log("entra bb");
        $scope.submitted = true;
 
        if(form.$valid){
+            console.log("entra cc");
        // $scope.clase.materia =  materia._id;
      //   $scope.clase.horario =  horario;
        // $scope.clase.aula = $scope.arrayAulas[0]._id;
@@ -224,9 +227,17 @@ angular.module('reservasApp')
          horario: horario._id
 
         }, function(clase) {
-          toaster.pop('success', "Grupo agregado");
+         console.log($rootScope.cicloActual._id);
+          toaster.pop('success', "Grupo enviado");
           $rootScope.tablaHorario.reload();
           $modalInstance.dismiss('cancel');
+         $resource('/api/clases/crearActividad/:claseId', {claseId: '@id'})
+         .save({claseId: clase._id},{ciclo: $rootScope.cicloActual._id}, function(res){
+          console.log("mm");
+          console.log(res);
+         }, function(err){
+          toaster.pop('error', "Error al agregar grupo");
+         })
         }, function(err) {
 
          $scope.errors={}

@@ -2,8 +2,7 @@
 
 angular.module('reservasApp')
   .controller('RevisarSolicitudCtrl', function($rootScope, $scope, $modal, $resource, ngTableParams, $filter, Actividad) {
-    var actividades = [],
-      i, j;
+   var i, j;
     $rootScope.enEspera = new ngTableParams({
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
@@ -16,15 +15,14 @@ angular.module('reservasApp')
         Actividad.query({
             idActividad: 'espera'
           }).$promise
-          .then(function(actividadesProm) {
-            actividades = rellenarEscuela(actividadesProm);
+          .then(function(actividades) {
+        //   var actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
           })
-
       }
     });
 
@@ -151,6 +149,7 @@ angular.module('reservasApp')
     };
 
     function rellenarEscuela(actividades) {
+     console.log(actividades);
       for (var i = 0; i < actividades.length; i++) {
         actividades[i].nescuela = actividades[i].escuela.nombre;
       }

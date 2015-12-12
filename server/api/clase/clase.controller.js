@@ -2,7 +2,8 @@
 
 var _ = require('lodash');
 var Clase = require('./clase.model');
-
+var Actividad = require('../actividad/actividad.model');
+var Ciclo = require('../ciclo/ciclo.model');
 // Get list of clases
 exports.index = function(req, res) {
   Clase.find({})
@@ -18,6 +19,51 @@ exports.index = function(req, res) {
   });
 };
 
+exports.crearActividad =  function(req, res){
+ Ciclo.findById(req.body.ciclo, function(err, ciclo){
+ if(err) { return handleError(res, err); }
+ console.log(ciclo);
+ var cAnio = ciclo.anio;
+ var di = ciclo.inicioClases.getDate();
+ var mi = ciclo.inicioClases.getMonth();
+ var ai = ciclo.inicioClases.getFullYear();
+ var df = ciclo.finClases.getDate();
+ var mf = ciclo.finClases.getMonth();
+ var af = ciclo.finClases.getFullYear();
+
+ Clase.findById(req.params.id)
+ .populate('franja1')
+ .populate('franja2')
+ .populate('materia')
+ .exec(function(err, clasex){
+  Actividad.create({
+   nombre: clasex.materia.codigo + ' ' + clasex.tipo + ' ' + clasex.numero, // DSI115 GT 01
+   tipo: 1,
+   materia: clasex.materia._id,
+   escuela: clasex.materia.escuela,
+   encargado: clasex.docente,
+   estado: 'espera_admin',
+   fechaCreacion: new Date(),
+   creadoPor: req.user._id,
+   ciclo: req.body.ciclo
+  }, function(err, actividad){
+   if(err) { return handleError(res, err); }
+   for (var d = new Date(ai, mi, di); d <= new Date(af, mf, df); d.setDate(d.getDate() + 1)) {
+         (function(diya){
+
+          Clase.crearTurnoClase(diya, clasex, actividad);
+          Clase.update({_id: clasex._id},{actividad: actividad._id}, function(err){
+           if(err) console.log(err);
+          });
+         }(d));
+   }
+    return res.status(200).json({exito: true});
+  })
+ });
+
+ });
+
+}
 exports.indexByHorario = function(req, res) {
   Clase.find({horario: req.params.id})
   .populate('docente', 'nombre')

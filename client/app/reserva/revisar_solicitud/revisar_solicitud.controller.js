@@ -156,7 +156,7 @@ angular.module('reservasApp')
     }
   })
 
-.controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, actividad, tipo, Actividad, Turno, toaster) {
+.controller('DetalleReservaCtrl', function($rootScope, $scope, $resource,$window,$location, $modalInstance, $modal,actividad, tipo, Actividad, Turno, toaster) {
   $scope.actividad = actividad;
   $scope.cancelar = false;
   $scope.mensaje = {};
@@ -246,14 +246,13 @@ angular.module('reservasApp')
        }
      });
 
-     modalInstance.result.then(function(actividad) {
-       console.log("entro al result");
-
-     }, function() {
-       //$log.info('Modal dismissed at: ' + new Date());
-
+     modalInstance.result.then(function(resp) {
+       if(resp)
+       enviarReservaClase(reservas, cont);
      });
 
+    }else{
+      enviarReservaClase(reservas, cont);
     }
 
   });
@@ -338,11 +337,33 @@ angular.module('reservasApp')
     $modalInstance.dismiss('cancel');
   };
 
+  function enviarReservaClase(reservas ,c){
+   var actividadEditada = {};
+   for (var i = 0; i < c; i++) {
+     $resource('/api/reservas').save(reservas.data[i]);
+   }
+   actividadEditada = nuevaActividad(actividad,'aprobado');
+   actividadEditada.fechaAprobacion = new Date();
+   Actividad.update({
+       idActividad: actividad._id
+     }, actividadEditada).$promise
+     .then(function() {
+      // actividad.estado = 'aprobado';
+       $rootScope.enEspera.reload();
+       $rootScope.aprobados.reload();
+       $rootScope.desaprobados.reload();
+       //actualizarTurnos(actividadEditada,respuesta);
+         toaster.pop('success', "Actividad aprobada", "Las reservas se han cargado en el sistema");
+     }, function(err) {
+       //error al actualizar
+     });
+  }
+
    function actualizarTurnos(actividad,respuesta){
     var aulaAux = [];
     for (var g = 0;  g < $scope.turnos.length; g++){
     actividad.estado = respuesta;
-     console.log("entra al for g");
+
           for (var s in $scope.turnos[g].aulas){
              aulaAux[s] = $scope.turnos[g].aulas[s]._id;
           }
@@ -377,6 +398,13 @@ angular.module('reservasApp')
 
 
 })
-.controller('ConfirmacionChoqueCtrl', function($scope, actividad){
+.controller('ConfirmacionChoqueCtrl', function($scope, actividad, $modalInstance){
  $scope.actividad =  actividad;
+
+ $scope.aprobar =  function(){
+  $modalInstance.close(true);
+ };
+ $scope.cancel = function () {
+   $modalInstance.dismiss('cancel');
+ };
 });

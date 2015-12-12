@@ -218,6 +218,15 @@
           {{aula.nombre}}
       </div>
     </DIV>
+     <DIV class="text-center">
+      <label for="">Estado:</label>
+      <i class="fa fa-circle " ng-class=
+          "{'esperEscuela':actividad.actividad.estado == 'espera_escuela', 'esper':actividad.actividad.estado == 'espera_admin',
+      'aprob': actividad.actividad.estado == 'aprobado', 'cancelado': actividad.actividad.estado == 'cancelado'}" ></i>
+        <label for="">
+          {{actividad.actividad.estado}}</label>
+      </div>
+    </DIV>
 
   </div>
   <div class="modal-footer">

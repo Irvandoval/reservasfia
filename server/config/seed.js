@@ -30,7 +30,8 @@ Clase.create({
  materia: "563fa64c3bcf29b61d70d7b1",
  ciclo:  "565c88d8c6d684ed0dd81dc3",
  docente: "565cd74a3db1ab1e2c6b81b1",
- horario: "565cce9a672f8e4a290865e5"
+ horario: "565cce9a672f8e4a290865e5",
+ aprobado: false
 },
 {
  tipo: 'GD',
@@ -44,7 +45,8 @@ Clase.create({
  materia: "55c2e6fbd9de2ffc4ae4af55",
  ciclo:  "565c88d8c6d684ed0dd81dc3",
  docente: "55cd6ea6d53897eb56e12806",
- horario: "565cce9a672f8e4a290865e5"
+ horario: "565cce9a672f8e4a290865e5",
+ aprobado: false
 },
 {
  tipo: 'GT',
@@ -58,7 +60,8 @@ Clase.create({
  materia: "563fa64c3bcf29b61d70d7b1",
  ciclo:  "565c88d8c6d684ed0dd81dc3",
  docente: "565cd74a3db1ab1e2c6b81b1",
- horario: "565cce9a672f8e4a290865e5"
+ horario: "565cce9a672f8e4a290865e5",
+ aprobado: false
 },
 {
  tipo: 'GL',
@@ -72,7 +75,8 @@ Clase.create({
  materia: "563fa64c3bcf29b61d70d7b1",
  ciclo:  "565c88d8c6d684ed0dd81dc3",
  docente: "565cd74a3db1ab1e2c6b81b1",
- horario: "565cce9a672f8e4a290865e5"
+ horario: "565cce9a672f8e4a290865e5",
+ aprobado: false
 },
 {
  tipo: 'GT',
@@ -86,7 +90,8 @@ Clase.create({
  materia: "563f9b64252439fa13e70632",
  ciclo:  "565c88d8c6d684ed0dd81dc3",
  docente: "565cd74a3db1ab1e2c6b81b1",
- horario: "565cce9a672f8e4a290865e5"
+ horario: "565cce9a672f8e4a290865e5",
+ aprobado: false
 },
 {
  tipo: 'GD',
@@ -99,7 +104,8 @@ Clase.create({
  materia: "563f9b64252439fa13e70632",
  ciclo:  "565c88d8c6d684ed0dd81dc3",
  docente: "565cd74a3db1ab1e2c6b81b1",
- horario: "565cce9a672f8e4a290865e5"
+ horario: "565cce9a672f8e4a290865e5",
+ aprobado: false
 },
 {
  tipo: 'GL',
@@ -113,7 +119,8 @@ Clase.create({
  materia: "563fa64c3bcf29b61d70d7b1",
  ciclo:  "565c88d8c6d684ed0dd81dc3",
  docente: "565cd74a3db1ab1e2c6b81b1",
- horario: "565cce9a672f8e4a290865e5"
+ horario: "565cce9a672f8e4a290865e5",
+ aprobado: false
 }
 
 

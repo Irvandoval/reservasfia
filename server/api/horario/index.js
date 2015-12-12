@@ -22,6 +22,7 @@ var upload = multer({storage: storage});
 router.get('/', controller.index);
 router.post('/xlsjson',upload.single('excel'),controller.xlstojson);
 router.get('/:id', controller.show);
+router.get('/reporte/:id', controller.reporte);
 router.get('/ciclo/escuela', controller.showByCicloAndEscuela);
 router.get('/:id', controller.showByCicloAndEscuela);
 router.post('/', auth.hasRole('admin'),controller.create);

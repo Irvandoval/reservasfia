@@ -5,7 +5,9 @@ var Aula = require('./aula.model');
 
 // Get list of aulas
 exports.index = function(req, res) {
-  Aula.find(function (err, aulas) {
+  Aula.find()
+  .sort({'nombre': 1})
+  .exec(function (err, aulas) {
     if(err) { return handleError(res, err); }
     return res.json(200, aulas);
   });

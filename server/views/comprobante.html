@@ -4,16 +4,22 @@
     <meta charset="utf-8">
     <link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
     <title>Comprobante de Aprobacion</title>
+    <style type="text/css">
+    @media print {
+        @page {
+         size: letter portrait;
+         margin: 1cm 2cm 1cm 2cm;
+        }
+    }
+</style>
   </head>
   <body>
     <div class="row">
-
       <div class="col-md-4">
         <h5>UNIVERSIDAD DE EL SALVADOR</h5>
         <h5>FACULTAD DE INGENIERÌA Y ARQUITECTURA</h5>
         <h5>UNIDAD DE PLANIFICACIÓN</h5>
       </div>
-
     </div>
 
     <div class="row">
@@ -59,8 +65,9 @@
         <th>Fin</th>
         <th>Aulas</th>
       </tr>
+       <% for(var i=0; i<turnos.length; i++) {%>
       <tr>
-        <% for(var i=0; i<turnos.length; i++) {%>
+
    <td><%= i + 1%></td>
    <td>
     <%= moment(turnos[i].inicio).locale('es').format('D MMMM YYYY')%>
@@ -72,14 +79,11 @@
    <td>
      <%= moment(turnos[i].fin).locale('es').format('h:mm a')%>
    </td>
-
       <td>
        <% for(var j=0; j < turnos[i].aulas.length; j++) {%>
           <b><%= turnos[0].aulas[j].nombre %></b>
         <% } %>
       </td>
-
-
 <% } %>
 
   </tr>

@@ -77,9 +77,9 @@ angular.module('reservasApp')
       });
 
       modalInstance.result.then(function(selectedItem) {
-        $scope.selected = selectedItem;
+      //  $scope.selected = selectedItem;
       }, function() {
-        $log.info('Modal dismissed at: ' + new Date());
+       // $log.info('Modal dismissed at: ' + new Date());
       });
 
     };
@@ -376,7 +376,6 @@ angular.module('reservasApp')
                 $scope.irvan();
               }, function(err) {
                 $scope.errors = {};
-               console.log(err.data.errors);
                // Update validity of form fields that match the mongoose errors
                angular.forEach(err.data.errors, function(error, field) {
                  form[field].$setValidity('mongoose', false);
@@ -418,16 +417,21 @@ angular.module('reservasApp')
 
   })
 
-.controller('ModalInstanceCtrl', function($scope, $modalInstance, actividad) {
+.controller('ModalInstanceCtrl', function($scope, $modalInstance, Turno, toaster,actividad, Auth, uiCalendarConfig) {
+  $scope.esAdmin =  Auth.isAdmin;
   $scope.actividad = actividad;
-  $scope.selected = {
-    //item: $scope.items[0]
-  };
-
   $scope.ok = function() {
     $modalInstance.close();
   };
-
+  $scope.cancelarClase= function(){
+   Turno.delete({idTurno: actividad._id}, function(){
+    uiCalendarConfig.calendars['calendario'].fullCalendar('refetchEvents');
+    $modalInstance.close();
+    toaster.pop('success', "Éxito", "La clase para ese día se ha cancelado");
+   }, function(err){
+      toaster.pop('error', "Error", "Ha ocurrido un error, intente mas tarde");
+   });
+  }
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };

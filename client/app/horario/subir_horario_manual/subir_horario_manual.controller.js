@@ -24,6 +24,8 @@ angular.module('reservasApp')
 
 
     $scope.enviarHorarioAdmin =  function(){
+     console.log($scope.horarioActual._id);
+     console.log($rootScope.cicloActual._id);
       $resource('/api/horarios/enviar-aprobacion')
       .save({horario: $scope.horarioActual._id, ciclo: $rootScope.cicloActual._id},
        function(){

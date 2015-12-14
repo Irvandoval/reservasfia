@@ -12,14 +12,12 @@ angular.module('reservasApp')
     getData: function($defer, params) {
       Materia.query().$promise
         .then(function(materias) {
-          console.log(materias);
           var orderedRecentActivity = params.filter() ?
             $filter('filter')(materias, params.filter()) :
             materias;
           params.total(orderedRecentActivity.length);
           $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         })
-
     }
   });
 
@@ -69,8 +67,7 @@ angular.module('reservasApp')
   });
   $scope.nuevaMateria = function(form) {
     $scope.submitted = true;
-    console.log(form.$valid);
-     if(form.$valid){
+    if(form.$valid){
        Materia.save({
         codigo: $scope.materia.codigo,
         nombre: $scope.materia.nombre,
@@ -79,23 +76,24 @@ angular.module('reservasApp')
         tipo: $scope.materia.tipo,
         imparteEnCiclo: $scope.materia.imparteEnCiclo
        }, function(materia) {
-        $rootScope.tablaMaterias.reload();
-        $modalInstance.dismiss('cancel');
-         toaster.pop('success', "Materia ingresada", "La materia se ha ingresado al sistema");
-         $modalInstance.dismiss('cancel');
+           $rootScope.tablaMaterias.reload();
+           $modalInstance.dismiss('cancel');
+           toaster.pop('success', "Materia ingresada", "La materia se ha ingresado al sistema");
+           $modalInstance.dismiss('cancel');
        }, function(err) {
-        console.log(err);
-        $scope.errors = {};
-        // Update validity of form fields that match the mongoose errors
-        angular.forEach(err.data.errors, function(error, field) {
-          form[field].$setValidity('mongoose', false);
-          $scope.errors[field] = error.message;
-        });
-         toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+           $scope.errors = {};
+
+           // Update validity of form fields that match the mongoose errors
+           angular.forEach(err.data.errors, function(error, field) {
+            console.log(form);
+             form[field].$setValidity('mongoose', false);
+             $scope.errors[field] = error.message;
+           });
+           toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
        });
      }
   }
-  
+
   function obtenerCarreras() {
     var carrerasAux = [];
     for (var i = 0; i < $scope.materia.carreras.length; i++) {
@@ -115,17 +113,21 @@ Materia.get({materiaId: materia._id}, function(materiax){
 });
 
   $scope.editarMateria = function() {
-   $scope.materiaEdit.carreras = obtenerCarreras();
-    Materia.update({
-      materiaId: $scope.materiaEdit._id
-    }, $scope.materiaEdit, function(materiax) {
-     $rootScope.tablaMaterias.reload();
-     $modalInstance.dismiss('cancel');
-      toaster.pop('success', "Materia editada", "La materia se ha editado éxitosamente");
-      $modalInstance.dismiss('cancel');
+    Materia.update({materiaId: $scope.materiaEdit._id},
+     {
+        codigo: $scope.materiaEdit.codigo,
+        nombre: $scope.materiaEdit.nombre,
+        tipo: $scope.materiaEdit.tipo,
+        imparteEnCiclo: $scope.materiaEdit.imparteEnCiclo,
+        carreras: obtenerCarreras()
+    }, function(materiax) {
+        $rootScope.tablaMaterias.reload();
+        $modalInstance.dismiss('cancel');
+        toaster.pop('success', "Materia editada", "La materia se ha editado éxitosamente");
+        $modalInstance.dismiss('cancel');
     }, function(err) {
-      $scope.materiaEdit.carreras =  materia.carreras;
-      toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+        $scope.materiaEdit.carreras =  materia.carreras;
+        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
     })
   }
   $scope.cancel = function() {

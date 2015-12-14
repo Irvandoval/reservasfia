@@ -13,16 +13,19 @@ var AulaSchema = new Schema({
   etiquetas: [{type:String, index: true}]//edificio X , Centro de computo, LCOM, Auditorios, Laboratorios UCB... etc etc etc
 });
 
-/*AulaSchema
+AulaSchema
 .path('nombre')
 .validate(function(nombre, respuesta){
+ var self =  this;
   this.constructor.findOne({nombre: nombre}, function(err, aula){
    if(err) throw err;
    if(aula){
+     if(aula.id === self.id)
+       return respuesta(true);
      return respuesta(false);
    }
    return respuesta(true);
   })
-}, 'El nombre del aula ya existe');*/
+}, 'El nombre del aula ya existe');
 
 module.exports = mongoose.model('Aula', AulaSchema);

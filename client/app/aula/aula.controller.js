@@ -59,13 +59,11 @@ angular.module('reservasApp')
 
 
 .controller('NuevaAulaCtrl', function($scope, $rootScope, $modalInstance, $resource, toaster, Aula, $window) {
-  $scope.aula = {};
-    
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
 
-  $scope.enviar = function(form) {
+  $scope.enviarAula = function(form) {
       $scope.submitted=true;
       if (form.$valid){
     Aula.save($scope.aula, function() {
@@ -73,10 +71,11 @@ angular.module('reservasApp')
       $modalInstance.dismiss('cancel');
       toaster.pop('success', "Aula Ingresada", "El aula se ha ingresado en el sistema'");
     }, function(err) {
-        console.log(err);
       $scope.errors={}
+
       //update validity of form fields that match the mongoose errors
       angular.forEach(err.data.errors, function(error, field){
+       console.log(form);
           form[field].setValidity('mongoose', false);
           $scope.errors[field]= error.message;
     });

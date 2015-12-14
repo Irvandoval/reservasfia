@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var MateriaSchema = new Schema({
-  codigo: { type: String, required:true, unique: true},// MAT115, FDE115
+  codigo: { type: String, required:true, unique: true,dropDups: true},// MAT115, FDE115
   nombre: {type: String, required:true}, // Matematica I , Fundamentos de Economia
   tipo: {type: String, required:true}, // obligatoria o electiva
   escuela: { type: Schema.Types.ObjectId, ref: 'Escuela' },
@@ -16,9 +16,12 @@ var MateriaSchema = new Schema({
 MateriaSchema
 .path('codigo')
 .validate(function(codigo, respuesta){
+ var self = this;
   this.constructor.findOne({codigo: codigo}, function(err, materia){
    if(err) throw err;
    if(materia){
+     if(materia.id === self.id)
+       return respuesta(true);
      return respuesta(false);
    }
    return respuesta(true);

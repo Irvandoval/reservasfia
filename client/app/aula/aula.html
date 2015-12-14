@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
- <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
+  <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
   <div class="panel panel-danger">
     <div class="panel-heading">
       <div class="row">
@@ -28,20 +28,20 @@
           </td>
           <td class="text-center" data-title="'Pizarra'">
             <span aria-hidden="true" class="fa" ng-class="{'fa-check verde':aula.pizarra.pizarra == true, 'fa-close rojo':aula.pizarra.pizarra == false }"></span>
-              <div ng-if="aula.pizarra.pizarra === true && aula.pizarra.tipo == 1">
-                  Madera
-              </div>
-              <div ng-if="aula.pizarra.pizarra === true && aula.pizarra.tipo == 2">
-                  Acrílico
-              </div>
+            <div ng-if="aula.pizarra.pizarra === true && aula.pizarra.tipo == 1">
+              Madera
+            </div>
+            <div ng-if="aula.pizarra.pizarra === true && aula.pizarra.tipo == 2">
+              Acrílico
+            </div>
           </td>
           <td class="text-center" data-title="'Capacidad'">{{aula.capacidad}}</td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning btn-sm" type="button" ng-click="editarAula(aula)">
+            <button class="btn btn-warning btn-sm" ng-click="editarAula(aula)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger btn-sm" type="button" ng-click="eliminarAula(aula._id)" confirm="¿Estas seguro de eliminar el aula {{aula.nombre}}?">
+            <button class="btn btn-danger btn-sm" confirm="¿Estas seguro de eliminar el aula {{aula.nombre}}?" ng-click="eliminarAula(aula._id)" type="button">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -72,124 +72,123 @@
 </script>
 
 <script id="nueva-aula.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Nueva Aula</h3>
- </div>
- <div class="container-fluid">
-  <form class="form" name="form" ng-submit="enviar(form)" novalidate>
-  <div class="form-group" ng-class="{'has-success': form.nombre.$valid && submitted, 'has-error': form.nombre.$invalid && submitted}">
-    <label>Nombre:</label>
-    <input class="form-control" mongoose-error name="nombre" ng-model="aula.nombre" required type="text" >
-    <p class="help-block" ng-show="form.nombre.$error.required && submitted">
-     El nombre es requerido
-    </p>
-    <p class="help-block" ng-show="form.nombre.$error.mongoose">
+  <div class="modal-header">
+    <h3 class="modal-title">Nueva Aula</h3>
+  </div>
+  <div class="container-fluid">
+    <form class="form" name="form" novalidate>
+      <div class="form-group" ng-class="{'has-success': form.nombre.$valid && submitted, 'has-error': form.nombre.$invalid && submitted}">
+        <label>Nombre:</label>
+        <input class="form-control" mongoose-error name="nombre" ng-model="aula.nombre" required type="text"/>
+        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+          El nombre es requerido
+        </p>
+        <p class="help-block" ng-show="form.nombre.$error.mongoose">
           {{ errors.nombre }}
-    </p>
-  </div>
+        </p>
+      </div>
 
-  <div class="form-group" ng-class="{ 'has-success': form.descripcion.$valid && submitted,
+      <div class="form-group" ng-class="{ 'has-success': form.descripcion.$valid && submitted,
                                       'has-error': form.descripcion.$invalid && submitted }">
-    <label>Descripción:</label>
-     <textarea name="descripcion" rows="5" cols="20" class="form-control" ng-model="aula.descripcion" required></textarea>
-      <p class="help-block" ng-show="form.descripcion.$error.required && submitted">
+        <label>Descripción:</label>
+        <textarea class="form-control" cols="20" name="descripcion" ng-model="aula.descripcion" required rows="5"></textarea>
+        <p class="help-block" ng-show="form.descripcion.$error.required && submitted">
           La descripcion es requerida
-      </p>
+        </p>
 
-  </div>
-  <div class="form-group" ng-class="{ 'has-success': form.estado.$valid && submitted,
+      </div>
+      <div class="form-group" ng-class="{ 'has-success': form.estado.$valid && submitted,
                                       'has-error': form.estado.$invalid && submitted }">
-    <label>Estado:</label>
-     <select class="form-control" name="estado" ng-model="aula.estado" required>
-       <option value="true">Habilitado</option>
-       <option value="false">Deshabilitado</option>
-     </select>
-     <p class="help-block" ng-show="form.estado.$error.required && submitted">
+        <label>Estado:</label>
+        <select class="form-control" name="estado" ng-model="aula.estado" required>
+          <option value="true">Habilitado</option>
+          <option value="false">Deshabilitado</option>
+        </select>
+        <p class="help-block" ng-show="form.estado.$error.required && submitted">
           El estado es requerido
-    </p>
-  </div>
-  <div class="form-group" ng-class="{ 'has-success': form.name.$valid && submitted,
-                                      'has-error': form.name.$invalid && submitted }">
-    <label>Capacidad:</label>
-    <input type="number" name="name"  min="0" class="form-control" ng-model="aula.capacidad">
-     <p class="help-block" ng-show="form.name.$error.required && submitted">
-         la capacidad es requerida
-    </p>
-    </div>
-    <label>Sonido:</label>
-     <input type="checkbox" name="name" value="false" class="" ng-model="aula.sonido">
-     <div class="form-group">
-      <label>Pizarra:</label>
-       <input type="checkbox" name="name" value="false" class="" ng-model="aula.pizarra.pizarra">
-       <div ng-if="aula.pizarra.pizarra" >
-        <label>Tipo de Pizarra:</label>
-         <select class="form-control" name="estado" ng-model="aula.pizarra.tipo">
-           <option value="1">Madera</option>
-           <option value="2">Acrílico</option>
-         </select>
+        </p>
+      </div>
+      <div class="form-group" ng-class="{ 'has-success': form.capacidad.$valid && submitted,
+                                      'has-error': form.capacidad.$invalid && submitted }">
+        <label>Capacidad:</label>
+        <input class="form-control" min="0" name="capacidad" ng-model="aula.capacidad" type="number">
+        <p class="help-block" ng-show="form.capacidad.$error.required && submitted">
+          la capacidad es requerida
+        </p>
+      </div>
+      <label>Sonido:</label>
+      <input class="" name="sonido" ng-model="aula.sonido" type="checkbox" value="false">
+      <div class="form-group">
+        <label>Pizarra:</label>
+        <input class="" name="pizarra" ng-model="aula.pizarra.pizarra" type="checkbox" value="false">
+        <div ng-if="aula.pizarra.pizarra">
+          <label>Tipo de Pizarra:</label>
+          <select class="form-control" name="estado" ng-model="aula.pizarra.tipo">
+            <option value="1">Madera</option>
+            <option value="2">Acrílico</option>
+          </select>
           <p class="help-block" ng-show="form.estado.$error.required && submitted">
-         la pizarra es requerida
-            </p>
-       </div>
-     </div>
-     </form>
- </div>
+            la pizarra es requerida
+          </p>
+        </div>
+      </div>
+    </form>
+  </div>
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="enviar(form)" type="button">
-   Agregar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
+    <button class="btn btn-success" ng-click="enviarAula(form)" type="button">
+      Agregar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
   </div>
-
 </script>
 <script id="editar-aula.html" type="text/ng-template">
- <div class="modal-header">
-   <h3 class="modal-title">Editar Aula</h3>
- </div>
- <div class="container-fluid">
-  <div class="form-group">
-    <label>Nombre:</label>
-    <input name="nombre" type="text"  class="form-control" ng-model="aula.nombre">
+  <div class="modal-header">
+    <h3 class="modal-title">Editar Aula</h3>
   </div>
-  <div class="form-group">
-    <label>Descripción:</label>
-     <textarea name="descripcion" rows="5" cols="20" class="form-control" ng-model="aula.descripcion"></textarea>
-  </div>
-  <div class="form-group">
-    <label>Estado:</label>
-     <select class="form-control" name="estado" ng-model="aula.estado">
-       <option value="true">Habilitado</option>
-       <option value="false">Deshabilitado</option>
+  <div class="container-fluid">
+    <div class="form-group">
+      <label>Nombre:</label>
+      <input class="form-control" name="nombre" ng-model="aula.nombre" type="text">
+    </div>
+    <div class="form-group">
+      <label>Descripción:</label>
+      <textarea class="form-control" cols="20" name="descripcion" ng-model="aula.descripcion" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Estado:</label>
+      <select class="form-control" name="estado" ng-model="aula.estado">
+        <option value="true">Habilitado</option>
+        <option value="false">Deshabilitado</option>
 
-     </select>
-  </div>
-  <div class="form-group">
-    <label>Capacidad:</label>
-    <input type="number" name="name"  min="0" class="form-control" ng-model="aula.capacidad">
-  </div>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Capacidad:</label>
+      <input class="form-control" min="0" name="name" ng-model="aula.capacidad" type="number">
+    </div>
     <label>Sonido:</label>
-     <input type="checkbox" name="name" ng-model="aula.sonido" >
-     <div class="form-group">
+    <input name="name" ng-model="aula.sonido" type="checkbox">
+    <div class="form-group">
       <label>Pizarra:</label>
-       <input type="checkbox" name="name" value="false" class="" ng-model="aula.pizarra.pizarra">
-       <div ng-if="aula.pizarra.pizarra" >
+      <input class="" name="name" ng-model="aula.pizarra.pizarra" type="checkbox" value="false">
+      <div ng-if="aula.pizarra.pizarra">
         <label>Tipo de Pizarra:</label>
-         <select class="form-control" name="estado" ng-model="aula.pizarra.tipo">
-           <option value="1">Madera</option>
-           <option value="2">Acrílico</option>
-         </select>
-       </div>
-     </div>
- </div>
+        <select class="form-control" name="estado" ng-model="aula.pizarra.tipo">
+          <option value="1">Madera</option>
+          <option value="2">Acrílico</option>
+        </select>
+      </div>
+    </div>
+  </div>
 
   <div class="modal-footer">
-  <button class="btn btn-success" ng-click="actualizar()" type="button">
-   Actualizar
-  </button>
-  <button class="btn btn-warning" ng-click="cancel()" type="button">
-  Cancelar</button>
+    <button class="btn btn-success" ng-click="actualizar()" type="button">
+      Actualizar
+    </button>
+    <button class="btn btn-warning" ng-click="cancel()" type="button">
+      Cancelar</button>
   </div>
 
 </script>

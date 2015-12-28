@@ -16,8 +16,8 @@ exports.index = function(req, res) {
 
 // Get list of aulas search by regular Expression
 exports.regexNombre = function(req, res) {
-  var regex = new RegExp(req.params.nombre, "i")
-  ,   query = { nombre: regex };
+  var regex = new RegExp(req.params.nombre, "i");
+  var query = { nombre: regex };
   Aula.find(query,function (err, aulas) {
     if(err) { return handleError(res, err); }
     return res.json(200, aulas);

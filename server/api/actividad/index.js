@@ -25,8 +25,8 @@ router.get('/cancelados', auth.hasRole('admin'), controller.indexCancelados);
 router.get('/:id', controller.show);
 router.get('/comprobante/:id',controller.comprobante);
 router.post('/', controller.create);
-router.put('/:id', auth.isAuthenticated(), comprobar.actividadCancelada(), envioCorreo.cambioEstado(), controller.update);
-router.patch('/:id', auth.isAuthenticated(), comprobar.actividadCancelada(), envioCorreo.cambioEstado(), controller.update);
+router.put('/:id', auth.isAuthenticated(), comprobar.actividadCancelada(), controller.update);
+router.patch('/:id', auth.isAuthenticated(), comprobar.actividadCancelada(), controller.update);
 router.delete('/:id', cascade.actividad(), controller.destroy);
 
 module.exports = router;

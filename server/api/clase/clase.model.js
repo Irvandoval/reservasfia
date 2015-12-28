@@ -21,14 +21,14 @@ var ClaseSchema = new Schema({
 });
 
 ClaseSchema.index({materia: 1, tipo: -1, numero: 1, horario: 1}, {unique: true});
-
 // valida si el index ya existe
 function validarIndex(value, respond){
  var self = this;
- this.constructor.findOne({materia: this.materia, tipo: this.tipo,  numero: value, horario: this.horario}, function(err, clase){
-  if(err) console.log(err);
-  if(clase) return respond(false);
-  return respond(true);
+ self.constructor.findOne({materia: self.materia, tipo: self.tipo,  numero: value, horario: self.horario},
+   function(err, clase){
+     if(err) console.log(err);
+     if(clase) return respond(false);
+     return respond(true);
  });
 }
 

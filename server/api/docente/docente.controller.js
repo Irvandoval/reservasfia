@@ -28,8 +28,8 @@ exports.indexByMaterias = function(req, res) {
 
 // Get list of docentes search by regular Expression
 exports.regexNombreByMateria = function(req, res) {
-  var regex = new RegExp(req.params.nombre, "i")
-  ,   query = { nombre: regex, materias: [req.query.materia] };
+  var regex = new RegExp(req.params.nombre, "i");
+  var query = { nombre: regex, materias: [req.query.materia] };
   Docente.find(query,function (err, aulas) {
     if(err) { return handleError(res, err); }
     return res.json(200, aulas);

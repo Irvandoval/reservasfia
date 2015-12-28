@@ -404,8 +404,8 @@ exports.create = function(req, res) {
           Actividad.populate(actividad,{path: 'materia', select: 'nombre'}, function(err, actividadPop){
            res.render('nueva_actividad', {actividad: actividadPop},function(err, html) {
                     if(err) console.log(err);
-                     else
-                    Actividad.correoNuevaActividad(actividad, html);
+                    /* else
+                    Actividad.correoNuevaActividad(actividad, html);*/
            });
        });
        return res.status(201).json(actividad);
@@ -432,11 +432,11 @@ exports.update = function(req, res) {
       if (err) {
         return handleError(res, err);
       }
-      if(actividad.tipo == 1){
+      if(actividad.tipo === 1){
        console.log("entra clase");
         Clase.findOne({actividad: actividad._id}, function(err, clase){
            if(!err && clase){
-               if(actividad.estado == 'aprobado'){
+               if(actividad.estado === 'aprobado'){
                  Clase.update({_id: clase._id}, {aprobado: true}, function(err){
                   if(err) console.log(err);
                  })

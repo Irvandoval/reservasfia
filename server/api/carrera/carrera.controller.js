@@ -15,8 +15,8 @@ exports.index = function(req, res) {
 
 // Get list of carreras search by regular Expression
 exports.regexCodigo = function(req, res) {
-  var regex = new RegExp(req.params.codigo, "i")
-  ,   query = { codigo: regex };
+  var regex = new RegExp(req.params.codigo, "i");
+  var query = { codigo: regex };
  Carrera.find(query,function (err, carreras) {
     if(err) { return handleError(res, err); }
     return res.json(200, carreras);

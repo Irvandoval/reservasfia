@@ -98,32 +98,29 @@ exports.createPlantilla =  function(req, res){
  req.body.estado = 'borrador';
  Horario.create (req.body, function(err, horario){
    if(err) { return handleError(res, err); }
-   console.log("horario");
-   console.log(horario);
    Horario.findOne({estado: 'plantilla', escuela: req.body.escuela}, function(err, plantilla){
          Clase.find({horario: plantilla._id}, function(err, clases){
              if(err) { return handleError(res, err); }
-              for(var i = 0; i < clases.length ; i++){
-                (function(it, hr){
-                 Clase.create({
-                   tipo: clases[it].tipo,
-                   numero: clases[it].numero,
-                   cupo: clases[it].cupo,
-                   franja1: clases[it].franja1,
-                   franja2: clases[it].franja2,
-                   dia1: clases[it].dia1,
-                   dia2: clases[it].dia2,
-                   aula: clases[it].aula,
-                   materia: clases[it].materia,
-                   ciclo: req.body.ciclo,
-                   docente: clases[it].docente,
-                   horario: hr._id,
-                   aprobado: clases[it].aprobado
-                 }, function(err, clase){
-                        if (err) console.log(err);
-                 });
-                })(i, horario)
-              }
+              clases.forEach(function(clase) {
+                Clase.create({
+                  tipo: clase.tipo,
+                  numero: clase.numero,
+                  cupo: clase.cupo,
+                  franja1: clase.franja1,
+                  franja2: clase.franja2,
+                  dia1: clase.dia1,
+                  dia2: clase.dia2,
+                  aula: clase.aula,
+                  materia: clase.materia,
+                  ciclo: req.body.ciclo,
+                  docente: clase.docente,
+                  horario: horario._id,
+                  aprobado: clase.aprobado
+                }, function(err, clase){
+                       if (err) console.log(err);
+                });
+             });
+
            return res.status(200).json(horario);
          });
    })

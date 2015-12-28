@@ -86,7 +86,7 @@ TurnoSchema
 TurnoSchema.statics.eliminarValoresNull = function(turnos){
  var ret = [];
  for(var i = 0; i < turnos.length; i++ )
-  if(turnos[i].actividad != null && turnos[i].aulas != null && turnos[i].aulas.length > 0)
+  if(turnos[i].actividad !== null && turnos[i].aulas !== null && turnos[i].aulas.length > 0)
        ret.push(turnos[i]);
  return ret;
 }

@@ -129,7 +129,7 @@ exports.createForNewHorario = function(req, res) {
  Clase.find({materia: req.body.materia, horario: req.body.horario}, function(err, clases){
    if(err) { return handleError(res, err); }
    console.log(clases.length);
-   if(clases.length == 0){
+   if(clases.length === 0){
     Clase.create(req.body, function(err, clase) {
       if(err) { return handleError(res, err); }
       return res.status(201).json(clase);

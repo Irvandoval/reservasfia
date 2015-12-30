@@ -64,24 +64,25 @@ angular.module('reservasApp')
   };
 
   $scope.enviarAula = function(form) {
-      $scope.submitted=true;
+      $scope.submitted = true;
       if (form.$valid){
-    Aula.save($scope.aula, function() {
-      $rootScope.tablaAulas.reload();
-      $modalInstance.dismiss('cancel');
-      toaster.pop('success', "Aula Ingresada", "El aula se ha ingresado en el sistema'");
-    }, function(err) {
-      $scope.errors={}
-
-      //update validity of form fields that match the mongoose errors
-      angular.forEach(err.data.errors, function(error, field){
-       console.log(form);
-          form[field].setValidity('mongoose', false);
-          $scope.errors[field]= error.message;
-    });
-    toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-  });
-}
+        Aula.save($scope.aula,
+         function(aula) {
+           $rootScope.tablaAulas.reload();
+           $modalInstance.dismiss('cancel');
+           toaster.pop('success', "Aula Ingresada", "El aula se ha ingresado en el sistema");
+          },
+          function(err) {
+             $scope.errors = {};
+             console.log(form.nombre);
+             //update validity of form fields that match the mongoose errors
+             angular.forEach(err.data.errors, function(error, field){
+               form[field].$setValidity('mongoose', false);
+                 $scope.errors[field]= error.message;
+              });
+            toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+       });
+     }
   }
 
 })

@@ -76,43 +76,43 @@
     <h3 class="modal-title">Nueva Aula</h3>
   </div>
   <div class="container-fluid">
-    <form class="form" name="form" novalidate>
-      <div class="form-group" ng-class="{'has-success': form.nombre.$valid && submitted, 'has-error': form.nombre.$invalid && submitted}">
+    <form class="form" name="formu" novalidate>
+      <div class="form-group" ng-class="{'has-success': formu.nombre.$valid && submitted, 'has-error': formu.nombre.$invalid && submitted}">
         <label>Nombre:</label>
         <input class="form-control" mongoose-error name="nombre" ng-model="aula.nombre" required type="text"/>
-        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
+        <p class="help-block" ng-show="formu.nombre.$error.required && submitted">
           El nombre es requerido
         </p>
-        <p class="help-block" ng-show="form.nombre.$error.mongoose">
+        <p class="help-block" ng-show="formu.nombre.$error.mongoose">
           {{ errors.nombre }}
         </p>
       </div>
 
-      <div class="form-group" ng-class="{ 'has-success': form.descripcion.$valid && submitted,
-                                      'has-error': form.descripcion.$invalid && submitted }">
+      <div class="form-group" ng-class="{ 'has-success': formu.descripcion.$valid && submitted,
+                                      'has-error': formu.descripcion.$invalid && submitted }">
         <label>Descripción:</label>
         <textarea class="form-control" cols="20" name="descripcion" ng-model="aula.descripcion" required rows="5"></textarea>
-        <p class="help-block" ng-show="form.descripcion.$error.required && submitted">
+        <p class="help-block" ng-show="formu.descripcion.$error.required && submitted">
           La descripcion es requerida
         </p>
 
       </div>
-      <div class="form-group" ng-class="{ 'has-success': form.estado.$valid && submitted,
-                                      'has-error': form.estado.$invalid && submitted }">
+      <div class="form-group" ng-class="{ 'has-success': formu.estado.$valid && submitted,
+                                      'has-error': formu.estado.$invalid && submitted }">
         <label>Estado:</label>
         <select class="form-control" name="estado" ng-model="aula.estado" required>
           <option value="true">Habilitado</option>
           <option value="false">Deshabilitado</option>
         </select>
-        <p class="help-block" ng-show="form.estado.$error.required && submitted">
+        <p class="help-block" ng-show="formu.estado.$error.required && submitted">
           El estado es requerido
         </p>
       </div>
-      <div class="form-group" ng-class="{ 'has-success': form.capacidad.$valid && submitted,
-                                      'has-error': form.capacidad.$invalid && submitted }">
+      <div class="form-group" ng-class="{ 'has-success': formu.capacidad.$valid && submitted,
+                                      'has-error': formu.capacidad.$invalid && submitted }">
         <label>Capacidad:</label>
         <input class="form-control" min="0" name="capacidad" ng-model="aula.capacidad" type="number">
-        <p class="help-block" ng-show="form.capacidad.$error.required && submitted">
+        <p class="help-block" ng-show="formu.capacidad.$error.required && submitted">
           la capacidad es requerida
         </p>
       </div>
@@ -123,12 +123,12 @@
         <input class="" name="pizarra" ng-model="aula.pizarra.pizarra" type="checkbox" value="false">
         <div ng-if="aula.pizarra.pizarra">
           <label>Tipo de Pizarra:</label>
-          <select class="form-control" name="estado" ng-model="aula.pizarra.tipo">
+          <select class="form-control" name="tipoPizarra" ng-model="aula.pizarra.tipo">
             <option value="1">Madera</option>
             <option value="2">Acrílico</option>
           </select>
-          <p class="help-block" ng-show="form.estado.$error.required && submitted">
-            la pizarra es requerida
+          <p class="help-block" ng-show="formu.pizarra.$error.required && submitted">
+           Campo requerido.
           </p>
         </div>
       </div>
@@ -136,7 +136,7 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-success" ng-click="enviarAula(form)" type="button">
+    <button class="btn btn-success" ng-click="enviarAula(formu)" type="button">
       Agregar
     </button>
     <button class="btn btn-warning" ng-click="cancel()" type="button">

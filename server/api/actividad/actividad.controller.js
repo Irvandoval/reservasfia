@@ -33,7 +33,22 @@ exports.index = function(req, res) {
       });
     });
 };
-
+exports.prueba =  function(req, res){
+ console.log(req.query.estado);
+ Actividad
+   .find({
+     estado: req.query.estado
+   })
+   .populate('materia', 'nombre')
+   .populate('encargado')
+    .populate('escuela')
+   .exec(function(err, actividades) {
+     if (err) {
+       return handleError(res, err);
+     }
+     return res.status(200).json(actividades);
+   });
+}
 //obtiene todas actividades aprobadas
 exports.indexAprobados = function(req, res) {
   Actividad

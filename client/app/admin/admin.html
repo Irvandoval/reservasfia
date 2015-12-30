@@ -1,18 +1,66 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container text-center">
   <ul class="list-group">
-   <li ng-if="isAdmin()" class="list-group-item"><a href="/solicitudes-reservas"><i class="fa fa-clock-o fa-2x"></i> Solicitudes de reservas</a></li>
-   <li ng-if="isRepresentante()" class="list-group-item"><a href="/solicitudes-reservas-escuela"><i class="fa fa-clock-o fa-2x"></i> Solicitudes de reservas</a></li>
-  <li ng-if="isDocente()" class="list-group-item"><a href="/mis-solicitudes"><i class="fa fa-clock-o fa-2x"></i> Mis Solicitudes de reservas</a></li>
-  <li class="list-group-item"><a href="/aula"><i class="fa fa-building fa-2x"></i> Aulas</a></li>
-  <li class="list-group-item"><a href="/materia"><i class="fa fa-book fa-2x"></i> Materias</a></li>
-  <li ng-if="isAdmin()" class="list-group-item"><a href="/usuario"><i class="fa fa-users fa-2x"></i> Usuarios </a></li>
-  <li class="list-group-item"><a href="/docente"><i class="fa fa-user fa-2x"></i> Docentes</a></li>
- <li class="list-group-item"><a href="/ciclo"><i class="fa fa-refresh fa-2x"></i> Ciclos</a></li>
- <li class="list-group-item"><a href="/escuela"><i class="fa fa-graduation-cap  fa-2x"></i> Escuelas</a></li>
- <li class="list-group-item"><a href="/horario"><i class="fa fa-calendar-o fa-2x"></i> Horarios de clases</a></li>
- <li class="list-group-item"><a href="/carrera"><i class="fa fa-book fa-2x"></i> Carreras</a></li>
- <li class="list-group-item"><a href="/representante"><i class="fa fa-user fa-2x"></i> Representantes</a></li>
-
-</ul>
+    <li class="list-group-item" ng-if="isAdmin()">
+      <a href="/solicitudes-reservas">
+        <i class="fa fa-clock-o fa-2x"></i>
+        Solicitudes de reservas</a>
+    </li>
+    <li class="list-group-item" ng-if="isRepresentante()">
+      <a href="/solicitudes-reservas-escuela">
+        <i class="fa fa-clock-o fa-2x"></i>
+        Solicitudes de reservas</a>
+    </li>
+    <li class="list-group-item" ng-if="isDocente()">
+      <a href="/mis-solicitudes">
+        <i class="fa fa-clock-o fa-2x"></i>
+        Mis Solicitudes de reservas</a>
+    </li>
+    <li class="list-group-item">
+      <a href="/aula">
+        <i class="fa fa-building fa-2x"></i>
+        Aulas</a>
+    </li>
+    <li class="list-group-item">
+      <a href="/materia">
+        <i class="fa fa-book fa-2x"></i>
+        Materias</a>
+    </li>
+    <li class="list-group-item" ng-if="isAdmin()">
+      <a href="/usuario">
+        <i class="fa fa-users fa-2x"></i>
+        Usuarios
+      </a>
+    </li>
+    <li class="list-group-item">
+      <a href="/docente">
+        <i class="fa fa-user fa-2x"></i>
+        Docentes</a>
+    </li>
+    <li class="list-group-item">
+      <a href="/representante">
+        <i class="fa fa-user fa-2x"></i>
+        Representantes</a>
+    </li>
+    <li class="list-group-item">
+      <a href="/ciclo">
+        <i class="fa fa-refresh fa-2x"></i>
+        Ciclos</a>
+    </li>
+    <li class="list-group-item">
+      <a href="/escuela">
+        <i class="fa fa-graduation-cap  fa-2x"></i>
+        Escuelas</a>
+    </li>
+    <li class="list-group-item">
+      <a href="/horario">
+        <i class="fa fa-calendar-o fa-2x"></i>
+        Horarios de clases</a>
+    </li>
+    <li class="list-group-item">
+      <a href="/carrera">
+        <i class="fa fa-book fa-2x"></i>
+        Carreras</a>
+    </li>
+  </ul>
 </div>

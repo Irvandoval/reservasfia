@@ -8,7 +8,7 @@ var envioCorreo = require('../../components/middleware/correo.mw');
 var cascade = require('../../components/cascade/actividad.cascade');
 var router = express.Router();
 
-router.get('/', controller.index);
+router.get('/', controller.prueba);
 router.get('/aprobados', auth.isAuthenticated(), controller.indexAprobados);
 router.get('/misaprobados', auth.isAuthenticated(), controller.indexMisAprobados);
 router.get('/espera_escuela_b',auth.isAuthenticated(), controller.indexEsperaEscuelaB);

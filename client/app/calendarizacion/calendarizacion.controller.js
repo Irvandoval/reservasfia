@@ -66,7 +66,7 @@ angular.module('reservasApp')
       console.log(date);
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
-        templateUrl: 'reserva-detalle.html',
+        templateUrl: '/app/calendarizacion/reserva-detalle-modal.html',
         controller: 'ModalInstanceCtrl',
         size: 'lg',
         resolve: {

@@ -13,7 +13,7 @@ exports.index = function(req, res) {
   });
 };
 
-// Get list of carreras search by regular Expression
+// Get list of carreras searched by regular Expression
 exports.regexCodigo = function(req, res) {
   var regex = new RegExp(req.params.codigo, "i");
   var query = { codigo: regex };

@@ -458,6 +458,7 @@ exports.update = function(req, res) {
                }
                else { Clase.update({_id: clase._id}, {aprobado: false}, function(err){
                 if(err) console.log(err);
+                console.log('actualiza');
                });}
            }
         });

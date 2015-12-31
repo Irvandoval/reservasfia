@@ -164,7 +164,6 @@
               <button class="btn btn-danger form-control btn-sm" type="submit">
                 Enviar</button>
             </form>
-
           </div>
 
         </tab>
@@ -174,63 +173,3 @@
   </div>
   <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
 </div>
-<script id="reserva-detalle.html" type="text/ng-template">
-  <div class="modal-header">
-    <h3 class="modal-title">Detalle de la actividad</h3>
-  </div>
-  <div class="modal-body">
-    <h2 class="text-center">
-      {{actividad.actividad.nombre}}
-    </h2>
-    <h4 class="text-center">
-      <div ng-if="actividad.actividad.tipo === 1">
-        Clase
-      </div>
-      <div ng-if="actividad.actividad.tipo === 2">
-        Evaluación
-      </div>
-    </h4>
-    <br>
-    <div class="text-center">
-      <label>Asignatura:</label>
-      {{actividad.actividad.materia.nombre}}
-    </div>
-    <br>
-    <DIV class="text-center">
-      <label for="">Encargado:</label>
-      {{actividad.actividad.encargado.nombre}}
-    </DIV><br>
-    <DIV class="text-center">
-      <label>Fecha:</label>
-      {{actividad.inicio | date:'fullDate'}}
-    </DIV><br>
-    <DIV class="text-center">
-      <label for="">Hora de inicio:</label>
-      {{actividad.inicio | date:'shortTime'}}
-    </DIV><br>
-    <DIV class="text-center">
-      <label for="">Hora de fin:</label>
-      {{actividad.fin | date:'shortTime'}}
-    </DIV><br>
-    <DIV class="text-center">
-      <label for="">Aulas:</label>
-      <div ng-repeat="aula in actividad.aulas">
-          {{aula.nombre}}
-      </div>
-    </DIV>
-     <DIV class="text-center">
-      <label for="">Estado:</label>
-      <i class="fa fa-circle " ng-class=
-          "{'esperEscuela':actividad.actividad.estado == 'espera_escuela', 'esper':actividad.actividad.estado == 'espera_admin',
-      'aprob': actividad.actividad.estado == 'aprobado', 'cancelado': actividad.actividad.estado == 'cancelado'}" ></i>
-        <label for="">
-          {{actividad.actividad.estado}}</label>
-      </div>
-    </DIV>
-
-  </div>
-  <div class="modal-footer">
-    <button ng-if="esAdmin() && actividad.actividad.tipo === 1" class="btn btn-danger" name="button" ng-click="cancelarClase()">Cancelar Clase</button>
-    <button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
-  </div>
-</script>

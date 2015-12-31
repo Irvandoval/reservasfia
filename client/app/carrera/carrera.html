@@ -29,7 +29,7 @@
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger btn-sm" ng-click="eliminarCarrera(carrera._id)" type="button" confirm="¿Estas seguro de eliminar la carrera {{carrera.nombre}}?">
+            <button class="btn btn-danger btn-sm" confirm="¿Estas seguro de eliminar la carrera {{carrera.nombre}}?" ng-click="eliminarCarrera(carrera._id)" type="button">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -56,110 +56,4 @@
       <a href="" ng-click="params.page(page.number)" ng-switch-when="next">&raquo;</a>
     </li>
   </ul>
-</script>
-
-<script id="nueva-carrera.html" type="text/ng-template">
-  <div class="modal-header">
-    <h3 class="modal-title">Nueva Carrera</h3>
-  </div>
-  <div class="container-fluid">
-    <form class="form" name="form" ng-submit="nuevaCarrera(form)" novalidate>
-      <div class="form-group"  ng-class="{ 'has-success': form.codigo.$valid && submitted,
-                                        'has-error': form.codigo.$invalid && submitted }">
-        <label>Codigo:</label>
-        <input class="form-control" mongoose-error name="codigo" ng-model="carrera.codigo" required type="text" value="">
-        <p class="help-block" ng-show="form.codigo.$error.required && submitted">
-          El codigo de la carrera es requerido
-        </p>
-        <p class="help-block" ng-show="form.codigo.$error.mongoose">
-          {{ errors.codigo }}
-        </p>
-      </div>
-
-      <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted,
-                                        'has-error': form.nombre.$invalid && submitted }">
-        <label>Nombre:</label>
-        <input class="form-control" name="nombre" ng-model="carrera.nombre" required type="text" value="">
-        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
-          El nombre de la carrera es requerido
-        </p>
-      </div>
-      <div class="form-group" ng-class="{ 'has-success': form.plan.$valid && submitted,
-                                        'has-error': form.plan.$invalid && submitted }">
-        <label>Plan:</label>
-        <input class="form-control" min="1990" name="plan" ng-model="carrera.plan" required type="number">
-        <p class="help-block" ng-show="form.plan.$error.required && submitted">
-          El plan de la carrera es requerido
-        </p>
-      </div>
-      <div class="form-group" ng-class="{ 'has-success': form.tescuela.$valid && submitted,
-                                        'has-error': form.tescuela.$invalid && submitted }">
-        <label>Escuela:</label>
-        <SELECT NAME="tescuela" class="form-control" ng-model="carrera.escuela" required>
-          <option value="">---Seleccione una escuela---</option>
-          <OPTION VALUE="{{escuela._id}}" ng-repeat="escuela in escuelas">{{escuela.nombre}}</OPTION>
-        </SELECT>
-        <p class="help-block" ng-show="form.tescuela.$error.required && submitted">
-          seleccione la carrera a la que pertenece la carrera
-        </p>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-success" ng-click="nuevaCarrera(form)" type="button">
-      Agregar
-    </button>
-    <button class="btn btn-warning" ng-click="cancel()" type="button">
-      Cancelar</button>
-  </div>
-</script>
-
-<script id="editar-carrera.html" type="text/ng-template">
-  <div class="modal-header">
-    <h3 class="modal-title">Editar carrera</h3>
-  </div>
-  <div class="container-fluid">
-    <form class="form" name="form" ng-submit="actualizarCarrera(form)" novalidate>
-      <div class="form-group">
-        <label>Codigo:</label>
-        <input class="form-control" name="codigo" ng-model="carrera.codigo" required type="text" value="">
-        <p class="help-block" ng-show="form.codigo.$error.required && submitted">
-          El codigo de la carrera es requerido
-        </p>
-      </div>
-
-      <div class="form-group">
-        <label>Nombre:</label>
-        <input class="form-control" name="nombre" ng-model="carrera.nombre" required type="text" value="">
-        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
-          El nombre de la carrera es requerido
-        </p>
-      </div>
-      <div class="form-group">
-        <label>Plan:</label>
-        <input class="form-control" min="1990" name="plan" ng-model="carrera.plan" required type="number">
-        <p class="help-block" ng-show="form.plan.$error.required && submitted">
-          El plan de la carrera es requerido
-        </p>
-      </div>
-      <div class="form-group">
-        <label>Escuela:</label>
-        <SELECT NAME="tescuela"  class="form-control" ng-model="carrera.escuela"  required>
-         <option value="">---Seleccione una escuela---</option>
-          <OPTION  ng-repeat="escuela in escuelas" VALUE="{{escuela._id}} ">{{escuela.nombre}}</OPTION>
-        </SELECT>
-        <p class="help-block" ng-show="form.tescuela.$error.required && submitted">
-          seleccione la carrera a la que pertenece la escuela
-        </p>
-      </div>
-    </form>
-</div>
-<div class="modal-footer">
-<button class="btn btn-success" ng-click="editar()" type="button">
-Actualizar
-</button>
-<button class="btn btn-warning" ng-click="cancel()" type="button">
-Cancelar</button>
-</div>
-
 </script>

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('DocenteCtrl', function($scope, $rootScope, $resource, ngTableParams, $filter, Docente, $modal, toaster, Auth) {
+  .controller('DocenteCtrl', function($scope, $rootScope, $resource, NgTableParams, $filter, Docente, $modal, toaster, Auth) {
     $scope.esAdmin = Auth.isAdmin;
-    $rootScope.tablaDocentes = new ngTableParams({
+    $rootScope.tablaDocentes = new NgTableParams({
       page: 1, // show first page
       count: 7 // count per page
     }, {
@@ -16,21 +16,21 @@ angular.module('reservasApp')
               docentes;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
+          });
 
       }
     });
     $scope.nuevoDocente = function() {
-      var modalInstance = $modal.open({
+     $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'nuevo-docente.html',
         controller: 'NuevoDocenteCtrl',
         size: 'lg'
       });
-    }
+    };
 
     $scope.editarDocente = function(docente) {
-      var modalInstance = $modal.open({
+      $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'editar-docente.html',
         controller: 'EditarDocenteCtrl',
@@ -41,21 +41,21 @@ angular.module('reservasApp')
           }
         }
       });
-    }
+    };
 
     $scope.eliminarDocente = function(id) {
       Docente.delete({
         docenteId: id
       }, function() {
         $rootScope.tablaDocentes.reload();
-        toaster.pop('success', "Docente eliminado", "El docente se ha eliminado");
+        toaster.pop('success', 'Docente eliminado', 'El docente se ha eliminado');
       }, function() {
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
       });
-    }
+    };
     $rootScope.cargarMaterias = function(query) {
       var res = $resource('/api/materias/nombre/' + query);
-      return res.query().$promise
+      return res.query().$promise;
     };
 
 
@@ -74,7 +74,7 @@ angular.module('reservasApp')
       Docente.save($scope.docente, function() {
         $rootScope.tablaDocentes.reload();
         $modalInstance.dismiss('cancel');
-        toaster.pop('success', "Docente creado", "El docente se ha creado");
+        toaster.pop('success', 'Docente creado', 'El docente se ha creado');
       }, function(err) {
        $scope.errors = {};
        // Update validity of form fields that match the mongoose errors
@@ -83,11 +83,10 @@ angular.module('reservasApp')
          $scope.errors[field] = error.message;
        });
        $scope.docente.materias =  undefined;
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
       });
     }
-
-  }
+  };
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
@@ -120,14 +119,14 @@ angular.module('reservasApp')
     Docente.update({
         docenteId: docente._id
       }, $scope.docentex,
-      function(docente) {
+      function() {
         $rootScope.tablaDocentes.reload();
         $modalInstance.dismiss('cancel');
-        toaster.pop('success', "Docente actualizado", "El docente se ha actualizado");
+        toaster.pop('success', 'Docente actualizado', 'El docente se ha actualizado');
       },
       function() {
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-      })
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
+      });
   };
   $scope.createUsuario = function() {
     $scope.usuario.role = 'docente';
@@ -142,13 +141,14 @@ angular.module('reservasApp')
         }, function() {
           $rootScope.tablaDocentes.reload();
           $modalInstance.dismiss('cancel');
-          toaster.pop('success', "Creado usuario", "Se ha creado un usuario para el docente éxitosamente");
+          toaster.pop('success', 'Creado usuario', 'Se ha creado un usuario para el docente éxitosamente');
         }, function() {
-          toaster.pop('error', "Error", "Ha ocurrido un error actualizar docente. Por favor intente mas tarde");
-        })
+          toaster.pop('error', 'Error', 'Ha ocurrido un error actualizar docente. Por favor intente mas tarde');
+        });
       })
       .catch(function(err) {
-        toaster.pop('error', "Error", "Ha ocurrido un error al crear usuario. Por favor intente mas tarde");
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al crear usuario. Por favor intente mas tarde');
+        console.error(err);
       });
 
   };
@@ -164,4 +164,4 @@ angular.module('reservasApp')
     }
     return materiasAux;
   }
-})
+});

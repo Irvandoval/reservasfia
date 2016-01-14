@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('EscuelaCtrl', function ($rootScope, $scope, $resource, ngTableParams, $filter, Escuela, $modal, toaster, Auth) {
+  .controller('EscuelaCtrl', function ($rootScope, $scope, $resource, NgTableParams, $filter, Escuela, $modal, toaster, Auth) {
    $scope.esAdmin = Auth.isAdmin;
 
-   $rootScope.tablaEscuelas = new ngTableParams({
+   $rootScope.tablaEscuelas = new NgTableParams({
      page: 1, // show first page
      count: 5 // count per page
    }, {
@@ -17,19 +17,18 @@ angular.module('reservasApp')
              escuelas;
            params.total(orderedRecentActivity.length);
            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-         })
-
+         });
      }
    });
 
    $scope.nuevaEscuela = function() {
-     var modalInstance = $modal.open({
+      $modal.open({
        animation: $scope.animationsEnabled,
        templateUrl: 'nueva-escuela.html',
        controller: 'NuevaEscuelaCtrl',
        size: 'lg'
      });
-   }
+   };
 
 
    $scope.eliminarEscuela = function(id) {
@@ -37,12 +36,13 @@ angular.module('reservasApp')
        escuelaId: id
      }, function() {
        $rootScope.tablaEscuelas.reload();
-       toaster.pop('success', "Escuela eliminada", "La escuela se ha eliminado del sistema");
-     }, function(err) {});
+       toaster.pop('success', 'Escuela eliminada', 'La escuela se ha eliminado del sistema');
+     }, function() {// error
+     });
    };
 
    $scope.editarEscuela = function(escuela) {
-     var modalInstance = $modal.open({
+     $modal.open({
        animation: $scope.animationsEnabled,
        templateUrl: 'editar-escuela.html',
        controller: 'EditarEscuelaCtrl',
@@ -53,11 +53,11 @@ angular.module('reservasApp')
          }
        }
      });
-   }
+   };
 
  })
 
-  .controller('NuevaEscuelaCtrl', function($scope, $rootScope, $modalInstance, toaster, Escuela, $window, $resource ) {
+  .controller('NuevaEscuelaCtrl', function($scope, $rootScope, $modalInstance, toaster, Escuela ) {
 
     $scope.escuela = {};
     $scope.cancel = function() {
@@ -70,7 +70,7 @@ angular.module('reservasApp')
       Escuela.save($scope.escuela, function() {
         $rootScope.tablaEscuelas.reload();
         $modalInstance.dismiss('cancel');
-        toaster.pop('success', "Escuela ingresada", "La escuela se ha ingresado en el sistema");
+        toaster.pop('success', 'Escuela ingresada', 'La escuela se ha ingresado en el sistema');
       }, function(err) {
         $scope.errors={};
           //Update validity of form fields that match the mongoose errors
@@ -78,11 +78,11 @@ angular.module('reservasApp')
               form[field].setValidity('mongoose',false);
               $scope.errors[field]=error.message;
           });
-          toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+          toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
       });
 
       }
-    }
+    };
 
   })
 
@@ -106,9 +106,9 @@ angular.module('reservasApp')
       }, $scope.escuela, function() {
         $rootScope.tablaEscuelas.reload();
         $modalInstance.dismiss('cancel');
-        toaster.pop('success', "Escuela editada", "La escuela se ha editado");
+        toaster.pop('success', 'Escuela editada', 'La escuela se ha editado');
       }, function() {
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-      })
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
+      });
     };
-  })
+  });

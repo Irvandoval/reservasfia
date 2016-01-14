@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CarreraCtrl', function($rootScope, $scope, $resource, ngTableParams, $filter, Carrera, $modal, Auth, toaster) {
+  .controller('CarreraCtrl', function($rootScope, $scope, $resource, NgTableParams, $filter, Carrera, $modal, Auth, toaster) {
     $scope.esAdmin = Auth.isAdmin;
-    $rootScope.tablaCarreras = new ngTableParams({
+    $rootScope.tablaCarreras = new NgTableParams({
       page: 1, // show first page
       count: 5 // count per page
     }, {
@@ -16,20 +16,20 @@ angular.module('reservasApp')
               carreras;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
+          });
 
       }
     });
     $scope.nuevaCarrera = function() {
-      var modalInstance = $modal.open({
+      $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: '/app/carrera/carrera-modal.html',
         controller: 'NuevaCarreraCtrl',
         size: 'lg'
       });
-    }
+    };
     $scope.editarCarrera = function(carrera) {
-      var modalInstance = $modal.open({
+      $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: '/app/carrera/carrera-modal.html',
         controller: 'EditarCarreraCtrl',
@@ -40,17 +40,21 @@ angular.module('reservasApp')
           }
         }
       });
-    }
+    };
 
-    $scope.eliminarCarrera =  function(id){
-     Carrera.delete({carreraId: id}, function(){
+    $scope.eliminarCarrera = function(id) {
+      Carrera.delete({
+        carreraId: id
+      },
+      function() {
         $rootScope.tablaCarreras.reload();
-         toaster.pop('success', "Carrera eliminada", "La carrera se ha eliminado al sistema");
+        toaster.pop('success', 'Carrera eliminada', 'La carrera se ha eliminado al sistema');
 
-     }, function(){
- toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");``
-     })
-    }
+      },
+      function() {
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
+      });
+    };
   })
 
 .controller('NuevaCarreraCtrl', function($scope, $rootScope, toaster, $resource, $modalInstance, Carrera) {
@@ -64,53 +68,59 @@ angular.module('reservasApp')
     $scope.submitted = true;
     if (form.$valid) {
       Carrera.save($scope.carrera,
-       function(carrera) {
-         $rootScope.tablaCarreras.reload();
-         $modalInstance.dismiss('cancel');
-         toaster.pop('success', "Carrera ingresada", "La carrera se ha agregado al sistema");
-      }, function(err) {
-        console.log(err);
-        $scope.errors = {};
-        // Update validity of form fields that match the mongoose errors
-        angular.forEach(err.data.errors, function(error, field) {
-          form[field].$setValidity('mongoose', false);
-          $scope.errors[field] = error.message;
+        function() {
+          $rootScope.tablaCarreras.reload();
+          $modalInstance.dismiss('cancel');
+          toaster.pop('success', 'Carrera ingresada', 'La carrera se ha agregado al sistema');
+        },
+        function(err) {
+          console.log(err);
+          $scope.errors = {};
+          // Update validity of form fields that match the mongoose errors
+          angular.forEach(err.data.errors, function(error, field) {
+            form[field].$setValidity('mongoose', false);
+            $scope.errors[field] = error.message;
+          });
+          toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
         });
-         toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-       });
     }
-  }
+  };
 
   $scope.cancel = function() {
-   $rootScope.tablaCarreras.reload();
+    $rootScope.tablaCarreras.reload();
     $modalInstance.dismiss('cancel');
   };
 
 })
 
-.controller('EditarCarreraCtrl', function($rootScope, carrera, $scope, $modalInstance,$resource,toaster, Carrera) {
-  Carrera.get({carreraId: carrera._id}, function(carrera){
-   $scope.carrera =  carrera;
+.controller('EditarCarreraCtrl', function($rootScope, carrera, $scope, $modalInstance, $resource, toaster, Carrera) {
+  Carrera.get({
+    carreraId: carrera._id
+  }, function(carrera) {
+    $scope.carrera = carrera;
   });
-  $scope.encabezado = "Editar Carrera";
+  $scope.encabezado = 'Editar Carrera';
   $scope.tipo = 2;
   var Escuela = $resource('/api/escuelas');
   Escuela.query(function(escuela) {
     $scope.escuelas = escuela;
   });
 
-  $scope.editar =  function(){
-   Carrera.update({carreraId: carrera._id}, $scope.carrera,
-   function(carrera){
-         $rootScope.tablaCarreras.reload();
-         $modalInstance.dismiss('cancel');
-         toaster.pop('success', "Carrera editada", "La carrera se ha editado exitosamente");
-   },
-   function(err){
-         $rootScope.tablaCarreras.reload();
-         $modalInstance.dismiss('cancel');
-         toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-   });
+  $scope.editar = function() {
+    Carrera.update({
+        carreraId: carrera._id
+      }, $scope.carrera,
+      function() {
+        $rootScope.tablaCarreras.reload();
+        $modalInstance.dismiss('cancel');
+        toaster.pop('success', 'Carrera editada', 'La carrera se ha editado exitosamente');
+      },
+      function(err) {
+        $rootScope.tablaCarreras.reload();
+        $modalInstance.dismiss('cancel');
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
+        console.error(err);
+      });
   };
 
   $scope.cancel = function() {

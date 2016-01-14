@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('RepresentanteCtrl', function ($scope, $rootScope, $resource, ngTableParams, $filter, Representante, $modal, toaster, Auth) {
+  .controller('RepresentanteCtrl', function ($scope, $rootScope, $resource, NgTableParams, $filter, Representante, $modal, toaster, Auth) {
     $scope.esAdmin = Auth.isAdmin;
-
-    $rootScope.tablaRepresentantes= new ngTableParams({
+    $rootScope.tablaRepresentantes= new NgTableParams({
       page: 1, // show first page
       count: 7 // count per page
     }, {
@@ -17,21 +16,21 @@ angular.module('reservasApp')
               representantes;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
+          });
 
       }
     });
 $scope.NuevoRepresentante = function() {
-      var modalInstance = $modal.open({
+      $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'nuevo-Representante.html',
         controller: 'NuevoRepresentanteCtrl',
         size: 'lg'
       });
-    }
+    };
 
 $scope.editarRepresentante= function(representante) {
-      var modalInstance = $modal.open({
+     $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'editar-representante.html',
         controller: 'EditarRepresentanteCtrl',
@@ -42,18 +41,18 @@ $scope.editarRepresentante= function(representante) {
           }
         }
       });
-    }
+    };
 
 $scope.EliminarRepresentante = function(representanteId) {
       Representante.delete({
         representanteId: representanteId
       }, function() {
         $rootScope.tablaRepresentantes.reload();
-        toaster.pop('success', "Representante eliminado", "El Representante se ha eliminado");
+        toaster.pop('success', 'Representante eliminado', 'El Representante se ha eliminado');
       }, function() {
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
       });
-    }
+    };
 
   })
 
@@ -67,21 +66,20 @@ $scope.EliminarRepresentante = function(representanteId) {
         $scope.users = user;
        });
 $scope.NuevoRepresentante = function() {
-  Representante.save($scope.representante, function(representante) {
+  Representante.save($scope.representante, function() {
      $rootScope.tablaRepresentantes.reload();
-      toaster.pop('success', "Representante ingresado", "El Representante se ha ingresado al sistema con exito");
+      toaster.pop('success', 'Representante ingresado', 'El Representante se ha ingresado al sistema con exito');
       $modalInstance.dismiss('cancel');
-    }, function(err) {
-     toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+    }, function() {
+     toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
     });
-}
+};
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
 })
 
-.controller('EditarRepresentanteCtrl', function(representante, $resource, $scope, $rootScope, $modalInstance, Representante, toaster, Auth) {
-    $scope.R
+.controller('EditarRepresentanteCtrl', function(representante, $resource, $scope, $rootScope, $modalInstance, Representante, toaster) {
   $resource('/api/escuelas').query(function(escuelas) {
     $scope.escuelas = escuelas;
   });
@@ -98,19 +96,17 @@ $scope.NuevoRepresentante = function() {
     Representante.update({
         representanteId: representante._id
       }, $scope.representantex,
-      function(representante) {
+      function() {
         $rootScope.tablaRepresentantes.reload();
         $modalInstance.dismiss('cancel');
-        toaster.pop('success', "Representante actualizado", "El representante se ha actualizado");
+        toaster.pop('success', 'Representante actualizado', 'El representante se ha actualizado');
       },
       function() {
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-      })
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
+      });
   };
 
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
-
-
-})
+});

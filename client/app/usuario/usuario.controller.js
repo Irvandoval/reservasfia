@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('UsuarioCtrl', function($scope, $rootScope, ngTableParams, $filter, Usuario, $modal, toaster) {
+  .controller('UsuarioCtrl', function($scope, $rootScope, NgTableParams, $filter, Usuario, $modal, toaster) {
 
 
-    $rootScope.tablaUsuarios = new ngTableParams({
+    $rootScope.tablaUsuarios = new NgTableParams({
       page: 1, // show first page
       count: 7 // count per page
     }, {
@@ -17,22 +17,22 @@ angular.module('reservasApp')
               usuarios;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
+          });
 
       }
     });
 
     $scope.nuevoUsuario = function() {
-      var modalInstance = $modal.open({
+      $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'nuevo-usuario.html',
         controller: 'NuevoUsuarioCtrl',
         size: 'lg'
       });
-    }
+    };
 
     $scope.editarUsuario = function(usuario) {
-      var modalInstance = $modal.open({
+    $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'editar-usuario.html',
         controller: 'EditarUsuarioCtrl',
@@ -43,16 +43,16 @@ angular.module('reservasApp')
           }
         }
       });
-    }
+    };
 
      $scope.eliminarUsuario = function(id){
        Usuario.delete({userId: id}, function(){
           $rootScope.tablaUsuarios.reload();
-         toaster.pop('success', "Usuario eliminado", "El usuario se ha eliminado");
+         toaster.pop('success', 'Usuario eliminado', 'El usuario se ha eliminado');
        }, function(){
-          toaster.pop('error', "Error", "Ha ocurrido un error al eliminar. Por favor intente mas tarde");
+          toaster.pop('error', 'Error', 'Ha ocurrido un error al eliminar. Por favor intente mas tarde');
        });
-     }
+     };
 
   })
 
@@ -72,33 +72,35 @@ angular.module('reservasApp')
       Auth.createUser($scope.user)
         .then(function(usuariox) {
           // creamos docente o representante
-          if ($scope.user.role == 'docente') {
+          if ($scope.user.role === 'docente') {
             $scope.usuario.materias = obtenerMaterias();
             $scope.usuario.nombre = $scope.user.name;
             $scope.usuario.usuario = usuariox._id;
-            Docente.save($scope.usuario, function(usuario) {
+            Docente.save($scope.usuario, function() {
               $rootScope.tablaUsuarios.reload();
               $modalInstance.dismiss('cancel');
-              toaster.pop('success', "Docente creado", "El docente se ha creado'");
+              toaster.pop('success', 'Docente creado', 'El docente se ha creado');
             }, function(err) {
-              toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+              toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
+              console.error(err);
             });
           }
-          if ($scope.user.role == 'representante') {
+          if ($scope.user.role === 'representante') {
             $scope.usuario.nombre = $scope.user.name;
             $scope.usuario.usuario = usuariox._id;
-            Representante.save($scope.usuario, function(usuario) {
+            Representante.save($scope.usuario, function() {
               $rootScope.tablaUsuarios.reload();
               $modalInstance.dismiss('cancel');
-              toaster.pop('success', "Representante creado", "El usuario se ha creado'");
+              toaster.pop('success', 'Representante creado', 'El usuario se ha creado');
             }, function(err) {
-              toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+              toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
+              console.error(err);
             });
           }
 
           $rootScope.tablaUsuarios.reload();
           $modalInstance.dismiss('cancel');
-          toaster.pop('success', "Usuario creado", "El usuario se ha creado'");
+          toaster.pop('success', 'Usuario creado', 'El usuario se ha creado');
         })
         .catch(function(err) {
           err = err.data;
@@ -112,10 +114,10 @@ angular.module('reservasApp')
         });
 
     }
-  }
+  };
   $scope.cargarMaterias = function(query) {
     var res = $resource('/api/materias/nombre/' + query);
-    return res.query().$promise
+    return res.query().$promise;
   };
 
   function obtenerMaterias() {
@@ -146,9 +148,9 @@ angular.module('reservasApp')
     }, $scope.usuario, function() {
       $rootScope.tablaUsuarios.reload();
       $modalInstance.dismiss('cancel');
-      toaster.pop('success', "Usuario editado", "El usuario se ha editado");
+      toaster.pop('success', 'Usuario editado', 'El usuario se ha editado');
     }, function() {
-      toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
-    })
+      toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
+    });
   };
-})
+});

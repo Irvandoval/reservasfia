@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('RevisarSolicitudCtrl', function($rootScope, $scope, $modal, $resource, ngTableParams, $filter, Actividad) {
-   var i, j;
-    $rootScope.enEspera = new ngTableParams({
+  .controller('RevisarSolicitudCtrl', function($rootScope, $scope, $modal, $resource, NgTableParams, $filter, Actividad) {
+    $rootScope.enEspera = new NgTableParams({
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
@@ -22,11 +21,11 @@ angular.module('reservasApp')
               actividades;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
+          });
       }
     });
 
-    $rootScope.aprobados = new ngTableParams({
+    $rootScope.aprobados = new NgTableParams({
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
@@ -45,12 +44,12 @@ angular.module('reservasApp')
               actividades;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
+          });
 
       }
     });
 
-    $rootScope.cancelados = new ngTableParams({
+    $rootScope.cancelados = new NgTableParams({
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
@@ -69,12 +68,11 @@ angular.module('reservasApp')
               actividades;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
-
+          });
       }
     });
 
-    $rootScope.enviadosAEscuela = new ngTableParams({
+    $rootScope.enviadosAEscuela = new NgTableParams({
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
@@ -92,13 +90,13 @@ angular.module('reservasApp')
               actividades;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
+          });
 
       }
     });
 
 
-    $rootScope.desaprobados = new ngTableParams({
+    $rootScope.desaprobados = new NgTableParams({
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
@@ -117,12 +115,12 @@ angular.module('reservasApp')
               actividades;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
+          });
       }
     });
 
     $scope.detalleReserva = function(idActividad, tipo) {
-      var modalInstance = $modal.open({
+      $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'detalleReserva.html',
         controller: 'DetalleReservaCtrl',
@@ -131,20 +129,12 @@ angular.module('reservasApp')
           actividad: function() {
             return Actividad.get({
               idActividad: idActividad
-            }).$promise
+            }).$promise;
           },
           tipo: function() {
-            return tipo
+            return tipo;
           }
         }
-      });
-
-      modalInstance.result.then(function(actividad) {
-        console.log("entro al result");
-
-      }, function() {
-        //$log.info('Modal dismissed at: ' + new Date());
-
       });
     };
 
@@ -161,7 +151,7 @@ angular.module('reservasApp')
     $scope.actividad = actividad;
     $scope.cancelar = false;
     $scope.mensaje = {};
-    console.log("entra al ctrl");
+    console.log('entra al ctrl');
     $scope.tipo = tipo;
     $scope.diferenciaMinutos = Math.round(((new Date() - new Date(actividad.fechaCreacion)) / 1000) / 60); // minutes
     console.log($scope.diferenciaMinutos);
@@ -177,14 +167,14 @@ angular.module('reservasApp')
           $rootScope.enEspera.reload();
           $rootScope.aprobados.reload();
           $rootScope.desaprobados.reload();
-          toaster.pop('success', "Actividad rechazada", "La actividad ahora se ha movido a 'Rechazados'");
-        }, function(err) {
-          console.log("error");
+          toaster.pop('success', 'Actividad rechazada', 'La actividad ahora se ha movido a "Rechazados"');
+        }, function() {
+          console.log('error');
         });
 
     };
 
-    $scope.cancelarSolicitud = function(comentario) {
+    $scope.cancelarSolicitud = function() {
       console.log($scope.mensaje.descripcion);
       $modalInstance.close(actividad);
       var actividadEditada = {};
@@ -198,23 +188,24 @@ angular.module('reservasApp')
           $rootScope.aprobados.reload();
           $rootScope.desaprobados.reload();
           $rootScope.cancelados.reload();
-          toaster.pop('success', "Actividad cancelada", "La actividad ahora se ha movido a 'Cancelados'");
+          toaster.pop('success', 'Actividad cancelada', 'La actividad ahora se ha movido a "Cancelados"');
         }, function(err) {
-          console.log("error");
+          console.log('error');
+          console.error(err);
         });
 
     };
 
     $scope.cancelacion = function() {
       $scope.cancelar = true;
-    }
+    };
 
     $scope.aprobarSolicitudClase = function() {
       $modalInstance.close(actividad);
       var reservas = {};
       reservas.data = [];
       var turnos = [];
-      var actividadEditada = {};
+     // var actividadEditada = {};
       var cont = 0;
       for (var i = 0; i < $scope.turnos.length; i++) { // creamos los objetos reservas
         var turno = $scope.turnos[i];
@@ -225,7 +216,7 @@ angular.module('reservasApp')
             fin: turno.fin,
             aula: aula._id,
             actividad: actividad._id
-          }
+          };
           reservas.data[cont] = nuevaReserva;
           cont++;
         }
@@ -243,18 +234,18 @@ angular.module('reservasApp')
                 size: 'lg',
                 resolve: {
                   actividad: function() {
-                    return respuesta.actividad
+                    return respuesta.actividad;
                   }
                 }
               });
 
               modalInstance.result.then(function(resp) {
                 if (resp)
-                  enviarReservaClase(reservas, cont);
+                  {enviarReservaClase(reservas, cont);}
               });
 
             } else {
-              toaster.pop('error', "Error", "Se ha detectado choque");
+              toaster.pop('error', 'Error', 'Se ha detectado choque');
             }
 
 
@@ -263,7 +254,7 @@ angular.module('reservasApp')
           }
 
         });
-    }
+    };
     $scope.aprobarSolicitud = function() {
       $modalInstance.close(actividad);
       var reservas = {};
@@ -280,7 +271,7 @@ angular.module('reservasApp')
             fin: turno.fin,
             aula: aula._id,
             actividad: actividad._id
-          }
+          };
           reservas.data[cont] = nuevaReserva;
           cont++;
         }
@@ -304,13 +295,13 @@ angular.module('reservasApp')
               $rootScope.aprobados.reload();
               $rootScope.desaprobados.reload();
               //actualizarTurnos(actividadEditada,respuesta);
-              toaster.pop('success', "Actividad aprobada", "Las reservas se han cargado en el sistema");
-            }, function(err) {
+              toaster.pop('success', 'Actividad aprobada', 'Las reservas se han cargado en el sistema');
+            }, function() {
               //error al actualizar
             });
-        }, function(err) {
-          console.log("ERROR");
-          toaster.pop('error', "Error", "Se ha detectado choque");
+        }, function() {
+          console.log('ERROR');
+          toaster.pop('error', 'Error', 'Se ha detectado choque');
         });
     };
     $resource('/api/turnos/actividad/:idActividad', {
@@ -323,7 +314,7 @@ angular.module('reservasApp')
       });
 
     $scope.eliminarSolicitud = function() {
-      console.log("entra");
+      console.log('entra');
       var Actividad = $resource('/api/actividades/:actividadId', {
         actividadId: '@id'
       });
@@ -334,12 +325,13 @@ angular.module('reservasApp')
         $rootScope.aprobados.reload();
         $rootScope.desaprobados.reload();
         $modalInstance.dismiss('cancel');
-        toaster.pop('success', "Actividad eliminada", "La actividad se ha eliminado del sistema'");
-      }, function(err) {})
-    }
+        toaster.pop('success', 'Actividad eliminada', 'La actividad se ha eliminado del sistema');
+      }, function() {//error
+      });
+    };
     $scope.comprobante = function() {
-      $location.path('/api/actividades/comprobante' + actividad._id)
-    }
+      $location.path('/api/actividades/comprobante' + actividad._id);
+    };
     $scope.ok = function() {
       $modalInstance.close();
     };
@@ -364,13 +356,13 @@ angular.module('reservasApp')
           $rootScope.aprobados.reload();
           $rootScope.desaprobados.reload();
           //actualizarTurnos(actividadEditada,respuesta);
-          toaster.pop('success', "Actividad aprobada", "Las reservas se han cargado en el sistema");
-        }, function(err) {
+          toaster.pop('success', 'Actividad aprobada', 'Las reservas se han cargado en el sistema');
+        }, function() {
           //error al actualizar
         });
     }
 
-    function actualizarTurnos(actividad, respuesta) {
+   /* function actualizarTurnos(actividad, respuesta) {
       var aulaAux = [];
       for (var g = 0; g < $scope.turnos.length; g++) {
         actividad.estado = respuesta;
@@ -387,7 +379,7 @@ angular.module('reservasApp')
         Turno.update({
             idTurno: $scope.turnos[g]._id
           }, turnoActualizado, function() {
-            console.log("exito al editar turno.....");
+            console.log('exito al editar turno.....');
           },
           function(err) {
             console.log(err);
@@ -395,7 +387,7 @@ angular.module('reservasApp')
         );
 
       }
-    }
+    }*/
 
     function nuevaActividad(actividad, respuesta) {
       var actividadEdit = {};

@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('AulaCtrl', function($rootScope, $scope, $resource, ngTableParams, $filter, Aula, $modal, toaster, Auth) {
+  .controller('AulaCtrl', function($rootScope, $scope, $resource, NgTableParams, $filter, Aula, $modal, toaster, Auth) {
     $scope.esAdmin = Auth.isAdmin;
 
-    $rootScope.tablaAulas = new ngTableParams({
+    $rootScope.tablaAulas = new NgTableParams({
       page: 1, // show first page
       count: 5 // count per page
     }, {
@@ -17,19 +17,19 @@ angular.module('reservasApp')
               aulas;
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          })
+          });
 
       }
     });
 
     $scope.nuevaAula = function() {
-      var modalInstance = $modal.open({
+     $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'nueva-aula.html',
         controller: 'NuevaAulaCtrl',
         size: 'lg'
       });
-    }
+    };
 
 
     $scope.eliminarAula = function(idAula) {
@@ -37,12 +37,14 @@ angular.module('reservasApp')
         aulaId: idAula
       }, function() {
         $rootScope.tablaAulas.reload();
-        toaster.pop('success', "Aula eliminada", "El aula se ha eliminado del sistema");
-      }, function(err) {});
+        toaster.pop('success', 'Aula eliminada', 'El aula se ha eliminado del sistema');
+      }, function() {
+       toaster.pop('error','Error', 'Por favor intente mas tarde');
+      });
     };
 
     $scope.editarAula = function(aula) {
-      var modalInstance = $modal.open({
+      $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'editar-aula.html',
         controller: 'EditarAulaCtrl',
@@ -53,12 +55,12 @@ angular.module('reservasApp')
           }
         }
       });
-    }
+    };
 
   })
 
 
-.controller('NuevaAulaCtrl', function($scope, $rootScope, $modalInstance, $resource, toaster, Aula, $window) {
+.controller('NuevaAulaCtrl', function($scope, $rootScope, $modalInstance, $resource, toaster, Aula) {
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
@@ -67,10 +69,10 @@ angular.module('reservasApp')
       $scope.submitted = true;
       if (form.$valid){
         Aula.save($scope.aula,
-         function(aula) {
+         function() {
            $rootScope.tablaAulas.reload();
            $modalInstance.dismiss('cancel');
-           toaster.pop('success', "Aula Ingresada", "El aula se ha ingresado en el sistema");
+           toaster.pop('success', 'Aula Ingresada', 'El aula se ha ingresado en el sistema');
           },
           function(err) {
              $scope.errors = {};
@@ -80,10 +82,10 @@ angular.module('reservasApp')
                form[field].$setValidity('mongoose', false);
                  $scope.errors[field]= error.message;
               });
-            toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+            toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
        });
      }
-  }
+  };
 
 })
 
@@ -91,7 +93,7 @@ angular.module('reservasApp')
  console.log(aula.estado);
   Aula.get({aulaId: aula._id}, function(aulax){
    $scope.aula = aulax;
-  })
+  });
 
   $scope.actualizar = function() {
    console.log($scope.aula);
@@ -100,12 +102,12 @@ angular.module('reservasApp')
     }, $scope.aula, function() {
       $rootScope.tablaAulas.reload();
       $modalInstance.dismiss('cancel');
-      toaster.pop('success', "Aula Editada", "El aula se ha editado en el sistema'");
+      toaster.pop('success', 'Aula Editada', 'El aula se ha editado en el sistema');
     }, function() {
-      console.log("error");
-    })
-  }
+      console.log('error');
+    });
+  };
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
-})
+});

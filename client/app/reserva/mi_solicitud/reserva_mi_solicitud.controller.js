@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('ReservaMiSolicitudCtrl', function ($rootScope, $scope, $modal, $resource, ngTableParams, $filter, Actividad) {
-   var actividades = [],
-     i, j;
-   $rootScope.enEspera = new ngTableParams({
+  .controller('ReservaMiSolicitudCtrl', function ($rootScope, $scope, $modal, $resource, NgTableParams, $filter, Actividad) {
+   var actividades = [];
+   $rootScope.enEspera = new NgTableParams({
      page: 1, // paginacion, primera en mostrar
      count: 15, // cantidad de elementos a mostrar por pagina
      sorting: {
@@ -23,12 +22,12 @@ angular.module('reservasApp')
              actividades;
            params.total(orderedRecentActivity.length);
            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-         })
+         });
 
      }
    });
 
-   $rootScope.cancelados = new ngTableParams({
+   $rootScope.cancelados = new NgTableParams({
      page: 1, // paginacion, primera en mostrar
      count: 15, // cantidad de elementos a mostrar por pagina
      sorting: {
@@ -47,12 +46,12 @@ angular.module('reservasApp')
              actividades;
            params.total(orderedRecentActivity.length);
            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-         })
+         });
 
      }
    });
 
-   $rootScope.aprobados = new ngTableParams({
+   $rootScope.aprobados = new NgTableParams({
      page: 1, // paginacion, primera en mostrar
      count: 15, // cantidad de elementos a mostrar por pagina
      sorting: {
@@ -70,13 +69,13 @@ angular.module('reservasApp')
              actividades;
            params.total(orderedRecentActivity.length);
            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-         })
+         });
 
      }
    });
 
 
-   $rootScope.desaprobados = new ngTableParams({
+   $rootScope.desaprobados = new NgTableParams({
      page: 1, // paginacion, primera en mostrar
      count: 15, // cantidad de elementos a mostrar por pagina
      sorting: {
@@ -94,13 +93,13 @@ angular.module('reservasApp')
              actividades;
            params.total(orderedRecentActivity.length);
            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-         })
+         });
 
      }
    });
 
    $scope.detalleReserva = function(idActividad, tipo) {
-     var modalInstance = $modal.open({
+    $modal.open({
        animation: $scope.animationsEnabled,
        templateUrl: 'detalleReserva.html',
        controller: 'DetalleReservaCtrl',
@@ -109,18 +108,10 @@ angular.module('reservasApp')
          actividad: function() {
            return Actividad.get({
              idActividad: idActividad
-           }).$promise
+           }).$promise;
          },
-         tipo: function(){return tipo}
+         tipo: function(){return tipo;}
        }
-     });
-
-     modalInstance.result.then(function(actividad) {
-       console.log("entro al result");
-
-     }, function() {
-       //$log.info('Modal dismissed at: ' + new Date());
-
      });
    };
   });

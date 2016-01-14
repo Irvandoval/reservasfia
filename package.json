@@ -35,7 +35,6 @@
     "xlsx-json": "~0.1.0"
   },
   "devDependencies": {
-    "bower": "~1.4.1",
     "grunt": "~0.4.4",
     "grunt-autoprefixer": "~0.7.2",
     "grunt-wiredep": "~1.8.0",

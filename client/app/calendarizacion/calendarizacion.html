@@ -42,7 +42,7 @@
             </tags-input>
           </div>
         </tab>
-        <tab ng-click="irvan()" ng-if="esAdmin() || esDocente() || esRepresentante() ">
+        <tab ng-click="irvan()" ng-show="esAdmin() || esDocente() || esRepresentante() ">
           <tab-heading>
             <i class="fa fa-list-alt"></i>
             Reservar

@@ -90,4 +90,11 @@ TurnoSchema.statics.eliminarValoresNull = function(turnos){
        ret.push(turnos[i]);
  return ret;
 }
+
+TurnoSchema.statics.filtroValoresNull = function(turno){
+  if(turno.actividad !== null && turno.aulas !== null && turno.aulas.length > 0)
+       return true;
+  return false;
+}
+
 module.exports = mongoose.model('Turno', TurnoSchema);

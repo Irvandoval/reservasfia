@@ -350,6 +350,7 @@ angular.module('reservasApp')
           $scope.aulas.splice(0, $scope.aulas.length);
           $scope.eventSources.push($scope.aprobadosEvt);
           $scope.eventSources.push($scope.esperaEvt);
+	  $scope.eventSources.push($scope.esperaEscuelaEvt);
           aulasEvt.splice(0, aulasEvt.length);
         }
       }

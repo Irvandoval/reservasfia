@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var Turno = require('./turno.model');
 
-// Get list of turnos
+// Envia lista de turnos
 exports.index = function(req, res) {
   Turno.find({})
   .populate('aulas')
@@ -24,6 +24,7 @@ exports.index = function(req, res) {
 
 };
 
+//Envia la lista de turnos por actividad
 exports.indexByActividad = function(req,res){
  Turno.find({actividad: req.params.id})
  .populate('aulas')
@@ -37,7 +38,7 @@ exports.indexByActividad = function(req,res){
  });
 }
 
-// envia los de tipo evaluacion
+// Envia la lista de turnos de actividades aprobadas
 exports.indexAprobados = function(req, res){
  Turno.find({$and: [{
    inicio: {
@@ -74,7 +75,8 @@ exports.indexAprobados = function(req, res){
     });
   });
 }
-//envia los que no han sido aprobados
+
+//envia los turnos de actividades que estan en espera del administrador
 exports.indexEnEspera = function(req, res){
  Turno.find({$and: [{
    inicio: {
@@ -111,7 +113,9 @@ exports.indexEnEspera = function(req, res){
  });
 }
 
+//Envia los turnos de actividades que estan en espera de la escuela
 exports.indexEsperaEscuela = function(req, res) {
+  var turn = [];
  Turno.find({$and: [{
    inicio: {
      $gte: new Date(req.query.inicio)
@@ -140,13 +144,18 @@ exports.indexEsperaEscuela = function(req, res) {
       }
       Turno.populate(docs, opt,function(err, turnos){
           if(err) return handleError(res, err);
-          var turn = Turno.eliminarValoresNull(turnos);
+          //var turn = Turno.eliminarValoresNull(turnos);
+	  turn = turnos.filter(Turno.filtroValoresNull);     
           return res.status(200).json(turn);
       });
    });
  });
 };
+
+//Envia los turnos por aulas especificas
 exports.indexByAula = function(req,res){
+   if (!req.query._aulas)
+    return res.status(404).send('No encontrado');
    Turno.find({$and: [{
      inicio: {
        $gte: new Date(req.query.inicio)

@@ -18,7 +18,6 @@ angular.module('reservasApp', [
   .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
       .otherwise('/');
-
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
   })
@@ -42,6 +41,9 @@ angular.module('reservasApp', [
         $cookieStore.remove('token');
         return $q.reject(response);
       } else {
+        if(response.status === 403) {
+         $location.path('/admin');
+        }
         return $q.reject(response);
       }
     }
@@ -55,7 +57,7 @@ angular.module('reservasApp', [
   $resource('/api/ciclos/por_fecha/actual')
   .get(function(ciclo){
    $rootScope.cicloActual = ciclo;
-  })
+  });
   // Redirect to login if route requires auth and you're not logged in
   $rootScope.$on('$stateChangeStart', function(event, next, toState, toStateParams) {
     $rootScope.toState = toState;

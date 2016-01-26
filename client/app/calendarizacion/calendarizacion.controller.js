@@ -55,7 +55,22 @@ angular.module('reservasApp')
     $scope.minDate = new Date(hoy);
     $scope.mstep = 5; // minutos en el timepicker se desplaza 5 mins
     $scope.openCalendar = openCalendar;
-    $scope.porAulaEvt = {
+    $scope.porAulaEvtAprobado = {
+      url: '/api/turnos/aulas',
+      className: 'aprobado',
+      startParam: 'inicio',
+      endParam: 'fin',
+      data: function() {
+        for (var m = 0; m < $scope.aulas.length; m++) {
+          aulasEvt[m] = $scope.aulas[m].nombre;
+        }
+        return {
+          _aulas: aulasEvt,
+          estado: 'aprobado'
+        };
+      }
+    };
+    $scope.porAulaEvtEsperaAdmin = {
       url: '/api/turnos/aulas',
       className: 'espera',
       startParam: 'inicio',
@@ -65,7 +80,23 @@ angular.module('reservasApp')
           aulasEvt[m] = $scope.aulas[m].nombre;
         }
         return {
-          _aulas: aulasEvt
+          _aulas: aulasEvt,
+          estado: 'espera_admin'
+        };
+      }
+    };
+    $scope.porAulaEvtEsperaEscuela = {
+      url: '/api/turnos/aulas',
+      className: 'esperaEscuela',
+      startParam: 'inicio',
+      endParam: 'fin',
+      data: function() {
+        for (var m = 0; m < $scope.aulas.length; m++) {
+          aulasEvt[m] = $scope.aulas[m].nombre;
+        }
+        return {
+          _aulas: aulasEvt,
+          estado: 'espera_escuela'
         };
       }
     };
@@ -340,17 +371,18 @@ angular.module('reservasApp')
     }
 
     function porAulas() {
-      // console.log('opcion: ' + $scope.busqueda.opcion2);
       if ($scope.busqueda.opcion2 === true) {
         $scope.eventSources.splice(0, $scope.eventSources.length); //eliminamos las actuales resources de eventos
-        $scope.eventSources.push($scope.porAulaEvt);
+        $scope.eventSources.push($scope.porAulaEvtAprobado);
+        $scope.eventSources.push($scope.porAulaEvtEsperaAdmin);
+        $scope.eventSources.push($scope.porAulaEvtEsperaEscuela);
       } else {
         if ($scope.busqueda.opcion2 === false) {
           $scope.eventSources.splice(0, $scope.eventSources.length);
           $scope.aulas.splice(0, $scope.aulas.length);
           $scope.eventSources.push($scope.aprobadosEvt);
           $scope.eventSources.push($scope.esperaEvt);
-	  $scope.eventSources.push($scope.esperaEscuelaEvt);
+	         $scope.eventSources.push($scope.esperaEscuelaEvt);
           aulasEvt.splice(0, aulasEvt.length);
         }
       }

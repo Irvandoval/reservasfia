@@ -23,7 +23,7 @@ TurnoSchema
 .path('inicio')
 .validate(function(inicio){
   var self = this;
-  var date = new Date();
+  var date = new Date(inicio);
   date.setHours(6);
   date.setMinutes(19);
   date.setDate(inicio.getDate());

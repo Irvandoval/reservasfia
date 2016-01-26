@@ -145,7 +145,7 @@ exports.indexEsperaEscuela = function(req, res) {
       Turno.populate(docs, opt,function(err, turnos){
           if(err) return handleError(res, err);
           //var turn = Turno.eliminarValoresNull(turnos);
-	  turn = turnos.filter(Turno.filtroValoresNull);     
+	  turn = turnos.filter(Turno.filtroValoresNull);
           return res.status(200).json(turn);
       });
    });
@@ -154,20 +154,24 @@ exports.indexEsperaEscuela = function(req, res) {
 
 //Envia los turnos por aulas especificas
 exports.indexByAula = function(req,res){
-   if (!req.query._aulas)
-    return res.status(404).send('No encontrado');
-   Turno.find({$and: [{
-     inicio: {
-       $gte: new Date(req.query.inicio)
-     }
-   }, {
-     fin: {
-       $lte: new Date(req.query.fin)
-     }
-   }]
-  })
+ if (!req.query._aulas || !req.query.estado)
+  return res.status(400).send('Invalid request');
+
+  console.log(req.query.estado);
+  Turno.find({
+               $and: [{
+                        inicio: {
+                          $gte: new Date(req.query.inicio)
+                        }
+                      },
+                      {
+                         fin: {
+                           $lte: new Date(req.query.fin)
+                         }
+                      }]
+               })
   .populate({path: 'aulas', match: {nombre: {$in: req.query._aulas}}})
-  .populate('actividad')
+  .populate({path: 'actividad', match: {estado: req.query.estado}})
   .exec(function(err, docs) {
     var options = {
       path: 'actividad.materia',

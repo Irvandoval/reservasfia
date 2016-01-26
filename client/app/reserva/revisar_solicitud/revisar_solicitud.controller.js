@@ -14,8 +14,8 @@ angular.module('reservasApp')
         Actividad.query({
             idActividad: 'espera'
           }).$promise
-          .then(function(actividades) {
-        //   var actividades = rellenarEscuela(actividadesProm);
+          .then(function(actividadesProm) {
+          var actividades = rellenarEscuela(actividadesProm);
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(actividades, params.orderBy()) :
               actividades;
@@ -139,7 +139,6 @@ angular.module('reservasApp')
     };
 
     function rellenarEscuela(actividades) {
-     console.log(actividades);
       for (var i = 0; i < actividades.length; i++) {
         actividades[i].nescuela = actividades[i].escuela.nombre;
       }
@@ -151,7 +150,6 @@ angular.module('reservasApp')
     $scope.actividad = actividad;
     $scope.cancelar = false;
     $scope.mensaje = {};
-    console.log('entra al ctrl');
     $scope.tipo = tipo;
     $scope.diferenciaMinutos = Math.round(((new Date() - new Date(actividad.fechaCreacion)) / 1000) / 60); // minutes
     console.log($scope.diferenciaMinutos);

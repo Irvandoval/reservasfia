@@ -111,7 +111,8 @@ angular.module('reservasApp')
     nombre: docente.nombre,
     escuela: docente.escuela._id,
     materias: docente.materias,
-    usuario: docente.usuario
+    usuario: docente.usuario,
+    correo: docente.correo
   };
 
   $scope.actualizarDocente = function() {

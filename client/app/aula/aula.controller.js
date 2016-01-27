@@ -90,9 +90,12 @@ angular.module('reservasApp')
 })
 
 .controller('EditarAulaCtrl', function(aula, $scope, $rootScope, $modalInstance, Aula, toaster) {
- console.log(aula.estado);
+
   Aula.get({aulaId: aula._id}, function(aulax){
+   console.log(aulax);
    $scope.aula = aulax;
+  },function(err){
+   console.log(err);
   });
 
   $scope.actualizar = function() {

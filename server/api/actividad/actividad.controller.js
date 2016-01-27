@@ -18,137 +18,103 @@ exports.index = function(req, res) {
     .populate('encargado')
     .populate('escuela')
     .exec(function(err, docs) {
-      if (err) {
-        return handleError(res, err);
-      }
+      if (err) return handleError(res, err);
       Actividad.populate(docs, {
         path: 'turnos.aulas',
         model: 'Aula',
         select: 'nombre'
       }, function(err, actividades) {
-        if (err) {
-          return handleError(res, err);
-        }
+        if (err) return handleError(res, err);
         return res.status(200).json(actividades);
       });
     });
 };
+
 exports.prueba =  function(req, res){
  console.log(req.query.estado);
  Actividad
-   .find({
-     estado: req.query.estado
-   })
+   .find({estado: req.query.estado})
    .populate('materia', 'nombre')
    .populate('encargado')
-    .populate('escuela')
+   .populate('escuela')
    .exec(function(err, actividades) {
-     if (err) {
-       return handleError(res, err);
-     }
+     if (err) return handleError(res, err);
      return res.status(200).json(actividades);
    });
 }
 //obtiene todas actividades aprobadas
 exports.indexAprobados = function(req, res) {
   Actividad
-    .find({
-      estado: 'aprobado'
-    })
+    .find({estado: 'aprobado'})
     .populate('materia', 'nombre')
     .populate('encargado')
-     .populate('escuela')
+    .populate('escuela')
     .exec(function(err, actividades) {
-      if (err) {
-        return handleError(res, err);
-      }
+      if (err) return handleError(res, err);
       return res.status(200).json(actividades);
     });
 };
 
 //Obtiene todas las actividades aprobadas donde el encargado sea un usuario
 exports.indexMisAprobados = function(req, res) {
-  console.log(req.user);
   Actividad
-    .find({
-      estado: 'aprobado',
-      encargado: req.user._id
-    })
-    .populate('materia', 'nombre')
-    .populate('encargado')
-     .populate('escuela')
-    .exec(function(err, actividades) {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.status(200).json(actividades);
-    });
-};
-exports.indexMisCancelados = function(req, res) {
-  console.log(req.user);
-  Actividad
-    .find({
-      estado: 'cancelado',
-      encargado: req.user._id
-    })
+    .find({estado: 'aprobado', encargado: req.user._id})
     .populate('materia', 'nombre')
     .populate('encargado')
     .populate('escuela')
     .exec(function(err, actividades) {
-      if (err) {
-        return handleError(res, err);
-      }
+      if (err) return handleError(res, err);
       return res.status(200).json(actividades);
     });
 };
+
+exports.indexMisCancelados = function(req, res) {
+  console.log(req.user);
+  Actividad
+    .find({estado: 'cancelado', encargado: req.user._id})
+    .populate('materia', 'nombre')
+    .populate('encargado')
+    .populate('escuela')
+    .exec(function(err, actividades) {
+      if (err) return handleError(res, err);
+      return res.status(200).json(actividades);
+    });
+};
+
 //Obtiene las actividades desaprobadas por el admin
 exports.indexDesaprobados = function(req, res) {
   Actividad
-    .find({
-      estado: 'desaprobado'
-    })
-    // .populate('turnos')
+    .find({estado: 'desaprobado'})
+    // populate('turnos')
     // .populate('aulas')
     .populate('materia', 'nombre')
     .populate('encargado')
     .populate('escuela')
     .exec(function(err, actividades) {
-      if (err) {
-        return handleError(res, err);
-      }
+      if (err) return handleError(res, err);
       return res.status(200).json(actividades);
     });
 };
 
 exports.indexCancelados = function(req, res) {
   Actividad
-    .find({
-      estado: 'cancelado'
-    })
-    // .populate('turnos')
-    // .populate('aulas')
+    .find({estado: 'cancelado'})
     .populate('materia', 'nombre')
     .populate('encargado')
     .populate('escuela')
     .exec(function(err, actividades) {
-      if (err) {
-        return handleError(res, err);
-      }
+      if (err) return handleError(res, err);
       return res.status(200).json(actividades);
     });
 };
 exports.indexToEscuelaAdmin = function(req, res) {
   Actividad
     .find({estado: 'espera_escuela', creadoPor: req.user._id})
-    // .populate('turnos')
-    // .populate('aulas')
     .populate('materia', 'nombre')
     .populate('encargado')
     .populate('escuela')
     .exec(function(err, actividades) {
-      if (err) {
-        return handleError(res, err);
-      }
+      if (err) return handleError(res, err);
       return res.status(200).json(actividades);
     });
 };
@@ -159,23 +125,23 @@ exports.indexMisDesaprobados = function(req, res) {
   console.log(req.user);
   Actividad
     .find({
-      $and: [{
-        $or: [{
-          estado: 'desaprobado'
-        }, {
-          estado: 'desaprobado_escuela'
-        }]
-      }, {
-        encargado: req.user._id
-      }]
-    })
+           $and:[{
+                   $or: [{
+                          estado: 'desaprobado'
+                         },
+                         {
+                           estado: 'desaprobado_escuela'
+                         }]
+                 },
+                 {
+                   encargado: req.user._id
+                 }]
+          })
     .populate('materia', 'nombre')
     .populate('encargado')
-     .populate('escuela')
+    .populate('escuela')
     .exec(function(err, actividades) {
-      if (err) {
-        return handleError(res, err);
-      }
+      if (err) return handleError(res, err);
       return res.status(200).json(actividades);
     });
 };
@@ -183,39 +149,16 @@ exports.indexMisDesaprobados = function(req, res) {
 // obtiene todas las reservas que estan en espera para el administrador (aprobados por la escuela)
 exports.indexEspera = function(req, res) {
   Actividad
-    .find({
-      estado: 'espera_admin'
-    })
+    .find({estado: 'espera_admin'})
     .populate('materia', 'nombre')
     .populate('encargado')
-     .populate('escuela')
+    .populate('escuela')
     .exec(function(err, actividades) {
-      if (err) {
-        return handleError(res, err);
-      }
+      if (err) return handleError(res, err);
       return res.status(200).json(actividades);
     });
 };
 
-/*exports.indexEsperaEscuelaA = function(req, res) {
-  Representante
-    .findOne({
-      usuario: req.user._id
-    }, function(err, representante) {
-      console.log(req.user._id);
-      Actividad
-        .find({
-          estado: 'espera_escuela',
-          escuela: representante.escuela
-        }, function(err, actividades) {
-          if (err) {
-            return handleError(res, err);
-          }
-          return res.status(200).json(actividades);
-        })
-
-    })
-};*/
 // obtiene todas las reservas que son parte de una escuela y estan en espera
 exports.indexEsperaEscuelaB = function(req, res) {
   Representante
@@ -223,17 +166,12 @@ exports.indexEsperaEscuelaB = function(req, res) {
       usuario: req.user._id
     }, function(err, representante) {
       Actividad
-        .find({
-          estado: 'espera_escuela',
-          escuela: representante.escuela
-        })
+        .find({ estado: 'espera_escuela',escuela: representante.escuela})
         .populate('materia', 'nombre')
         .populate('encargado')
         .populate('escuela')
         .exec(function(err, actividades) {
-          if (err) {
-            return handleError(res, err);
-          }
+          if (err) return handleError(res, err);
           return res.status(200).json(actividades);
         });
     })
@@ -246,17 +184,12 @@ exports.indexDesaprobadosByEscuela = function(req, res) {
       usuario: req.user._id
     }, function(err, representante) {
       Actividad
-        .find({
-          estado: 'desaprobado_escuela',
-          escuela: representante.escuela
-        })
+        .find({estado: 'desaprobado_escuela', escuela: representante.escuela})
         .populate('materia', 'nombre')
         .populate('encargado')
-         .populate('escuela')
+        .populate('escuela')
         .exec(function(err, actividades) {
-          if (err) {
-            return handleError(res, err);
-          }
+          if (err) return handleError(res, err);
           return res.status(200).json(actividades);
         });
 
@@ -351,7 +284,7 @@ exports.indexMisEspera = function(req, res) {
 
 //Renderiza HTML de un comprobante  de una actividad
 exports.comprobante = function(req, res) {
-    console.log(req.params.id);
+
     Actividad
       .findById(req.params.id)
       .populate('materia')
@@ -431,38 +364,15 @@ exports.create = function(req, res) {
 
 // Updates an existing actividad in the DB.
 exports.update = function(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
+  if (req.body._id) delete req.body._id;
   Actividad.findById(req.params.id, function(err, actividad) {
-    if (err) {
-      return handleError(res, err);
-    }
-    if (!actividad) {
-      return res.status(404).send('Not Found');
-    }
- //
+    if (err) return handleError(res, err);
+    if (!actividad) return res.status(404).send('Not Found');
+    req.body.actividad.fechaEdicion = Date.now();
     var updated = _.merge(actividad, req.body);
     updated.save(function(err) {
-      if (err) {
-        return handleError(res, err);
-      }
-      if(actividad.tipo === 1){
-       console.log("entra clase");
-        Clase.findOne({actividad: actividad._id}, function(err, clase){
-           if(!err && clase){
-               if(actividad.estado === 'aprobado'){
-                 Clase.update({_id: clase._id}, {aprobado: true}, function(err){
-                  if(err) console.log(err);
-                 })
-               }
-               else { Clase.update({_id: clase._id}, {aprobado: false}, function(err){
-                if(err) console.log(err);
-                console.log('actualiza');
-               });}
-           }
-        });
-      }
+      if (err) return handleError(res, err);
+      if(actividad.tipo === 1) actualizarClase(actividad);
       return res.status(200).json(actividad);
     });
   });
@@ -470,7 +380,6 @@ exports.update = function(req, res) {
 
 // Deletes a actividad from the DB.
 exports.destroy = function(req, res) {
-
   Reserva.find({
     actividad: req.params.id
   }).remove(function() {
@@ -478,16 +387,10 @@ exports.destroy = function(req, res) {
       actividad: req.params.id
     }).remove(function() {
       Actividad.findById(req.params.id, function(err, actividad) {
-        if (err) {
-          return handleError(res, err);
-        }
-        if (!actividad) {
-          return res.status(404).send('Not Found');
-        }
+        if (err) return handleError(res, err);
+        if (!actividad)  return res.status(404).send('Not Found');
         actividad.remove(function(err) {
-          if (err) {
-            return handleError(res, err);
-          }
+          if (err) return handleError(res, err);
           return res.status(204).send('No Content');
         });
       });
@@ -498,4 +401,20 @@ exports.destroy = function(req, res) {
 
 function handleError(res, err) {
   return res.status(500).send(err);
+}
+
+function actualizarClase(actividad){
+ Clase.findOne({actividad: actividad._id}, function(err, clase){
+    if(!err && clase){
+        if(actividad.estado === 'aprobado'){
+          Clase.update({_id: clase._id}, {aprobado: true}, function(err){
+           if(err) console.log(err);
+          })
+        }
+        else { Clase.update({_id: clase._id}, {aprobado: false}, function(err){
+         if(err) console.log(err);
+         console.log('actualiza');
+        });}
+    }
+ });
 }

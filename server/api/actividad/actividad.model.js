@@ -28,9 +28,9 @@ var ActividadSchema = new Schema({
    encargado: {type: Schema.Types.ObjectId, ref: 'Docente', required: true },
    materia: {type: Schema.Types.ObjectId, ref: 'Materia'},
    escuela: {type: Schema.Types.ObjectId, ref: 'Escuela'},
-   estado: {type:String, required:true}, // aprobado, desaprobado o en espera
-   //turnos: [{type: Schema.Types.ObjectId, ref: 'Turno'}],
+   estado: {type:String, required:true},
    fechaCreacion: {type: Date,required: true},
+   fechaEdicion:{type:Date,required: false},
    fechaAprobacion:{type:Date,required: false},
    creadoPor: {type: Schema.Types.ObjectId, ref: 'User', required: true },
    comentario: {type: String, required: false},

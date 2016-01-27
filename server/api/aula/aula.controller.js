@@ -14,12 +14,12 @@ exports.index = function(req, res) {
   return;
 };
 
-// Get list of aulas search by regular Expression
+// Obtiene la lista de aulas disponibles dada una expresion regular
 exports.regexNombre = function(req, res) {
   var regex = new RegExp(req.params.nombre, "i");
-  var query = { nombre: regex };
+  var query = {nombre: regex, estado: true};
   Aula.find(query,function (err, aulas) {
-    if(err) { return handleError(res, err); }
+    if(err) return handleError(res, err);
     return res.json(200, aulas);
   });
 };

@@ -2,142 +2,39 @@
 
 angular.module('reservasApp')
   .controller('RevisarSolicitudCtrl', function($rootScope, $scope, $modal, $resource, NgTableParams, $filter, Actividad) {
-    $rootScope.enEspera = new NgTableParams({
-      page: 1, // paginacion, primera en mostrar
-      count: 15, // cantidad de elementos a mostrar por pagina
-      sorting: {
-        fechaCreacion: 'asc'
-      }
-    }, {
-      total: 0,
-      getData: function($defer, params) {
-        Actividad.query({
-            idActividad: 'espera'
-          }).$promise
-          .then(function(actividadesProm) {
-          var actividades = rellenarEscuela(actividadesProm);
-            var orderedRecentActivity = params.filter() ?
-              $filter('orderBy')(actividades, params.orderBy()) :
-              actividades;
-            params.total(orderedRecentActivity.length);
-            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          });
-      }
-    });
+     $scope.cambiarTipoReserva = cambiarTipoReserva;
 
-    $rootScope.aprobados = new NgTableParams({
+//////////////////////////////////////////////////
+
+function activate(){
+ cambiarTipoReserva('aprobados');
+}
+activate();
+/////////////////////////////////////////////////////
+  function cambiarTipoReserva(tipo){
+   console.log(tipo);
+   $rootScope.solicitudesAdmin = new NgTableParams({
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
         fechaCreacion: 'desc'
       }
-    }, {
-      total: 0,
-      getData: function($defer, params) {
-        Actividad.query({
-            idActividad: 'aprobados'
-          }).$promise
-          .then(function(actividadesProm) {
-            var actividades = rellenarEscuela(actividadesProm);
-            var orderedRecentActivity = params.filter() ?
-              $filter('orderBy')(actividades, params.orderBy()) :
-              actividades;
-            params.total(orderedRecentActivity.length);
-            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          });
-
-      }
-    });
-
-    $rootScope.cancelados = new NgTableParams({
-      page: 1, // paginacion, primera en mostrar
-      count: 15, // cantidad de elementos a mostrar por pagina
-      sorting: {
-        fechaCreacion: 'desc'
-      }
-    }, {
-      total: 0,
-      getData: function($defer, params) {
-        Actividad.query({
-            idActividad: 'cancelados'
-          }).$promise
-          .then(function(actividadesProm) {
-            var actividades = rellenarEscuela(actividadesProm);
-            var orderedRecentActivity = params.filter() ?
-              $filter('orderBy')(actividades, params.orderBy()) :
-              actividades;
-            params.total(orderedRecentActivity.length);
-            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          });
-      }
-    });
-
-    $rootScope.enviadosAEscuela = new NgTableParams({
-      page: 1, // paginacion, primera en mostrar
-      count: 15, // cantidad de elementos a mostrar por pagina
-      sorting: {
-        fechaCreacion: 'desc'
-      }
-    }, {
-      total: 0,
-      getData: function($defer, params) {
-        Actividad.query({
-            idActividad: 'enviados_escuela_admin'
-          }).$promise
-          .then(function(actividades) {
-            var orderedRecentActivity = params.filter() ?
-              $filter('orderBy')(actividades, params.orderBy()) :
-              actividades;
-            params.total(orderedRecentActivity.length);
-            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          });
-
-      }
-    });
-
-
-    $rootScope.desaprobados = new NgTableParams({
-      page: 1, // paginacion, primera en mostrar
-      count: 15, // cantidad de elementos a mostrar por pagina
-      sorting: {
-        fechaCreacion: 'asc'
-      }
-    }, {
-      total: 0,
-      getData: function($defer, params) {
-        Actividad.query({
-            idActividad: 'desaprobados'
-          }).$promise
-          .then(function(actividadesProm) {
-            var actividades = rellenarEscuela(actividadesProm);
-            var orderedRecentActivity = params.filter() ?
-              $filter('orderBy')(actividades, params.orderBy()) :
-              actividades;
-            params.total(orderedRecentActivity.length);
-            $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          });
-      }
-    });
-
-    $scope.detalleReserva = function(idActividad, tipo) {
-      $modal.open({
-        animation: $scope.animationsEnabled,
-        templateUrl: 'detalleReserva.html',
-        controller: 'DetalleReservaCtrl',
-        size: 'lg',
-        resolve: {
-          actividad: function() {
-            return Actividad.get({
-              idActividad: idActividad
-            }).$promise;
-          },
-          tipo: function() {
-            return tipo;
-          }
-        }
-      });
-    };
-
+     }, {
+    total: 0,
+    getData: function($defer, params) {
+    Actividad.query({idActividad: tipo})
+     .$promise
+       .then(function(actividadesProm) {
+         var actividades = rellenarEscuela(actividadesProm);
+         var orderedRecentActivity = params.filter() ?
+           $filter('orderBy')(actividades, params.orderBy()) :
+           actividades;
+         params.total(orderedRecentActivity.length);
+         $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+       });
+   }
+ });
+     }
     function rellenarEscuela(actividades) {
       for (var i = 0; i < actividades.length; i++) {
         actividades[i].nescuela = actividades[i].escuela.nombre;

@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h3 class="modal-title">¿Esta seguro de realizar esta reserva?</h3>
+</div>
+<div class="modal-body text-center">
+  Se ha detectado un choque con la siguiente Actividad:<br><br>
+  <div class="text-center">
+    <label>Nombre:
+    </label>
+    {{actividad.nombre}}
+    <br>
+    <label>Materia:
+    </label>
+    {{actividad.materia.nombre}}
+    <br>
+    <label>Escuela:
+    </label>
+    {{actividad.escuela.nombre}}
+    <br>
+    <b>¿Desea continuar de todos modos?</b>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-success" ng-click="aprobar()" type="button">
+    Reservar de todos modos
+  </button>
+  <button class="btn btn-warning" ng-click="cancel()" type="button">
+    Cancelar</button>
+</div>

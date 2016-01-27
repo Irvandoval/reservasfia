@@ -2,45 +2,67 @@
 
 angular.module('reservasApp')
   .controller('RevisarSolicitudCtrl', function($rootScope, $scope, $modal, $resource, NgTableParams, $filter, Actividad) {
+     $scope.detalleReserva = detalleReserva;
      $scope.cambiarTipoReserva = cambiarTipoReserva;
+     $scope.tipoReserva = 'espera';
 
 //////////////////////////////////////////////////
 
-function activate(){
- cambiarTipoReserva('aprobados');
-}
-activate();
-/////////////////////////////////////////////////////
-  function cambiarTipoReserva(tipo){
-   console.log(tipo);
-   $rootScope.solicitudesAdmin = new NgTableParams({
-      page: 1, // paginacion, primera en mostrar
-      count: 15, // cantidad de elementos a mostrar por pagina
-      sorting: {
-        fechaCreacion: 'desc'
-      }
-     }, {
-    total: 0,
-    getData: function($defer, params) {
-    Actividad.query({idActividad: tipo})
-     .$promise
-       .then(function(actividadesProm) {
-         var actividades = rellenarEscuela(actividadesProm);
-         var orderedRecentActivity = params.filter() ?
-           $filter('orderBy')(actividades, params.orderBy()) :
-           actividades;
-         params.total(orderedRecentActivity.length);
-         $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-       });
-   }
- });
+  function activate(){
+   cambiarTipoReserva('espera');
+  }
+  activate();
+  /////////////////////////////////////////////////////
+  function detalleReserva(idActividad, tipo) {
+   $modal.open({
+     animation: $scope.animationsEnabled,
+     templateUrl: '/app/reserva/revisar_solicitud/detalleReserva.html',
+     controller: 'DetalleReservaCtrl',
+     size: 'lg',
+     resolve: {
+       actividad: function() {
+         return Actividad.get({
+           idActividad: idActividad
+         }).$promise;
+       },
+       tipo: function() {
+         return tipo;
+       }
      }
-    function rellenarEscuela(actividades) {
-      for (var i = 0; i < actividades.length; i++) {
-        actividades[i].nescuela = actividades[i].escuela.nombre;
+   });
+  }
+
+    function cambiarTipoReserva(tipo){
+
+         $rootScope.solicitudesAdmin = new NgTableParams({
+            page: 1, // paginacion, primera en mostrar
+            count: 15, // cantidad de elementos a mostrar por pagina
+            sorting: {
+              fechaCreacion: 'desc'
+            }
+           }, {
+          total: 0,
+          getData: function($defer, params) {
+          Actividad.query({idActividad: tipo})
+           .$promise
+             .then(function(actividadesProm) {
+               var actividades = rellenarEscuela(actividadesProm);
+               var orderedRecentActivity = params.filter() ?
+                 $filter('orderBy')(actividades, params.orderBy()) :
+                 actividades;
+               params.total(orderedRecentActivity.length);
+               $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+             });
+             }
+              });
+       }
+
+      function rellenarEscuela(actividades) {
+        for (var i = 0; i < actividades.length; i++) {
+          actividades[i].nescuela = actividades[i].escuela.nombre;
+        }
+        return actividades;
       }
-      return actividades;
-    }
   })
 
 .controller('DetalleReservaCtrl', function($rootScope, $scope, $resource, $window, $location, $modalInstance, $modal, actividad, tipo, Actividad, Turno, toaster) {
@@ -79,10 +101,7 @@ activate();
           idActividad: actividad._id
         }, actividadEditada).$promise
         .then(function() {
-          $rootScope.enEspera.reload();
-          $rootScope.aprobados.reload();
-          $rootScope.desaprobados.reload();
-          $rootScope.cancelados.reload();
+          $rootScope.solicitudesAdmin.reload();
           toaster.pop('success', 'Actividad cancelada', 'La actividad ahora se ha movido a "Cancelados"');
         }, function(err) {
           console.log('error');
@@ -124,7 +143,7 @@ activate();
             if (respuesta.actividad.escuela._id !== actividad.escuela._id) {
               var modalInstance = $modal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: 'confirmacion-choque.html',
+                templateUrl: '/app/reserva/revisar_solicitud/confirmacion-choque.html',
                 controller: 'ConfirmacionChoqueCtrl',
                 size: 'lg',
                 resolve: {
@@ -185,11 +204,7 @@ activate();
               idActividad: actividad._id
             }, actividadEditada).$promise
             .then(function() {
-              // actividad.estado = 'aprobado';
-              $rootScope.enEspera.reload();
-              $rootScope.aprobados.reload();
-              $rootScope.desaprobados.reload();
-              //actualizarTurnos(actividadEditada,respuesta);
+              $rootScope.solicitudesAdmin.reload();
               toaster.pop('success', 'Actividad aprobada', 'Las reservas se han cargado en el sistema');
             }, function() {
               //error al actualizar
@@ -246,11 +261,7 @@ activate();
           idActividad: actividad._id
         }, actividadEditada).$promise
         .then(function() {
-          // actividad.estado = 'aprobado';
-          $rootScope.enEspera.reload();
-          $rootScope.aprobados.reload();
-          $rootScope.desaprobados.reload();
-          //actualizarTurnos(actividadEditada,respuesta);
+          $rootScope.solicitudesAdmin.reload();
           toaster.pop('success', 'Actividad aprobada', 'Las reservas se han cargado en el sistema');
         }, function() {
           //error al actualizar

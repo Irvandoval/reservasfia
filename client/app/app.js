@@ -5,6 +5,7 @@ angular.module('reservasApp', [
     'ngSanitize',
     'ngAnimate',
     'angular-confirm',
+    'ngLoadingSpinner',
     'btford.socket-io',
     'ui.router',
     'ui.bootstrap',

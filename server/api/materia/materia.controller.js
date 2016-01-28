@@ -26,8 +26,17 @@ exports.indexByEscuela = function(req, res) {
 
 // Get list of aulas search by regular Expression
 exports.regexNombre = function(req, res) {
-  var regex = new RegExp(req.params.nombre, "i");
-  var query = { codigo: regex };
+   var query = {};
+   var regex = '';
+  if(req.params.nombre){
+   regex = new RegExp(req.params.nombre, 'i');
+   query.codigo = regex;
+  }
+  if(req.query.escuela){
+   console.log(req.query.escuela);
+   query.escuela = req.query.escuela;
+  }
+  console.log(query);
  Materia.find(query,function (err, materias) {
     if(err) { return handleError(res, err); }
     return res.json(200, materias);

@@ -1,32 +1,27 @@
-
-#banner {
-    border-bottom: none;
-    margin-top: -20px;
+#section1 {
+ background-color:#B71C1C;
+ color: white;
+ margin-top: -100px;
+}
+#section2 {
+ background-color:#C62828;
+ color: white;
+}
+#section3 {
+ background-color: #D32F2F;
+ color: white;
 }
 
-#banner h1 {
-    font-size: 60px;
-    line-height: 1;
-    letter-spacing: -1px;
+.icon-main{
+ font-size: 100px;
 }
 
-.hero-unit {
-    position: relative;
-    padding: 30px 15px;
-    color: #F5F5F5;
-    text-align: center;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-    background: #4393B9;
-}
-
-.footer {
-    text-align: center;
-    padding: 30px 0;
-    margin-top: 70px;
-    border-top: 1px solid #E5E5E5;
-}
-
-#calendarioIcon{
- font-size: 250px;
- margin-top: 20%
+.contenido {
+ position: relative;
+padding: 20vh 10%;
+min-height: 100vh;
+width: 100vw;
+box-sizing: border-box;
+box-shadow: 0 0px 10px rgba(0, 0, 0, .7);
+transform-style: inherit;
 }

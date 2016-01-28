@@ -25,7 +25,6 @@ angular.module('reservasApp')
     $scope.cargarAulas = cargarAulas;
     $scope.changed = changed;
     $scope.changeView = changeView;
-    $scope.cicloActual = $rootScope.cicloActual;
     $scope.datePicker = {};
     $scope.enviar = enviar;
     $scope.esAdmin = Auth.isAdmin;
@@ -148,6 +147,10 @@ angular.module('reservasApp')
       } else {
         $scope.minDate.setDate(hoy.getDate() + DIAS_HABILES);
       }
+      $resource('/api/ciclos/por_fecha/actual')
+      .get(function(ciclo){
+       $scope.cicloActual = ciclo;
+      });
     })();
     /////////////////////////////////////////
 

@@ -122,7 +122,6 @@ exports.indexToEscuelaAdmin = function(req, res) {
 
 // obtiene las actividades desaprobadas ya sean por la escuela o por el admin
 exports.indexMisDesaprobados = function(req, res) {
-  console.log(req.user);
   Actividad
     .find({
            $and:[{

@@ -1,4 +1,4 @@
-<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
+<div class="navbar navbar-default navbar-fixed-top" ng-controller="NavbarCtrl">
   <div class="container">
     <div class="navbar-header">
       <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
@@ -8,13 +8,13 @@
         <span class="icon-bar"></span>
       </button>
 
-      <a href="/" class="navbar-brand">
+      <a href="/calendarizacion" class="navbar-brand">
        <span><img src="./assets/images/ues.gif" id="logo"> </img> </span>
       <span>Reservas FIA</span></a>
     </div>
     <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
-        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
+        <li ng-show="!isLoggedIn()" ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
             <a ng-href="{{item.link}}"> <i class={{item.icon}}></i> <b>{{item.title}}</b></a>
         </li>
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/calendarizacion')}"><a href="/calendarizacion"><i class="fa fa-calendar fa-lg"></i> <b>Calendarización</b></a></li>

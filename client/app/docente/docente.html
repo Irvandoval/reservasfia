@@ -83,7 +83,7 @@
       </div>
       <div class="form-group" ng-class="{ 'has-success': form.correo.$valid && submitted, 'has-error': form.correo.$invalid && submitted }">
         <label>Correo:</label>
-        <input class="form-control" mongoose-error name="correo" ng-model="docente.correo" required type="text" value=""/>
+        <input class="form-control" mongoose-error name="correo" ng-model="docente.correo" required type="text"/>
         <p class="help-block" ng-show="form.escuela.$error.required && submitted">
           el correo es requerido
         </p>
@@ -94,10 +94,10 @@
       <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
                                       'has-error': form.escuela.$invalid && submitted }">
         <label>Escuela:</label>
-        <SELECT NAME="escuela" class="form-control" ng-model="docente.escuela" required>
+        <select NAME="escuela" class="form-control" ng-model="docente.escuela" required>
           <option value="">---Selecciona Escuela---</option>
-          <OPTION VALUE="{{escuela._id}}" ng-repeat="escuela in escuelas">{{escuela.nombre}}</OPTION>
-        </SELECT>
+          <option value="{{escuela._id}}" ng-repeat="escuela in escuelas">{{escuela.nombre}}</option>
+        </select>
         <p class="help-block" ng-show="form.escuela.$error.required && submitted">
           La escuela es requerida
         </p>
@@ -105,7 +105,7 @@
       <div class="form-group" ng-class="{ 'has-success': form.materias.$valid && submitted, 'has-error': form.materias.$invalid && submitted }">
         <label>Materias:</label>
         <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" name="materias" ng-model="docente.materias" placeholder="Agrega una materia" replace-spaces-with-dashes="false" required>
-          <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarMaterias($query)"></auto-complete>
+          <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarMaterias($query, docente.escuela)"></auto-complete>
         </tags-input>
         <p class="help-block" ng-show="form.materias.$error.required && submitted">
           Por lo menos una materia es requerida

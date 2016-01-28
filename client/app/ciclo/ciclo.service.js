@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 angular.module('reservasApp')
  .factory('Ciclo', function ($resource){

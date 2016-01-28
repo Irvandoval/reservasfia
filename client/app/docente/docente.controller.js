@@ -17,7 +17,6 @@ angular.module('reservasApp')
             params.total(orderedRecentActivity.length);
             $defer.resolve(orderedRecentActivity.slice((params.page() - 1) * params.count(), params.page() * params.count()));
           });
-
       }
     });
     $scope.nuevoDocente = function() {
@@ -53,8 +52,12 @@ angular.module('reservasApp')
         toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
       });
     };
-    $rootScope.cargarMaterias = function(query) {
-      var res = $resource('/api/materias/nombre/' + query);
+    $rootScope.cargarMaterias = function(query, escuela) {
+     var escuelaStr = '';
+     if(escuela){
+      escuelaStr = '?escuela=' + escuela;
+     }
+      var res = $resource('/api/materias/nombre/' + query + escuelaStr);
       return res.query().$promise;
     };
 
@@ -64,24 +67,30 @@ angular.module('reservasApp')
 
 .controller('NuevoDocenteCtrl', function($scope, $rootScope, $resource, $modalInstance, Docente, toaster) {
   $scope.docente = {};
+  var docente = {};
   $resource('/api/escuelas').query(function(escuelas) {
     $scope.escuelas = escuelas;
   });
   $scope.nuevoDocente = function(form) {
     $scope.submitted = true;
     if (form.$valid) {
-      $scope.docente.materias = obtenerMaterias();
-      Docente.save($scope.docente, function() {
+      docente = {
+        nombre: $scope.docente.nombre,
+        correo: $scope.docente.correo,
+        escuela: $scope.docente.escuela,
+        materias: obtenerMaterias()
+      };
+      Docente.save(docente, function() {
         $rootScope.tablaDocentes.reload();
         $modalInstance.dismiss('cancel');
         toaster.pop('success', 'Docente creado', 'El docente se ha creado');
-      }, function(err) {
-       $scope.errors = {};
-       // Update validity of form fields that match the mongoose errors
-       angular.forEach(err.data.errors, function(error, field) {
-         form[field].$setValidity('mongoose', false);
-         $scope.errors[field] = error.message;
-       });
+      },
+      function(err) {
+        $scope.errors = {};
+        angular.forEach(err.data.errors, function(error, field) {
+          form[field].$setValidity('mongoose', false);
+          $scope.errors[field] = error.message;
+        });
        $scope.docente.materias =  undefined;
         toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
       });

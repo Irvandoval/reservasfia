@@ -15,14 +15,14 @@ angular.module('reservasApp')
         })
         .then( function() {
           // Logueado, redirigido a la home
-          $location.path('/');
+          $location.path('/calendarizacion');
         })
         .catch( function(err) {
           $scope.errors.other = err.message;
         });
       }
     };
-    
+
     $scope.invitado =  function(){
       Auth.login({
           username: 'invitado',
@@ -30,11 +30,11 @@ angular.module('reservasApp')
         })
         .then( function() {
           // Logged in, redirect to home
-          $location.path('/');
+          $location.path('/calendarizacion');
         })
         .catch( function(err) {
           $scope.errors.other = err.message;
         });
-    }
+    };
 
   });

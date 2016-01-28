@@ -1,278 +1,54 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
-  <tabset>
-    <tab>
-      <tab-heading>
-        <i class="fa fa-circle amarillo"></i>
-        En Espera
-      </tab-heading>
-      <table class="table table-striped table-hover" ng-table="enEspera" template-pagination="custom/pager">
-        <tbody ng-repeat="actividad in $data">
-          <tr class="fila" ng-click="detalleReserva(actividad._id, 1)">
-            <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
-              {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
-            </td>
-
-            <td class="text-center" data-title="'Solicitante'">
-              {{actividad.encargado.nombre}}
-            </td>
-            <td class="text-center" data-title="'Actividad'">
-              {{actividad.nombre}}
-            </td>
-            <td class="text-center" data-title="'Materia'">
-              {{actividad.materia.nombre}}
-            </td>
-            <td class="text-center" data-title="'Escuela'" sortable="'nescuela'">
-              {{actividad.nescuela}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-    </tab>
-    <tab>
-      <tab-heading>
-        <i class="fa fa-circle verde"></i>
-        Aprobados
-      </tab-heading>
-      <table class="table table-striped" ng-table="aprobados" template-pagination="custom/pager">
-        <tbody ng-repeat="actividad in $data">
-          <tr class="fila" ng-click="detalleReserva(actividad._id, 2)">
-            <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
-              {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
-            </td>
-            <td class="text-center" data-title="'Solicitante'">
-              {{actividad.encargado.nombre}}
-            </td>
-            <td class="text-center" data-title="'Actividad'">
-              {{actividad.nombre}}
-            </td>
-            <td class="text-center" data-title="'Materia'">
-              {{actividad.materia.nombre}}
-            </td>
-            <td class="text-center" data-title="'Escuela'" sortable="'nescuela'">
-              {{actividad.nescuela}}
-            </td>
-          </tr>
-          <tbody></table>
-        </tab>
-        <tab>
-          <tab-heading>
-            <i class="fa fa-circle esperEscuela"></i>
-            Enviados a Escuelas
-          </tab-heading>
-          <table class="table table-striped table-hover" ng-table="enviadosAEscuela" template-pagination="custom/pager">
-            <tbody ng-repeat="actividad in $data">
-              <tr class="fila" ng-click="detalleReserva(actividad._id, 4)">
-                <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
-                  {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
-                </td>
-
-                <td class="text-center" data-title="'Solicitante'">
-                  {{actividad.encargado.nombre}}
-                </td>
-                <td class="text-center" data-title="'Actividad'">
-                  {{actividad.nombre}}
-                </td>
-                <td class="text-center" data-title="'Materia'">
-                  {{actividad.materia.nombre}}
-                </td>
-                <td class="text-center" data-title="'Escuela'" sortable="'nescuela'">
-                  {{actividad.nescuela}}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-        </tab>
-        <tab>
-          <tab-heading>
-            <i class="fa fa-circle rojo"></i>
-            Rechazados
-          </tab-heading>
-          <table class="table table-striped" ng-table="desaprobados" template-pagination="custom/pager">
-            <tbody ng-repeat="actividad in $data">
-              <tr class="fila" ng-click="detalleReserva(actividad._id, 3)">
-                <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
-                  {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
-                </td>
-                <td class="text-center" data-title="'Solicitante'">
-                  {{actividad.encargado.nombre}}
-                </td>
-                <td class="text-center" data-title="'Actividad'">
-                  {{actividad.nombre}}
-                </td>
-                <td class="text-center" data-title="'Materia'">
-                  {{actividad.materia.nombre}}
-                </td>
-                <td class="text-center" data-title="'Escuela'" sortable="'nescuela'">
-                  {{actividad.nescuela}}
-                </td>
-              </tr>
-              <tbody></table>
-            </tab>
-            <tab>
-              <tab-heading>
-                <i class="fa fa-circle cancelado"></i>
-                Cancelados
-              </tab-heading>
-              <table class="table table-striped" ng-table="cancelados" template-pagination="custom/pager">
-                <tbody ng-repeat="actividad in $data">
-                  <tr class="fila" ng-click="detalleReserva(actividad._id, 3)">
-                    <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
-                      {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
-                    </td>
-                    <td class="text-center" data-title="'Solicitante'">
-                      {{actividad.encargado.nombre}}
-                    </td>
-                    <td class="text-center" data-title="'Actividad'">
-                      {{actividad.nombre}}
-                    </td>
-                    <td class="text-center" data-title="'Materia'">
-                      {{actividad.materia.nombre}}
-                    </td>
-                    <td class="text-center" data-title="'Escuela'" sortable="'nescuela'">
-                      {{actividad.nescuela}}
-                    </td>
-                  </tr>
-                  <tbody></table>
-                </tab>
-              </tabset>
-            </div>
-            <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
-            <script id="custom/pager" type="text/ng-template">
-              <ul class="ng-cloak pager">
-                <li ng-class="{'disabled': !page.active}" ng-repeat="page in pages" ng-switch="page.type">
-                  <a href="" ng-click="params.page(page.number)" ng-switch-when="prev">&laquo;</a>
-                  <a href="" ng-click="params.page(page.number)" ng-switch-when="first">
-                    <span ng-bind="page.number"></span>
-                  </a>
-                  <a href="" ng-click="params.page(page.number)" ng-switch-when="page">
-                    <span ng-bind="page.number"></span>
-                  </a>
-                  <a href="" ng-click="params.page(page.number)" ng-switch-when="more">&#8230;</a>
-                  <a href="" ng-click="params.page(page.number)" ng-switch-when="last">
-                    <span ng-bind="page.number"></span>
-                  </a>
-                  <a href="" ng-click="params.page(page.number)" ng-switch-when="next">&raquo;</a>
-                </li>
-              </ul>
-            </script>
-
-            <script id="detalleReserva.html" type="text/ng-template">
-              <div class="modal-header">
-                <h3 class="modal-title">Detalles de la actividad</h3>
-              </div>
-              <div class="modal-body text-center">
-                <h3>
-                  {{actividad.nombre}}</h3>
-                <label>Encargado:</label>
-                {{actividad.encargado.nombre}}
-              </br>
-              <label>Materia:</label>
-              {{actividad.materia.nombre}}
-            </br>
-            <label>
-              Fecha de creación</label>
-            {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
-
-            <h4>Turnos</h4>
-            <table class="table table-striped">
-              <tr>
-                <th class="text-center">#</th>
-                <th class="text-center">Día</th>
-                <th class="text-center">inicio</th>
-                <th class="text-center">Fin</th>
-                <th class="text-center">Aulas</th>
-              </tr>
-              <tr ng-repeat="turno in turnos">
-                <td class="text-center">{{$index + 1}}
-                </td>
-                <td class="text-center">
-                  {{turno.inicio | date:'fullDate'}}</td>
-                <td class="text-center">
-                  {{turno.inicio | date:'shortTime'}}
-                </td>
-                <td class="text-center">
-                  {{turno.fin | date:'shortTime'}}</td>
-                <td class="text-center">
-                  <b ng-repeat="aula in turno.aulas">
-                    {{aula.nombre}}
-                  </b>
-                </td>
-              </tr>
-            </table>
-            <div ng-if="actividad.comentario">
-              <h4>Comentarios</h4>
-              <p>
-                {{actividad.comentario}}
-              </p>
-            </div>
-            <div class="form-group" ng-if="cancelar">
-              <h3>Agregue comentarios</h3>
-              <textarea class="form-control" cols="40" name="name" ng-model="mensaje.descripcion" rows="5"></textarea>
-            </div>
-          </div>
-          <div class="modal-footer" ng-if="tipo == 1">
-            <button class="btn btn-success" ng-click="aprobarSolicitud()" ng-if="!cancelar && actividad.tipo === 2" type="button">
-              Aprobar</button>
-            <button class="btn btn-success" ng-click="aprobarSolicitudClase()" ng-if="!cancelar && actividad.tipo === 1" type="button">
-              Aprobar</button>
-            <button class="btn btn-danger" name="bun" ng-click="cancelacion()" ng-if="!cancelar" type="button">Rechazar actividad</button>
-            <button class="btn btn-danger" ng-click="rechazarSolicitud()" ng-if="cancelar" type="button">
-              Rechazar</button>
-            <button class="btn btn-warning" ng-click="cancel()" type="button">
-              Cerrar</button>
-          </div>
-          <div class="modal-footer" ng-if="tipo == 2">
-            <a class="btn btn-success" href="/api/actividades/comprobante/{{actividad._id}}" ng-click="" target="_blank" type="button">
-              Mostrar Comprobante</a>
-            <button class="btn btn-success" ng-click="" ng-if="false" type="button">
-              Mover Actividad</button>
-            <button class="btn btn-danger" name="bun" ng-click="cancelacion()" ng-if="!cancelar" type="button">Cancelar Actividad</button>
-            <button class="btn btn-danger" ng-click="cancelarSolicitud()" ng-if="cancelar" type="button">
-              Confirmar Cancelación</button>
-            <button class="btn btn-warning" ng-click="cancel()" type="button">
-              Cerrar</button>
-          </div>
-          <div class="modal-footer" ng-if="tipo == 3">
-            <button class="btn btn-success" ng-click="" ng-if="false" type="button">
-              Mover a En Espera</button>
-
-            <button class="btn btn-danger" ng-click="eliminarSolicitud()" type="button">
-              Eliminar registro
-            </button>
-
-            <button class="btn btn-warning" ng-click="cancel()" type="button">
-              Cerrar</button>
-          </div>
-          <div class="modal-footer" ng-if="tipo == 4">
-            <button class="btn btn-success" ng-click="cancelarSolicitud()" type="button">
-              Cancelar Actividad</button>
-
-            <button class="btn btn-warning" ng-click="cancel()" type="button">
-              Cerrar</button>
-          </div>
-        </script>
-
-     <script id="confirmacion-choque.html" type="text/ng-template">
-     <div class="modal-header">
-       <h3 class="modal-title">¿Esta seguro de realizar esta reserva?</h3>
-     </div>
-      <div class="modal-body text-center">
-       Se ha detectado un choque con la siguiente Actividad:<br><br>
-        <div class="text-center">
-          <label>Nombre: </label> {{actividad.nombre}} <br>
-          <label>Materia: </label> {{actividad.materia.nombre}} <br>
-          <label>Escuela: </label> {{actividad.escuela.nombre}} <br>
-
-          <b>¿Desea continuar de todos modos?</b>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-success" ng-click="aprobar()" type="button">
-          Reservar de todos modos </button>
-        <button class="btn btn-warning" ng-click="cancel()" type="button">
-          Cancelar</button>
-      </div>
-     </script>
+ <span us-spinner="{radius:30, width:8, length: 16}"></span>
+ <toaster-container toaster-options="{'position-class': 'toast-top-right'}"></toaster-container>
+ <div class="form-group">
+  <label for="tipoReserva">Elige el estado de la reserva a consultar:</label>
+   <select name="tipoReserva" id="tipoReserva" class="form-control" style="font-family: 'FontAwesome', Helvetica;" ng-model="tipoReserva" ng-change="cambiarTipoReserva(tipoReserva)">
+    <option value="espera">En Espera</option>
+    <option value="aprobados" >Aprobados</option>
+    <option value="enviados_escuela_admin">Enviados a escuela</option>
+    <option value="desaprobados">Rechazados</option>
+    <option value="cancelados">Cancelados</option>
+   </select>
+ </div>
+ <table class="table table-striped table-hover" ng-table="solicitudesAdmin" template-pagination="custom/pager">
+       <tbody ng-repeat="actividad in $data">
+         <tr class="fila" ng-click="detalleReserva(actividad._id, tipoReserva)">
+           <td class="text-center" data-title="'Fecha de solicitud'" sortable="'fechaCreacion'">
+             {{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
+           </td>
+           <td class="text-center" data-title="'Solicitante'">
+             {{actividad.encargado.nombre}}
+           </td>
+           <td class="text-center" data-title="'Actividad'">
+             {{actividad.nombre}}
+           </td>
+           <td class="text-center" data-title="'Materia'">
+             {{actividad.materia.nombre}}
+           </td>
+           <td class="text-center" data-title="'Escuela'" sortable="'nescuela'">
+             {{actividad.nescuela}}
+           </td>
+         </tr>
+       </tbody>
+  </table>
+</div>
+<script id="custom/pager" type="text/ng-template">
+  <ul class="ng-cloak pager">
+    <li ng-class="{'disabled': !page.active}" ng-repeat="page in pages" ng-switch="page.type">
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="prev">&laquo;</a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="first">
+        <span ng-bind="page.number"></span>
+      </a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="page">
+        <span ng-bind="page.number"></span>
+      </a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="more">&#8230;</a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="last">
+        <span ng-bind="page.number"></span>
+      </a>
+      <a href="" ng-click="params.page(page.number)" ng-switch-when="next">&raquo;</a>
+    </li>
+  </ul>
+</script>

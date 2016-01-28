@@ -1,0 +1,93 @@
+<div class="modal-header">
+  <h3 class="modal-title">Detalles de la actividad</h3>
+</div>
+<div class="modal-body text-center">
+  <h3>
+    {{actividad.nombre}}</h3>
+  <label>Encargado:</label>
+  {{actividad.encargado.nombre}}
+</br>
+<label>Materia:</label>
+{{actividad.materia.nombre}}
+</br>
+<label>
+Fecha de creación</label>
+{{actividad.fechaCreacion | date:'MMM d, y HH:mm'}}
+
+<h4>Turnos</h4>
+<table class="table table-striped">
+<tr>
+  <th class="text-center">#</th>
+  <th class="text-center">Día</th>
+  <th class="text-center">inicio</th>
+  <th class="text-center">Fin</th>
+  <th class="text-center">Aulas</th>
+</tr>
+<tr ng-repeat="turno in turnos">
+  <td class="text-center">{{$index + 1}}
+  </td>
+  <td class="text-center">
+    {{turno.inicio | date:'fullDate'}}</td>
+  <td class="text-center">
+    {{turno.inicio | date:'shortTime'}}
+  </td>
+  <td class="text-center">
+    {{turno.fin | date:'shortTime'}}</td>
+  <td class="text-center">
+    <b ng-repeat="aula in turno.aulas">
+      {{aula.nombre}}
+    </b>
+  </td>
+</tr>
+</table>
+<div ng-if="actividad.comentario">
+<h4>Comentarios</h4>
+<p>
+  {{actividad.comentario}}
+</p>
+</div>
+<div class="form-group" ng-if="cancelar">
+<h3>Agregue comentarios</h3>
+<textarea class="form-control" cols="40" name="name" ng-model="mensaje.descripcion" rows="5"></textarea>
+</div>
+</div>
+<div class="modal-footer" ng-if="tipo === 'espera'">
+<button class="btn btn-success" ng-click="aprobarSolicitud()" ng-if="!cancelar && actividad.tipo === 2" type="button">
+Aprobar</button>
+<button class="btn btn-success" ng-click="aprobarSolicitudClase()" ng-if="!cancelar && actividad.tipo === 1" type="button">
+Aprobar</button>
+<button class="btn btn-danger" name="bun" ng-click="cancelacion()" ng-if="!cancelar" type="button">Rechazar actividad</button>
+<button class="btn btn-danger" ng-click="rechazarSolicitud()" ng-if="cancelar" type="button">
+Rechazar</button>
+<button class="btn btn-warning" ng-click="cancel()" type="button">
+Cerrar</button>
+</div>
+<div class="modal-footer" ng-if="tipo === 'aprobados'">
+<a class="btn btn-success" href="/api/actividades/comprobante/{{actividad._id}}" ng-click="" target="_blank" type="button">
+Mostrar Comprobante</a>
+<button class="btn btn-success" ng-click="" ng-if="false" type="button">
+Mover Actividad</button>
+<button class="btn btn-danger" name="bun" ng-click="cancelacion()" ng-if="!cancelar" type="button">Cancelar Actividad</button>
+<button class="btn btn-danger" ng-click="cancelarSolicitud()" ng-if="cancelar" type="button">
+Confirmar Cancelación</button>
+<button class="btn btn-warning" ng-click="cancel()" type="button">
+Cerrar</button>
+</div>
+<div class="modal-footer" ng-if="tipo === 'enviados_escuela_admin'">
+<button class="btn btn-success" ng-click="" ng-if="false" type="button">
+Mover a En Espera</button>
+
+<button class="btn btn-danger" ng-click="eliminarSolicitud()" type="button">
+Eliminar registro
+</button>
+
+<button class="btn btn-warning" ng-click="cancel()" type="button">
+Cerrar</button>
+</div>
+<div class="modal-footer" ng-if="tipo === 'desaprobados'">
+<button class="btn btn-success" ng-click="cancelarSolicitud()" type="button">
+Cancelar Actividad</button>
+
+<button class="btn btn-warning" ng-click="cancel()" type="button">
+Cerrar</button>
+</div>

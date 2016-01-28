@@ -50,6 +50,7 @@ exports.indexAprobados = function(req, res) {
     .populate('encargado')
     .populate('escuela')
     .exec(function(err, actividades) {
+     console.log(actividades);
       if (err) return handleError(res, err);
       return res.status(200).json(actividades);
     });
@@ -367,7 +368,7 @@ exports.update = function(req, res) {
   Actividad.findById(req.params.id, function(err, actividad) {
     if (err) return handleError(res, err);
     if (!actividad) return res.status(404).send('Not Found');
-    req.body.actividad.fechaEdicion = Date.now();
+    req.body.fechaEdicion = Date.now();
     var updated = _.merge(actividad, req.body);
     updated.save(function(err) {
       if (err) return handleError(res, err);

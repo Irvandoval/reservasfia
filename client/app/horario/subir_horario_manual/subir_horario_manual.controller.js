@@ -19,23 +19,24 @@ angular.module('reservasApp')
     });
 
     Franja.query(function(franjas) {
-      $rootScope.franjas = franjas
+      $rootScope.franjas = franjas;
     });
 
 
     $scope.enviarHorarioAdmin =  function(){
+     console.log($scope.opcion.ciclo);
      console.log($scope.horarioActual._id);
      console.log($rootScope.cicloActual._id);
       $resource('/api/horarios/enviar-aprobacion')
-      .save({horario: $scope.horarioActual._id, ciclo: $rootScope.cicloActual._id},
+      .save({horario: $scope.horarioActual._id, ciclo: $scope.opcion.ciclo},
        function(){
        $scope.horarioActual.estado = 'enviado_admin';
         $rootScope.tablaHorario.reload();
-       toaster.pop('success', "Se ha enviado el horario al admin");
+       toaster.pop('success', 'Se ha enviado el horario al admin');
       }, function(err){
        console.log(err);
        toaster.pop('error', "Error al agregar grupo");
-      })
+      });
     };
 
     $scope.ciclo = function() {
@@ -85,7 +86,7 @@ angular.module('reservasApp')
       franja2:'565cd41cff75b7fe2a602d13',
       aula: "55c2e6fbd9de2ffc4ae4af51",
       materia: $scope.opcion.materia,
-      ciclo: $rootScope.cicloActual._id,
+      ciclo: $scope.opcion.ciclo,
       horario: $scope.horarioActual._id
      }, function(){
       toaster.pop('success', "Grupo agregado", "Se ha agregado al horario la materia con un grupo de ejemplo");
@@ -129,18 +130,18 @@ angular.module('reservasApp')
 
    $scope.verMensaje  = function(clase){
     console.log(clase);
-    var modalInstance = $modal.open({
+    $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'comentario.html',
       controller: 'ComentarioCtrl',
       size: 'sm',
       resolve: {
         actividad: function() {
-         return clase.actividad
+         return clase.actividad;
         }
       }
     });
-   }
+   };
     $scope.crearHorario = function() {
       $resource('/api/horarios/crear-horario/plantilla')
         .save({
@@ -151,9 +152,9 @@ angular.module('reservasApp')
           $scope.opcion.noHayHorario = false;
           $scope.opcion.hayHorario = true;
           cargarTabla(horario);
-        })
+        });
 
-    }
+    };
     $scope.eliminar = function(id) {
       Clase.delete({
         claseId: id
@@ -162,8 +163,8 @@ angular.module('reservasApp')
         console.log('exito');
       }, function() {
         console.log('error');
-      })
-    }
+      });
+    };
 
 
     function cargarTabla(horario) {
@@ -183,21 +184,21 @@ angular.module('reservasApp')
            var clasesor =  agregarNombreMateria(clases);
             $defer.resolve($filter('orderBy')(clasesor, params.orderBy()));
             $defer.resolve(clasesor);
-          })
+          });
         }
       });
-    };
+    }
 
     function agregarNombreMateria(clases){
       for(var a = 0; a < clases.length; a++){
        clases[a].nmateria = clases[a].materia.nombre;
      }
      return clases;
-    };
+    }
 
     $rootScope.cargarAulas = function(query) {
       var res = $resource('/api/aulas/nombre/' + query);
-      return res.query().$promise
+      return res.query().$promise;
     };
   })
   .controller('NuevaClaseCtrl', function($scope, $rootScope, $resource, materia, ciclo, horario, Clase, $modalInstance,Aula, toaster) {
@@ -206,7 +207,7 @@ angular.module('reservasApp')
     $scope.arrayAulas = [];
     Aula.query(function(aulas){
      $scope.aulas =  aulas;
-    })
+    });
     $scope.clase = {};
     $resource('/api/docentes/materia/:materiaId', {
         materiaId: '@id'

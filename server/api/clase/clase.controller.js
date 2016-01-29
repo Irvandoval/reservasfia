@@ -73,7 +73,6 @@ exports.crearActividad =  function(req, res){
    if(err) { return handleError(res, err); }
    for (var d = new Date(ai, mi, di); d <= new Date(af, mf, df); d.setDate(d.getDate() + 1)) {
          (function(diya){
-
           Clase.crearTurnoClase(diya, clasex, actividad);
           Clase.update({_id: clasex._id},{actividad: actividad._id}, function(err){
            if(err) console.log(err);

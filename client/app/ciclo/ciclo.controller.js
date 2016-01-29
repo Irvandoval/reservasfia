@@ -1,6 +1,6 @@
 'use strict';
 angular.module('reservasApp')
-  .controller('CicloCtrl', function($scope, $rootScope, $resource, NgTableParams, toaster, $filter, Ciclo, $modal, Auth) {
+  .controller('CicloCtrl', function($scope, $rootScope,$resource, NgTableParams, toaster, $filter, Ciclo, $modal, Auth) {
     $scope.esAdmin = Auth.isAdmin;
     $rootScope.tablaCiclos = new NgTableParams({
       page: 1, // show first page
@@ -82,7 +82,7 @@ angular.module('reservasApp')
 })
 
 
-.controller('EditarCicloCtrl', function(ciclo, $scope, $rootScope, $modalInstance, Ciclo) {
+.controller('EditarCicloCtrl', function(ciclo, $scope, $rootScope, $modalInstance, Ciclo, toaster) {
   $scope.ciclox = {};
   Ciclo.get({
     cicloId: ciclo._id
@@ -103,6 +103,7 @@ angular.module('reservasApp')
     }, $scope.ciclox, function() {
       $modalInstance.dismiss('cancel');
       $rootScope.tablaCiclos.reload();
+      toaster.pop('success', 'Ciclo editado', 'El ciclo se ha editado exitosamente');
     }, function() {
       console.log('err');
     });

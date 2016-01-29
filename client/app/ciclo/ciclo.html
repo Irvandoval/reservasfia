@@ -25,20 +25,20 @@
             {{ciclo.anio}}
           </td>
           <td class='text-center' data-title="'Inicio de clases'">
-            {{ciclo.inicioClases | date:'MMM d'}}
+            {{ciclo.inicioClases | date:'d/MM/yy'}}
           </td>
           <td class='text-center' data-title="'Fin de clases'">
-            {{ciclo.finClases | date:'MMM d'}}
+            {{ciclo.finClases | date:'d/MM/yy'}}
           </td>
           <td class='text-center' data-title="'Inicio de ciclo'">
-            {{ciclo.inicioCiclo | date:'MMM d'}}</td>
+            {{ciclo.inicioCiclo | date:'d/MM/yy'}}</td>
           <td class='text-center' data-title="'Fin de ciclo'">
-            {{ciclo.finCiclo | date:'MMM d'}}
+            {{ciclo.finCiclo | date:'d/MM/yy'}}
           </td>
           <td class='text-center' data-title="'Inicio de subida de horario'">
-            {{ciclo.inicioSubidaHorario | date:'MMM d'}}</td>
+            {{ciclo.inicioSubidaHorario | date:'d/MM/yy'}}</td>
           <td class='text-center' data-title="'Fin de subida de horario'">
-            {{ciclo.finSubidaHorario| date:'MMM d'}}
+            {{ciclo.finSubidaHorario| date:'d/MM/yy'}}
           </td>
           <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
             <button class="btn btn-warning btn-sm" ng-click="editarCiclo(ciclo)" type="button">
@@ -238,7 +238,7 @@
   <div class="modal-footer">
 
     <button class="btn btn-success" ng-click="editar()" type="button">
-      Agregar
+      Editar
     </button>
     <button class="btn btn-warning" ng-click="cancel()" type="button">
       Cancelar</button>

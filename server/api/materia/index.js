@@ -9,7 +9,7 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.get('/nombre/:nombre', auth.isAuthenticated(), controller.regexNombre);
-router.get('/escuela/:id', auth.isAuthenticated, controller.indexByEscuela);
+router.get('/escuela/:id', auth.isAuthenticated(), controller.indexByEscuela);
 router.post('/', auth.hasRole('admin'), controller.create);
 router.put('/:id', auth.hasRole('admin'), controller.update);
 router.patch('/:id', auth.hasRole('admin'), controller.update);

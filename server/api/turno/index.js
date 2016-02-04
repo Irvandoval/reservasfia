@@ -13,6 +13,7 @@ router.get('/estado/espera', controller.indexEnEspera);
 router.get('/estado/espera_escuela', controller.indexEsperaEscuela);
 //router.get('/estado/espera_escuela_b',auth.isAuthenticated(), controller.indexEsperaEscuelaB);
 router.get('/actividad/:id',controller.indexByActividad);
+router.get('/materias', controller.indexByMateria);
 router.get('/aulas', controller.indexByAula);
 router.get('/:id', controller.show);
 router.post('/', controller.create);

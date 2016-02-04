@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var Turno = require('./turno.model');
-
+var Actividad =  require('../actividad/actividad.model')
 // Envia lista de turnos
 exports.index = function(req, res) {
   Turno.find({})
@@ -145,20 +145,76 @@ exports.indexEsperaEscuela = function(req, res) {
       Turno.populate(docs, opt,function(err, turnos){
           if(err) return handleError(res, err);
           //var turn = Turno.eliminarValoresNull(turnos);
-	  turn = turnos.filter(Turno.filtroValoresNull);
+	         turn = turnos.filter(Turno.filtroValoresNull);
           return res.status(200).json(turn);
       });
    });
  });
 };
 
+//Envia los turnos por materias especificas
+exports.indexByMateria = function(req, res) {
+  var turn = [];
+  if (!req.query._materias || !req.query.estado || req.query.inicio || req.query.fin)
+    return res.status(400).send('Invalid request');
+  Actividad.find({
+    estado: req.query.estado
+  }, function(err, actividades) {
+    if (err) return handleError(res, err);
+    if (actividades.length === 0) return res.status(404).send('no encontrado');
+    Turno.find({
+        $and: [{
+          inicio: {
+            $gte: new Date(req.query.inicio)
+          }
+        }, {
+          fin: {
+            $lte: new Date(req.query.fin)
+          }
+        }]
+      })
+      .populate({
+        path: 'actividad',
+        match: {
+          $and: [{
+            estado: req.query.estado
+          }, {
+            materia: {
+              $in: req.query._materias
+            }
+          }]
+        }
+      })
+      .exec(function(err, docs) {
+        var options = {
+          path: 'actividad.materia',
+          model: 'Materia'
+        }
+        if (err) {
+          console.log(err);
+          return handleError(res, err);
+        }
+        Turno.populate(docs, options, function(err, turnos) {
+          if (err) return handleError(res, err);
+          turn = turnos.filter(Turno.filtroValoresNull);
+          return res.status(200).json(turn);
+        });
+      });
+  });
+};
 //Envia los turnos por aulas especificas
 exports.indexByAula = function(req,res){
- if (!req.query._aulas || !req.query.estado)
-  return res.status(400).send('Invalid request');
-
-  console.log(req.query.estado);
-  Turno.find({
+ var turn = [];
+ var populateMateriaOptions = {
+   path: 'actividad.materia',
+   model: 'Materia'
+ };
+ if (!req.query._materias || !req.query.estado || req.query.inicio || req.query.fin)
+ return res.status(400).send('Invalid request');
+ Actividad.find({estado: req.query.estado}, function(err, actividades){
+   if(err) return handleError(res, err);
+   if(actividades.length === 0) return res.status(404).send('no encontrado');
+   Turno.find({
                $and: [{
                         inicio: {
                           $gte: new Date(req.query.inicio)
@@ -173,22 +229,17 @@ exports.indexByAula = function(req,res){
   .populate({path: 'aulas', match: {nombre: {$in: req.query._aulas}}})
   .populate({path: 'actividad', match: {estado: req.query.estado}})
   .exec(function(err, docs) {
-    var options = {
-      path: 'actividad.materia',
-      model: 'Materia'
-    }
-    if (err) {
-      console.log(err);
-      return handleError(res, err);
-    }
-    Turno.populate(docs, options, function(err, turnos){
+     if(!docs) return res.status(404).send('no encontrado');
+     if (err)  return handleError(res, err);
+    Turno.populate(docs, populateMateriaOptions, function(err, turnos){
        if(err) return handleError(res, err);
-       var turn = Turno.eliminarValoresNull(turnos);
+       turn = turnos.filter(Turno.filtroValoresNull);
        return res.status(200).json(turn);
     });
   });
 
-}
+ });
+};
 // Get a single turno
 exports.show = function(req, res) {
   Turno.findById(req.params.id, function (err, turno) {

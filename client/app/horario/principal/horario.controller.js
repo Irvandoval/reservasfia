@@ -1,9 +1,22 @@
 'use strict';
+(function(){
 
-angular.module('reservasApp')
-  .controller('HorarioCtrl', function($scope, $rootScope, $resource, NgTableParams, $filter, $modal, Auth) {
-    $scope.esRepresentante = Auth.isRepresentante;
-    $scope.tablaHorarios = new NgTableParams({
+ function HorarioCtrl($rootScope, $resource, NgTableParams, $filter, $modal, Auth) {
+   var self =  this;
+   self.periodoHorarios = false;
+    $resource('/api/ciclos/por_fecha/actual')
+ .get(function(ciclo){
+  var hoy = new Date();
+  var inicioH = new Date(ciclo.inicioSubidaHorario);
+  var finH = new Date(ciclo.finSubidaHorario);
+  if (hoy >= inicioH && hoy <= finH) {
+    self.periodoHorarios =  true;
+  }else{
+   self.periodoHorarios =  false;
+  }
+ });
+    self.esRepresentante = Auth.isRepresentante;
+    self.tablaHorarios = new NgTableParams({
       page: 1, // paginacion, primera en mostrar
       count: 15, // cantidad de elementos a mostrar por pagina
       sorting: {
@@ -14,7 +27,6 @@ angular.module('reservasApp')
       getData: function($defer, params) {
         $resource('/api/horarios').query().$promise
           .then(function(horarios) {
-
             var orderedRecentActivity = params.filter() ?
               $filter('orderBy')(horarios, params.orderBy()) :
               horarios;
@@ -24,9 +36,9 @@ angular.module('reservasApp')
 
       }
     });
-    $scope.abrir = function(horario) {
+    self.horarioDetalle = function(horario) {
       $modal.open({
-        animation: $scope.animationsEnabled,
+        animation: true,
         templateUrl: 'horario-detalle.html',
         size: 'lg',
         controller: 'HorarioDetalleCtrl',
@@ -37,19 +49,9 @@ angular.module('reservasApp')
         }
       });
     };
+  }
 
-    $scope.periodoHorarios = function() {
-      var hoy = new Date();
-      var inicioH = new Date($rootScope.cicloActual.inicioSubidaHorario);
-      var finH = new Date($rootScope.cicloActual.finSubidaHorario);
-      if (hoy >= inicioH && hoy <= finH) {
-        return true;
-      }
-      return false;
-    };
-  })
-
-.controller('HorarioDetalleCtrl', function($scope, NgTableParams, $modalInstance, $filter, horario, $resource) {
+  function HorarioDetalleCtrl($scope, NgTableParams, $modalInstance, $filter, horario, $resource) {
   $scope.horario = horario;
   $scope.tablaHorarioDetalle = new NgTableParams({
     sorting: {
@@ -86,4 +88,10 @@ angular.module('reservasApp')
     $modalInstance.dismiss('cancel');
   };
 
-});
+}
+
+angular.module('reservasApp')
+  .controller('HorarioCtrl', HorarioCtrl )
+  .controller('HorarioDetalleCtrl', HorarioDetalleCtrl);
+
+})();

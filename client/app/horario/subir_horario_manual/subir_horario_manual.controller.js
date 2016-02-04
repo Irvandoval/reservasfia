@@ -24,9 +24,6 @@ angular.module('reservasApp')
 
 
     $scope.enviarHorarioAdmin =  function(){
-     console.log($scope.opcion.ciclo);
-     console.log($scope.horarioActual._id);
-     console.log($rootScope.cicloActual._id);
       $resource('/api/horarios/enviar-aprobacion')
       .save({horario: $scope.horarioActual._id, ciclo: $scope.opcion.ciclo},
        function(){
@@ -35,7 +32,7 @@ angular.module('reservasApp')
        toaster.pop('success', 'Se ha enviado el horario al admin');
       }, function(err){
        console.log(err);
-       toaster.pop('error', "Error al agregar grupo");
+       toaster.pop('error', 'Error al agregar grupo');
       });
     };
 
@@ -63,11 +60,11 @@ angular.module('reservasApp')
 
                 cargarTabla(horario);
                 $scope.opcion.hayHorario = true;
-              }, function(err) {
-                console.error("entra al error horario");
+              }, function() {
+                console.error('entra al error horario');
                 $scope.opcion.noHayHorario = true;
               });
-          })
+          });
       }
      }
 
@@ -84,21 +81,21 @@ angular.module('reservasApp')
       dia2: 3,
       franja1: '565cd41cff75b7fe2a602d13',
       franja2:'565cd41cff75b7fe2a602d13',
-      aula: "55c2e6fbd9de2ffc4ae4af51",
+      aula: '55c2e6fbd9de2ffc4ae4af51',
       materia: $scope.opcion.materia,
       ciclo: $scope.opcion.ciclo,
       horario: $scope.horarioActual._id
      }, function(){
-      toaster.pop('success', "Grupo agregado", "Se ha agregado al horario la materia con un grupo de ejemplo");
+      toaster.pop('success', 'Grupo agregado', 'Se ha agregado al horario la materia con un grupo de ejemplo');
       $rootScope.tablaHorario.reload();
      }, function(err){
        console.log(err);
-       toaster.pop('error', "La materia ya esta agregada en el horario");
-     })
+       toaster.pop('error', 'La materia ya esta agregada en el horario');
+     });
     };
 
     $scope.nuevaClase = function(materia) {
-      var modalInstance = $modal.open({
+      $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'nueva-clase.html',
         controller: 'NuevaClaseCtrl',
@@ -107,15 +104,14 @@ angular.module('reservasApp')
           materia: function() {
             return materia;
           },
-          ciclo: function(){ return $scope.opcion.ciclo},
-          horario: function(){ return $scope.horarioActual},
-
+          ciclo: function(){ return $scope.opcion.ciclo;},
+          horario: function(){ return $scope.horarioActual;},
         }
       });
     };
 
     $scope.editarClase = function(clase) {
-      var modalInstance = $modal.open({
+      $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'editar-clase.html',
         controller: 'EditarClaseCtrl',
@@ -220,11 +216,11 @@ angular.module('reservasApp')
 
 
       $scope.enviarClaseDirecto = function(form){
-       console.log("entra bb");
+       console.log('entra bb');
        $scope.submitted = true;
 
        if(form.$valid){
-            console.log("entra cc");
+            console.log('entra cc');
        // $scope.clase.materia =  materia._id;
      //   $scope.clase.horario =  horario;
        // $scope.clase.aula = $scope.arrayAulas[0]._id;
@@ -245,15 +241,15 @@ angular.module('reservasApp')
 
         }, function(clase) {
          console.log($rootScope.cicloActual._id);
-          toaster.pop('success', "Grupo enviado");
+          toaster.pop('success', 'Grupo enviado');
           $rootScope.tablaHorario.reload();
           $modalInstance.dismiss('cancel');
          $resource('/api/clases/crearActividad/:claseId', {claseId: '@id'})
          .save({claseId: clase._id},{ciclo: $rootScope.cicloActual._id}, function(res){
-          console.log("mm");
+          console.log('mm');
           console.log(res);
          }, function(err){
-          toaster.pop('error', "Error al agregar grupo");
+          toaster.pop('error', 'Error al agregar grupo');
          })
         }, function(err) {
 
@@ -263,7 +259,7 @@ angular.module('reservasApp')
           //   form[field].setValidity('mongoose', false);
              $scope.errors[field]= error.message;
        });
-          toaster.pop('error', "Numero de grupo ya existe");
+          toaster.pop('error', 'Numero de grupo ya existe');
         });
       }
     };
@@ -290,7 +286,7 @@ angular.module('reservasApp')
         horario: horario._id
 
        }, function(clase) {
-         toaster.pop('success', "Grupo agregado");
+         toaster.pop('success', 'Grupo agregado');
          $rootScope.tablaHorario.reload();
          $modalInstance.dismiss('cancel');
        }, function(err) {
@@ -301,7 +297,7 @@ angular.module('reservasApp')
          //   form[field].setValidity('mongoose', false);
             $scope.errors[field]= error.message;
       });
-         toaster.pop('error', "Error al agregar grupo");
+         toaster.pop('error', 'Error al agregar grupo');
        });
      }
     };
@@ -350,9 +346,9 @@ angular.module('reservasApp')
       }, $scope.clasesx, function() {
         $rootScope.tablaHorario.reload();
         $modalInstance.dismiss('cancel');
-        //toaster.pop('success', "Carrera ingresada", "La carrera se ha agregado al sistema");
+        //toaster.pop('success', 'Carrera ingresada', 'La carrera se ha agregado al sistema');
       }, function(err) {
-        toaster.pop('error', "Error", "Ha ocurrido un error al enviar. Por favor intente mas tarde");
+        toaster.pop('error', 'Error', 'Ha ocurrido un error al enviar. Por favor intente mas tarde');
       });
     };
 
@@ -370,10 +366,10 @@ angular.module('reservasApp')
      .save({claseId: claseg._id},{ciclo: $rootScope.cicloActual._id}, function(res){
       $rootScope.tablaHorario.reload();
       $modalInstance.dismiss('cancel');
-        toaster.pop('success', "Grupo enviado");
+        toaster.pop('success', 'Grupo enviado');
      }, function(err){
 
-         toaster.pop('error', "Error al enviar grupo");
+         toaster.pop('error', 'Error al enviar grupo');
      })
     }, function(err){console.log(err);})
   }

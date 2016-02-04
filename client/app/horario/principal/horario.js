@@ -6,7 +6,7 @@ angular.module('reservasApp')
       .state('horario', {
         url: '/horario',
         templateUrl: 'app/horario/principal/horario.html',
-        controller: 'HorarioCtrl',
+        controller: 'HorarioCtrl as hr',
         authenticate: true
       });
   });

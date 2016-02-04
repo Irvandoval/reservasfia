@@ -51,3 +51,7 @@
 button.ui-datepicker-current {
   display: none;
 }
+
+.loading{
+ background-color: red;
+}

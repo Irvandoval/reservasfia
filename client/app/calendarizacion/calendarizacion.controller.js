@@ -1,9 +1,14 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CalendarizacionCtrl', function(Auth, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig, $rootScope) {
+  .controller('CalendarizacionCtrl', function(Auth, $rootScope, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig, usSpinnerService) {
     var DIAS_HABILES = 3;
-
+    var HORA_MINIMO = 6;
+    var HORA_MAXIMO = 20;
+    var MINUTO_MINIMO = 20;
+    var MINUTO_MAXIMO= 15;
+    var MINUTO_INTERVALO_MINIMO = 30;
+    var MINUTO_INTERVALO_MAXIMO = 300; //5hrs
     var aulasEvt = [];
     var errorDB = false;
     var hoy = new Date();
@@ -23,6 +28,7 @@ angular.module('reservasApp')
     $scope.aulas = []; // parametro de busqueda por aulas
     $scope.busqueda = {};
     $scope.cargarAulas = cargarAulas;
+    $scope.cargarMaterias = cargarMaterias;
     $scope.changed = changed;
     $scope.changeView = changeView;
     $scope.datePicker = {};
@@ -139,6 +145,8 @@ angular.module('reservasApp')
         monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
       }
     };
+    $scope.validarHoraInicio = validarHoraInicio;
+    $scope.validarHoraFin = validarHoraFin;
 
     /////////////////////////////////////////
     (function activate() {
@@ -151,6 +159,7 @@ angular.module('reservasApp')
       .get(function(ciclo){
        $scope.cicloActual = ciclo;
       });
+
     })();
     /////////////////////////////////////////
 
@@ -174,6 +183,10 @@ angular.module('reservasApp')
       return res.query().$promise;
     }
 
+    function cargarMaterias(query) {
+      var res = $resource('/api/materias/nombre/' + query );
+      return res.query().$promise;
+    }
     function changed() {
       $scope.actividad.fin = $scope.actividad.inicio;
     }
@@ -414,6 +427,57 @@ angular.module('reservasApp')
         });
     }
 
+    function validarHoraInicio(){
+      var dateAux;
+      var horaSeleccionada =  $scope.actividad.inicio.getHours();
+      var minutoSeleccionado = $scope.actividad.inicio.getMinutes();
+     // validarIntervalo();
+      if (horaSeleccionada < HORA_MINIMO){
+        dateAux = new Date($scope.actividad.inicio);
+        dateAux.setHours(HORA_MINIMO);
+        $scope.actividad.inicio =  new Date(dateAux);
+      }else{
+       if(horaSeleccionada === HORA_MINIMO && minutoSeleccionado < MINUTO_MINIMO){
+         dateAux = new Date($scope.actividad.inicio);
+         dateAux.setMinutes(MINUTO_MINIMO);
+         $scope.actividad.inicio = new Date(dateAux);
+       }
+      }
+    }
+
+    function validarHoraFin(){
+     var dateAux;
+     var horaSeleccionada =  $scope.actividad.fin.getHours();
+     var minutoSeleccionado = $scope.actividad.fin.getMinutes();
+   //  validarIntervalo();
+     if (horaSeleccionada > HORA_MAXIMO){
+       dateAux = new Date($scope.actividad.fin);
+       dateAux.setHours(HORA_MAXIMO);
+       $scope.actividad.fin =  new Date(dateAux);
+     }else{
+      if(horaSeleccionada === HORA_MAXIMO && minutoSeleccionado > MINUTO_MAXIMO){
+        dateAux = new Date($scope.actividad.fin);
+        dateAux.setMinutes(MINUTO_MAXIMO);
+        $scope.actividad.inicio = new Date(dateAux);
+      }
+     }
+    }
+   /* function validarIntervalo(){
+     var dateAux;
+     if($scope.actividad.fin - $scope.actividad.inicio < MINUTO_INTERVALO_MINIMO*60*1000){
+         dateAux =  new Date($scope.actividad.fin);
+         var minAux =  dateAux.getMinutes();
+         dateAux.setMinutes(minAux - MINUTO_INTERVALO_MINIMO);
+         $scope.actividad.inicio = new Date(dateAux);
+      }else{
+       if($scope.actividad.fin - $scope.actividad.inicio > MINUTO_INTERVALO_MAXIMO*60*1000){
+        dateAux =  new Date($scope.actividad.fin);
+        var maxHour =  dateAux.getHours();
+        dateAux.setHours(maxHour - 1);
+        $scope.actividad.fin =  new Date(dateAux);
+       }
+      }
+    }*/
     function renderCalender(calendar) {
       if (uiCalendarConfig.calendars[calendar]) {
         uiCalendarConfig.calendars[calendar].fullCalendar('render');

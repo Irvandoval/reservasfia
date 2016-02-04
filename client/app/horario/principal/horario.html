@@ -7,7 +7,7 @@
           <h4>Horario</h4>
         </div>
         <div class="col-md-2">
-          <a ng-if="esRepresentante() && periodoHorarios()" class="btn btn-success" href="/horario/subir_horario_manual" type="button">
+          <a ng-if="hr.esRepresentante() && hr.periodoHorarios === true" class="btn btn-success" href="/horario/subir_horario_manual" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nuevo horario
           </a>
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped" ng-table="tablaHorarios" show-filter="true" >
+      <table class="table table-striped" ng-table="hr.tablaHorarios" show-filter="true" >
         <tr ng-repeat="horario in $data">
           <td class="text-center" data-title="'Escuela'" filter="{ 'nombre': 'text' }"> {{horario.escuela.nombre}}</td>
           <td class="text-center" data-title="'Ciclo'">{{horario.ciclo.numero}}</td>
@@ -23,7 +23,7 @@
            {{horario.ciclo.anio}}
           </td>
           <td class="text-center" data-title="'Acciones'">
-           <button class="btn btn-success  btn-sm" type="button" ng-click="abrir(horario)">
+           <button class="btn btn-success  btn-sm" type="button" ng-click="hr.horarioDetalle(horario)">
               <span aria-hidden="true" class="fa fa-info-circle "></span>
               Mostrar
             </button>

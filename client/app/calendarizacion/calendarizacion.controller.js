@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CalendarizacionCtrl', function(Auth, $rootScope, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig, usSpinnerService) {
+  .controller('CalendarizacionCtrl', function(Auth, $rootScope, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig) {
     var DIAS_HABILES = 3;
     var HORA_MINIMO = 6;
     var HORA_MAXIMO = 20;

@@ -1,28 +1,29 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
-    $scope.menu = [{
+  .controller('NavbarCtrl', function ($location, Auth) {
+    var self = this;
+    self.menu = [{
       'title': 'Home',
       'link': '/',
       'icon': 'fa fa-home fa-lg'
     }
     ];
 
-    $scope.isCollapsed = true;
-    $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.isAdmin = Auth.isAdmin;
-    $scope.isDocente = Auth.isDocente;
-    $scope.isRepresentante = Auth.isRepresentante;
-    $scope.isInvitado = Auth.isInvitado;
-    $scope.getCurrentUser = Auth.getCurrentUser;
+    self.isCollapsed = true;
+    self.isLoggedIn = Auth.isLoggedIn;
+    self.isAdmin = Auth.isAdmin;
+    self.isDocente = Auth.isDocente;
+    self.isRepresentante = Auth.isRepresentante;
+    self.isInvitado = Auth.isInvitado;
+    self.getCurrentUser = Auth.getCurrentUser;
 
-    $scope.logout = function() {
+    self.logout = function() {
       Auth.logout();
       $location.path('/login');
     };
 
-    $scope.isActive = function(route) {
+    self.isActive = function(route) {
       return route === $location.path();
     };
   });

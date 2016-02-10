@@ -1,0 +1,81 @@
+<div class="modal-header">
+  <h3 class="modal-title">{{mm.titulo}}</h3>
+</div>
+<div class="container-fluid">
+  <form class="form" name="form" novalidate>
+    <div class="form-group" ng-class="{ 'has-success': form.codigo.$valid && mm.submitted,
+                                      'has-error': form.codigo.$invalid && mm.submitted }">
+      <label>Codigo:</label>
+      <input class="form-control" mongoose-error name="codigo" ng-model="mm.materia.codigo" required type="text"/>
+      <p class="help-block" ng-show="form.codigo.$error.required && mm.submitted">
+        Campo requerido
+      </p>
+      <p class="help-block" ng-show="form.codigo.$error.mongoose">
+        {{ mm.errors.codigo }}
+      </p>
+    </div>
+    <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && mm.submitted,
+                                      'has-error': form.nombre.$invalid && mm.submitted }">
+      <label>Nombre:</label>
+      <input class="form-control" name="nombre" ng-model="mm.materia.nombre" required type="text">
+      <p class="help-block" ng-show="form.nombre.$error.required && mm.submitted">
+        El nombre de la materia es requerido
+      </p>
+    </div>
+    <div ng-show="mm.modoEditar === false" class="form-group" ng-class="{ 'has-success': form.escuela.$valid && mm.submitted,
+                                      'has-error': form.escuela.$invalid && mm.submitted }">
+      <label>Escuela:</label>
+      <select class="form-control" name="escuela" ng-model="mm.materia.escuela" required>
+        <option value="">---Selecciona Escuela---</option>
+        <option ng-repeat="escuela in mm.escuelas" value="{{escuela._id}}">{{escuela.nombre}}</option>
+      </select>
+      <p class="help-block" ng-show="form.escuela.$error.required && mm.submitted">
+        La escuela es requerida
+      </p>
+    </div>
+    <div class="form-group" ng-class="{ 'has-success': form.carreras.$valid && mm.submitted,
+                                      'has-error': form.carreras.$invalid && mm.submitted }">
+      <label>Carreras:</label>
+      <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" name="carreras" ng-model="mm.materia.carreras" placeholder="Agrega una carrera" replace-spaces-with-dashes="false" required>
+        <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarCarreras($query)"></auto-complete>
+      </tags-input>
+      <p class="help-block" ng-show="form.carreras.$error.required && mm.submitted">
+        Por lo menos una carrera es requerida
+      </p>
+    </div>
+    <div class="form-group" ng-class="{ 'has-success': form.tipo.$valid && mm.submitted,
+                                      'has-error': form.tipo.$invalid && mm.submitted }">
+      <label>Tipo:</label>
+      <select class="form-control" name="tipo" ng-model="mm.materia.tipo" required>
+        <option value="">---Selecciona un tipo---</option>
+        <option value="obligatoria">Obligatoria</option>
+        <option value="electiva">Electiva</option>
+      </select>
+      <p class="help-block" ng-show="form.tipo.$error.required && mm.submitted">
+        El tipo es requerido
+      </p>
+    </div>
+    <div class="form-group" ng-class="{ 'has-success': form.ciclo.$valid && mm.submitted,
+                                      'has-error': form.ciclo.$invalid && mm.submitted }">
+      <label>Se imparte en ciclo:</label>
+      <select class="form-control" name="ciclo" ng-model="mm.materia.imparteEnCiclo" required>
+        <option value="1">Ciclo I</option>
+        <option value="2">Ciclo II</option>
+        <option value="3">Ambos ciclos</option>
+      </select>
+      <p class="help-block" ng-show="form.ciclo.$error.required && mm.submitted">
+        Campo requerido
+      </p>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button ng-show="mm.modoEditar === false"class="btn btn-success" ng-click="mm.nuevaMateria(form)" type="button">
+    Agregar
+  </button>
+  <button ng-show="mm.modoEditar === true" class="btn btn-success" ng-click="mm.editarMateria(form)" type="button">
+    Editar
+  </button>
+  <button class="btn btn-warning" ng-click="mm.cancel()" type="button">
+    Cancelar</button>
+</div>

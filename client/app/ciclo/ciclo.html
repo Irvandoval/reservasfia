@@ -7,8 +7,8 @@
         <div class="col-md-10">
           <h4>Ciclos</h4>
         </div>
-        <div class="col-md-2" ng-if="esAdmin()">
-          <button class="btn btn-success  btn-sm" ng-click="nuevoCiclo()" type="button">
+        <div class="col-md-2" ng-if="cc.esAdmin()">
+          <button class="btn btn-success  btn-sm" ng-click="cc.nuevoCiclo()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nuevo Ciclo
           </button>
@@ -40,12 +40,12 @@
           <td class='text-center' data-title="'Fin de subida de horario'">
             {{ciclo.finSubidaHorario| date:'d/MM/yy'}}
           </td>
-          <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning btn-sm" ng-click="editarCiclo(ciclo)" type="button">
+          <td class="text-center" data-title="'Acciones'" ng-if="cc.esAdmin()">
+            <button class="btn btn-warning btn-sm" ng-click="cc.editarCiclo(ciclo)" type="button">
               <span aria-hidden="true" class="fa fa-pencil "></span>
               Editar
             </button>
-            <button class="btn btn-danger btn-sm" type="button" ng-click="eliminarCiclo(ciclo._id)" confirm="¿Estas seguro de eliminar el ciclo {{ciclo.numero}} {{ciclo.anio}}?">
+            <button class="btn btn-danger btn-sm" type="button" ng-click="cc.eliminarCiclo(ciclo._id)" confirm="¿Estas seguro de eliminar el ciclo {{ciclo.numero}} {{ciclo.anio}}?">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -74,121 +74,6 @@
     </li>
   </ul>
 </script>
-
-<script id="nuevo-ciclo.html" type="text/ng-template">
-  <div class="modal-header">
-    <h3 class="modal-title">Nuevo Ciclo</h3>
-  </div>
-
-  <div class="container-fluid">
-   <form class="form" name="form" novalidate>
-    <div class="form-group" ng-class="{ 'has-success': form.ciclo.$valid && submitted,
-                                        'has-error': form.ciclo.$invalid && submitted }">
-      <label>Ciclo</label>
-      <select name="ciclo" class="form-control" ng-model="ciclo.numero" required>
-        <option value="1">I</option>
-        <option value="2">II</option>
-      </select>
-      <p class="help-block" ng-show="form.ciclo.$error.required && submitted">
-      el ciclo es requerido
-        </p>
-        <p class="help-block" ng-show="form.ciclo.$error.mongoose">
-          {{ errors.codigo }}
-        </p>
-    </div>
-    <div class="form-group" ng-class="{ 'has-success': form.anio.$valid && submitted,
-                                        'has-error': form.anio.$invalid && submitted }">
-      <label>Año</label>
-      <input class="form-control" name="anio" ng-model="ciclo.anio" type="number" required>
-       <p class="help-block" ng-show="form.anio.$error.required && submitted">
-          El anio es requerido
-        </p>
-    </div>
-
-    <div class="form-group" ng-class="{ 'has-success': form.inicioCiclo.$valid && submitted,
-                                        'has-error': form.inicioCiclo.$invalid && submitted }">
-      <label>Inicio de Ciclo</label>
-      <input class="form-control" name="inicioCiclo" ng-model="ciclo.inicioCiclo" type="date" required>
-         <p class="help-block" ng-show="form.inicioCiclo.$error.required && submitted">
-          Campo requerido, favor introducir el inicio del ciclo
-        </p>
-        <p class="help-block" ng-show="form.inicioCiclo.$error.mongoose">
-          {{ errors.inicioCiclo}}
-        </p>
-
-    </div>
-
-    <div class="form-group" ng-class="{ 'has-success': form.finCiclo.$valid && submitted,
-                                        'has-error': form.finCiclo.$invalid && submitted }">
-      <label>Fin de Ciclo</label>
-      <input class="form-control" name="finCiclo" ng-model="ciclo.finCiclo" type="date" required>
-      <p class="help-block" ng-show="form.finCiclo.$error.required && submitted">
-          Campo requerido, por favor indicar fin de ciclo
-        </p>
-        <p class="help-block" ng-show="form.finCiclo.$error.mongoose">
-          {{ errors.finCiclo }}
-        </p>
-    </div>
-    <div class="form-group" class="{ 'has-success': form.inicioClases.valid && submitted,
-                                        'has-error': form.inicioClases.$invalid && submitted }">
-      <label>Inicio de Clases</label>
-      <input class="form-control" name="inicioClases" ng-model="ciclo.inicioClases" type="date" required>
-      <p class="help-block" ng-show="form.inicioClases.$error.required && submitted">
-          Campo requerido, el inicio es necesario
-        </p>
-        <p class="help-block" ng-show="form.inicioClases.$error.mongoose">
-          {{ errors.inicioClases}}
-        </p>
-
-    </div>
-    <div class="form-group" ng-class="{ 'has-success': form.finClases.$valid && submitted,
-                                        'has-error': form.finClases.$invalid && submitted }">
-      <label>Fin de Clases</label>
-      <input class="form-control" name="finClases" ng-model="ciclo.finClases" type="date" required>
-      <p class="help-block" ng-show="form.finClases.$error.required && submitted">
-          Campo requerido
-        </p>
-        <p class="help-block" ng-show="form.finClases.$error.mongoose">
-          {{ errors.finClases }}
-        </p>
-
-    </div>
-
-    <div class="form-group" ng-class="{ 'has-success': form.inicioSubidaHorario.$valid && submitted,
-                                        'has-error': form.inicioSubidaHorario.$invalid && submitted }">
-      <label>Inicio de subida de horarios</label>
-      <input class="form-control" name="inicioSubidaHorario" ng-model="ciclo.inicioSubidaHorario" type="date" required>
-      <p class="help-block" ng-show="form.inicioSubidaHorario.$error.required && submitted">
-          Campo requerido
-        </p>
-        <p class="help-block" ng-show="form.inicioSubidaHorario.$error.mongoose">
-        {{ errors.inicioSubidaHorario }}
-        </p>
-    </div>
-    <div class="form-group" ng-class="{ 'has-success': form.finSubidaHorario.$valid && submitted,
-                                        'has-error': form.finSubidaHorario.$invalid && submitted }">
-      <label>Fin de subida de horarios</label>
-      <label></label>
-      <input class="form-control" name="finSubidaHorario" ng-model="ciclo.finSubidaHorario" type="date" required>
-      <p class="help-block" ng-show="form.finSubidaHorario.$error.required && submitted">
-          Campo requerido
-        </p>
-        <p class="help-block" ng-show="form.finSubidaHorario.$error.mongoose">
-        {{ errors.finSubidaHorario }}
-        </p>
-      </div>
-    </form>
-  </div>
-
-  <div class="modal-footer">
-    <button class="btn btn-success" ng-click="enviar(form)" type="button">
-      Agregar
-    </button>
-    <button class="btn btn-warning" ng-click="cancel()" type="button">
-      Cancelar</button>
-  </div>
-</script>
-
 <script id="editar-ciclo.html" type="text/ng-template">
   <div class="modal-header">
     <h3 class="modal-title">Editar Ciclo</h3>

@@ -6,7 +6,7 @@ angular.module('reservasApp')
       .state('ciclo', {
         url: '/ciclo',
         templateUrl: 'app/ciclo/ciclo.html',
-        controller: 'CicloCtrl',
+        controller: 'CicloCtrl as cc',
         authenticate: true
       });
   });

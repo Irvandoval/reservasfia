@@ -6,7 +6,7 @@ angular.module('reservasApp')
       .state('materia', {
         url: '/materia',
         templateUrl: 'app/materia/materia.html',
-        controller: 'MateriaCtrl',
+        controller: 'MateriaCtrl as mc',
         authenticate: true
       });
   });

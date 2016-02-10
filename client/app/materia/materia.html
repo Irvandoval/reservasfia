@@ -7,8 +7,8 @@
         <div class="col-md-10">
           <h4>Materias</h4>
         </div>
-        <div class="col-md-2" ng-if="esAdmin()">
-          <button class="btn btn-success btn-sm" ng-click="nuevaMateria()" type="button">
+        <div class="col-md-2" ng-if="mc.esAdmin()">
+          <button class="btn btn-success btn-sm" ng-click="mc.nuevaMateria()" type="button">
             <span aria-hidden="true" class="fa fa-plus-circle"></span>
             Nueva Materia
           </button>
@@ -39,12 +39,12 @@
             </div>
           </td>
 
-          <td class="text-center" data-title="'Acciones'" ng-if="esAdmin()">
-            <button class="btn btn-warning btn-sm" ng-click="editarMateria(materia)" type="button">
+          <td class="text-center" data-title="'Acciones'" ng-if="mc.esAdmin()">
+            <button class="btn btn-warning btn-sm" ng-click="mc.editarMateria(materia)" type="button">
               <span aria-hidden="true" class="fa fa-pencil-square "></span>
               Editar
             </button>
-            <button class="btn btn-danger btn-sm" confirm="¿Estas seguro de eliminar la materia {{materia.nombre}}?" ng-click="eliminarMateria(materia._id)" type="button">
+            <button class="btn btn-danger btn-sm" confirm="¿Estas seguro de eliminar la materia {{materia.nombre}}?" ng-click="mc.eliminarMateria(materia._id)" type="button">
               <span aria-hidden="true" class="fa fa-minus-circle"></span>
               Eliminar
             </button>
@@ -54,7 +54,6 @@
     </div>
   </div>
 </div>
-
 <script id="custom/pager" type="text/ng-template">
   <ul class="ng-cloak pager">
     <li ng-class="{'disabled': !page.active}" ng-repeat="page in pages" ng-switch="page.type">
@@ -72,136 +71,4 @@
       <a href="" ng-click="params.page(page.number)" ng-switch-when="next">&raquo;</a>
     </li>
   </ul>
-</script>
-
-<script id="nueva-materia.html" type="text/ng-template">
-  <div class="modal-header">
-    <h3 class="modal-title">Nueva Materia</h3>
-  </div>
-  <div class="container-fluid">
-    <form class="form" name="form" novalidate>
-      <div class="form-group" ng-class="{ 'has-success': form.codigo.$valid && submitted,
-                                        'has-error': form.codigo.$invalid && submitted }">
-        <label>Codigo:</label>
-        <input class="form-control" mongoose-error name="codigo" ng-model="materia.codigo" required type="text"/>
-        <p class="help-block" ng-show="form.codigo.$error.required && submitted">
-          Campo requerido
-        </p>
-        <p class="help-block" ng-show="form.codigo.$error.mongoose">
-          {{ errors.codigo }}
-        </p>
-      </div>
-      <div class="form-group" ng-class="{ 'has-success': form.nombre.$valid && submitted,
-                                        'has-error': form.nombre.$invalid && submitted }">
-        <label>Nombre:</label>
-        <input class="form-control" name="nombre" ng-model="materia.nombre" required type="text">
-        <p class="help-block" ng-show="form.nombre.$error.required && submitted">
-          El nombre de la materia es requerido
-        </p>
-      </div>
-      <div class="form-group" ng-class="{ 'has-success': form.escuela.$valid && submitted,
-                                        'has-error': form.escuela.$invalid && submitted }">
-        <label>Escuela:</label>
-        <select class="form-control" name="escuela" ng-model="materia.escuela" required>
-          <option value="">---Selecciona Escuela---</option>
-          <option ng-repeat="escuela in escuelas" value="{{escuela._id}}">{{escuela.nombre}}</option>
-        </select>
-        <p class="help-block" ng-show="form.escuela.$error.required && submitted">
-          La escuela es requerida
-        </p>
-      </div>
-      <div class="form-group" ng-class="{ 'has-success': form.carreras.$valid && submitted,
-                                        'has-error': form.carreras.$invalid && submitted }">
-        <label>Carreras:</label>
-        <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" name="carreras" ng-model="materia.carreras" placeholder="Agrega una carrera" replace-spaces-with-dashes="false" required>
-          <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarCarreras($query)"></auto-complete>
-        </tags-input>
-        <p class="help-block" ng-show="form.carreras.$error.required && submitted">
-          Por lo menos una carrera es requerida
-        </p>
-      </div>
-      <div class="form-group" ng-class="{ 'has-success': form.tipo.$valid && submitted,
-                                        'has-error': form.tipo.$invalid && submitted }">
-        <label>Tipo:</label>
-        <select class="form-control" name="tipo" ng-model="materia.tipo" required>
-          <option value="">---Selecciona un tipo---</option>
-          <option value="obligatoria">Obligatoria</option>
-          <option value="electiva">Electiva</option>
-        </select>
-        <p class="help-block" ng-show="form.tipo.$error.required && submitted">
-          El tipo es requerido
-        </p>
-      </div>
-
-      <div class="form-group" ng-class="{ 'has-success': form.ciclo.$valid && submitted,
-                                        'has-error': form.ciclo.$invalid && submitted }">
-        <label>Se imparte en ciclo:</label>
-        <select class="form-control" name="ciclo" ng-model="materia.imparteEnCiclo" required>
-          <option value="1">Ciclo I</option>
-          <option value="2">Ciclo II</option>
-          <option value="3">Ambos ciclos</option>
-        </select>
-        <p class="help-block" ng-show="form.ciclo.$error.required && submitted">
-          Campo requerido
-        </p>
-      </div>
-    </form>
-  </div>
-
-  <div class="modal-footer">
-    <button class="btn btn-success" ng-click="nuevaMateria(form)" type="button">
-      Agregar
-    </button>
-    <button class="btn btn-warning" ng-click="cancel()" type="button">
-      Cancelar</button>
-  </div>
-
-</script>
-<script id="editar-materia.html" type="text/ng-template">
-  <div class="modal-header">
-    <h3 class="modal-title">Editar Materia</h3>
-  </div>
-  <div class="container-fluid">
-    <div class="form-group">
-      <label>Codigo:</label>
-      <input class="form-control" name="codigo" ng-model="materiaEdit.codigo" type="text">
-    </div>
-    <div class="form-group">
-      <label>Nombre:</label>
-      <input class="form-control" name="nombre" ng-model="materiaEdit.nombre" type="text">
-    </div>
-    <div class="form-group">
-      <label>Tipo:</label>
-      <select class="form-control" name="tipo" ng-model="materiaEdit.tipo">
-        <option value="obligatoria">Obligatoria</option>
-        <option value="electiva">Electiva</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Se imparte en ciclo:</label>
-      <select class="form-control" name="ciclo" ng-model="materiaEdit.imparteEnCiclo">
-        <option value="1">Ciclo I</option>
-        <option value="2">Ciclo II</option>
-        <option value="3">Ambos ciclos</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Carreras:</label>
-      <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="codigo" name="carreras" ng-model="materiaEdit.carreras" placeholder="Agrega una carrera" replace-spaces-with-dashes="false" required>
-        <auto-complete debounce-delay="0" max-results="10" min-length="0" source="cargarCarreras($query)"></auto-complete>
-      </tags-input>
-      <p class="help-block" ng-show="form.materias.$error.required && submitted">
-        Por lo menos una materia es requerida
-      </p>
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button class="btn btn-success" ng-click="editarMateria()" type="button">
-      Editar
-    </button>
-    <button class="btn btn-warning" ng-click="cancel()" type="button">
-      Cancelar</button>
-  </div>
-
 </script>

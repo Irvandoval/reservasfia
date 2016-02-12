@@ -36,7 +36,6 @@ exports.regexNombre = function(req, res) {
    console.log(req.query.escuela);
    query.escuela = req.query.escuela;
   }
-  console.log(query);
  Materia.find(query,function (err, materias) {
     if(err) { return handleError(res, err); }
     return res.json(200, materias);

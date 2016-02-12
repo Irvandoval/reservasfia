@@ -155,61 +155,77 @@ exports.indexEsperaEscuela = function(req, res) {
 //Envia los turnos por materias especificas
 exports.indexByMateria = function(req, res) {
   var turn = [];
-  if (!req.query._materias || !req.query.estado || req.query.inicio || req.query.fin)
-    return res.status(400).send('Invalid request');
-  Actividad.find({
-    estado: req.query.estado
-  }, function(err, actividades) {
-    if (err) return handleError(res, err);
-    if (actividades.length === 0) return res.status(404).send('no encontrado');
+  var actividadPopulationOptions = [
+    {
+      path: 'actividad.materia',
+      model: 'Materia',
+      select: 'nombre'
+    },
+    {
+      path: 'actividad.encargado',
+      model: 'Docente',
+      select: 'nombre'
+    }
+  ];
+  var turnoPopulationOptions = [
+    {
+      path: 'aulas',
+      select: 'nombre'
+    },
+    {
+      path: 'actividad',
+      match: {
+        $and: [{estado: req.query.estado}, {materia: {$in: req.query._materias}}]
+             }
+     }
+  ];
+  if (!req.query._materias || !req.query.estado || !req.query.inicio || !req.query.fin){
+    return res.status(400).send('Invalid Request');
+  }
+  Actividad.find({estado: req.query.estado}, function(err, actividades){
+    if(err) return handleError(res, err);
+    if(!actividades.length) return res.status(404).send('no encontrado');
+
     Turno.find({
-        $and: [{
-          inicio: {
-            $gte: new Date(req.query.inicio)
-          }
-        }, {
-          fin: {
-            $lte: new Date(req.query.fin)
-          }
-        }]
-      })
-      .populate({
-        path: 'actividad',
-        match: {
-          $and: [{
-            estado: req.query.estado
-          }, {
-            materia: {
-              $in: req.query._materias
-            }
-          }]
-        }
-      })
-      .exec(function(err, docs) {
-        var options = {
-          path: 'actividad.materia',
-          model: 'Materia'
-        }
-        if (err) {
-          console.log(err);
-          return handleError(res, err);
-        }
-        Turno.populate(docs, options, function(err, turnos) {
-          if (err) return handleError(res, err);
-          turn = turnos.filter(Turno.filtroValoresNull);
-          return res.status(200).json(turn);
+     $and: [{
+              inicio: {$gte: new Date(req.query.inicio)}
+            },
+            {
+              fin: {$lte: new Date(req.query.fin)}
+           }]
+    })
+        .populate(turnoPopulationOptions)
+        .exec(function(err, docs){
+           if(err) handleError(res, err);
+           if(!docs.length) return res.status(404).send('no encontrado');
+           Turno.populate(docs, actividadPopulationOptions, function(err, turnos){
+             if(err) handleError(res, err);
+             turn = turnos.filter(Turno.filtroValoresNull);
+             return res.status(200).json(turn);
+           })
         });
-      });
   });
 };
 //Envia los turnos por aulas especificas
 exports.indexByAula = function(req,res){
  var turn = [];
- var populateMateriaOptions = {
-   path: 'actividad.materia',
-   model: 'Materia'
- };
- if (!req.query._materias || !req.query.estado || req.query.inicio || req.query.fin)
+ var turnoPopulationOptions = [
+  {path: 'aulas', match: {nombre: {$in: req.query._aulas}}},
+  {path: 'actividad', match: {estado: req.query.estado}}
+ ]
+ var actividadPopulationOptions = [
+   {
+     path: 'actividad.materia',
+     model: 'Materia',
+     select: 'nombre'
+   },
+   {
+     path: 'actividad.encargado',
+     model: 'Docente',
+     select: 'nombre'
+   }
+ ];
+ if (!req.query._aulas || !req.query.estado || !req.query.inicio || !req.query.fin)
  return res.status(400).send('Invalid request');
  Actividad.find({estado: req.query.estado}, function(err, actividades){
    if(err) return handleError(res, err);
@@ -226,12 +242,11 @@ exports.indexByAula = function(req,res){
                          }
                       }]
                })
-  .populate({path: 'aulas', match: {nombre: {$in: req.query._aulas}}})
-  .populate({path: 'actividad', match: {estado: req.query.estado}})
+  .populate(turnoPopulationOptions)
   .exec(function(err, docs) {
      if(!docs) return res.status(404).send('no encontrado');
      if (err)  return handleError(res, err);
-    Turno.populate(docs, populateMateriaOptions, function(err, turnos){
+    Turno.populate(docs, actividadPopulationOptions, function(err, turnos){
        if(err) return handleError(res, err);
        turn = turnos.filter(Turno.filtroValoresNull);
        return res.status(200).json(turn);

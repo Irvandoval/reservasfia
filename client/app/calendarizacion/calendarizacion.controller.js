@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reservasApp')
-  .controller('CalendarizacionCtrl', function(Auth, $rootScope, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig) {
+  .controller('CalendarizacionCtrl', function(Auth, $rootScope, $scope, $resource, toaster, $compile, $modal, $log, uiCalendarConfig, Events) {
     var DIAS_HABILES = 3;
     var HORA_MINIMO = 6;
     var HORA_MAXIMO = 20;
@@ -50,7 +50,7 @@ angular.module('reservasApp')
     $scope.esRepresentante = Auth.isRepresentante;
     $scope.eventRender = eventRender;
     $scope.etiquetas = ['Edificio B', 'Edificio C', 'Edificio D']; // parametros de busqueda para reservas
-    $scope.eventSources = [$scope.aprobadosEvt, $scope.esperaEvt, $scope.esperaEscuelaEvt];
+    $scope.eventSources = Events.get();
     $scope.filtroPorAulas = filtroPorAulas;
     $scope.hstep = 1; // horas en el timepicker se desplaza 1 hora
     $scope.ismeridian = false; // no mostrara AM/PM

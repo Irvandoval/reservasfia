@@ -135,7 +135,17 @@ body{
 .navbar-default .navbar-link:hover {
   color: #ffffff;
 }
-
+.sample-show-hide {
+  padding:10px;
+  background:white;
+}
+.sample-show-hide {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+.sample-show-hide.ng-hide {
+  opacity:0;
+}
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
     color: #d7dddf;

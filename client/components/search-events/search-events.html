@@ -1,0 +1,36 @@
+<section>
+ <div class="form-container">
+  <input type="checkbox" id="radio01" name="radio" ng-model="se.radio1" ng-click="se.seleccionarTipoBusqueda(1)"/>
+ <label for="radio01"><span></span>Materias</label>
+   <div class="input-group sample-show-hide" ng-show="se.radio1">
+     <span class="input-group-btn">
+       <button class="btn btn-success" type="button" ng-click="se.busquedaPorMaterias()">
+        <i class="fa fa-search"></i>
+       </button>
+     </span>
+     <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="codigo"
+        name="materias" ng-model="se.materias" placeholder="Agrega materias"
+         replace-spaces-with-dashes="false" required>
+       <auto-complete debounce-delay="0" max-results="10" min-length="0" source="se.cargarMaterias($query)"></auto-complete>
+     </tags-input>
+   </div>
+ </div>
+</section>
+<section>
+ <div class="form-container">
+  <input type="checkbox" id="radio02" name="radio" ng-model="se.radio2" ng-click="se.seleccionarTipoBusqueda(2)"/>
+ <label for="radio02"><span></span>Aulas</label>
+  <div class="input-group sample-show-hide" ng-show="se.radio2 == true">
+    <span class="input-group-btn">
+      <button class="btn btn-success" type="button" ng-click="se.busquedaPorAulas()">
+       <i class="fa fa-search"></i>
+      </button>
+    </span>
+    <tags-input add-from-autocomplete-only="true" class="bootstrap" display-property="nombre"
+    ng-model="se.aulas" placeholder="Agrega aulas" replace-spaces-with-dashes="false">
+    <auto-complete debounce-delay="0" max-results="10" min-length="0" source="se.cargarAulas($query)"></auto-complete>
+    </tags-input>
+  </div>
+
+ </div>
+</section>

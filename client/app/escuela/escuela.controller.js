@@ -145,4 +145,4 @@
     .controller('NuevaEscuelaCtrl', NuevaEscuelaCtrl)
     .controller('EditarEscuelaCtrl', EditarEscuelaCtrl);
 
-})();
+}());

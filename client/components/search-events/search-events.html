@@ -1,5 +1,8 @@
 <section>
  <div class="form-container">
+  <alert ng-repeat="alert in se.alerts" type="{{alert.type}}" close="se.closeAlert($index)">
+   {{alert.msg}}
+  </alert>
   <input type="checkbox" id="radio01" name="radio" ng-model="se.radio1" ng-click="se.seleccionarTipoBusqueda(1)"/>
  <label for="radio01"><span></span>Materias</label>
    <div class="input-group sample-show-hide" ng-show="se.radio1">

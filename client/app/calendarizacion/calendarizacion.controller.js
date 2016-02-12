@@ -129,7 +129,7 @@ angular.module('reservasApp')
         },
         eventClick: $scope.alertOnEventClick,
         eventRender: $scope.eventRender,
-        defaultView: 'agendaDay',
+        defaultView: 'month',
         allDaySlot: false,
         firstDay: 1,
         lang: 'es',

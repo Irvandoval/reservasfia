@@ -5,11 +5,14 @@
    var self = this;
    var materiasEvt = [];
    var aulasEvt = [];
+   self.alerts = [{type:'info', msg: 'Selecciona un tipo de búsqueda,' +
+                                     'agrega elementos y haz clic en el botón para obtener resultados.'}];
    self.aulas = [];
    self.busquedaPorAulas = busquedaPorAulas;
    self.busquedaPorMaterias  = busquedaPorMaterias;
    self.cargarAulas = cargarAulas;
    self.cargarMaterias = cargarMaterias;
+   self.closeAlert = closeAlert;
    self.escuela = '';
    self.materias = [];
    self.seleccionarTipoBusqueda = seleccionarTipoBusqueda;
@@ -126,6 +129,10 @@
      return res.query().$promise;
    }
 
+   function closeAlert(index) {
+    self.alerts.splice(index, 1);
+   }
+
    function busquedaPorMaterias(){
      if(self.materias.length){
       Events.removeAll();
@@ -155,6 +162,8 @@
       self.radio1 = false;
      }
    }
+
+
  }
 
  angular.module('reservasApp')

@@ -6,7 +6,7 @@
    var materiasEvt = [];
    var aulasEvt = [];
    self.alerts = [{type:'info', msg: 'Selecciona un tipo de búsqueda,' +
-                                     'agrega elementos y haz clic en el botón para obtener resultados.'}];
+                                     ' agrega elementos y haz clic en el botón para obtener resultados.'}];
    self.aulas = [];
    self.busquedaPorAulas = busquedaPorAulas;
    self.busquedaPorMaterias  = busquedaPorMaterias;
@@ -168,4 +168,4 @@
 
  angular.module('reservasApp')
    .controller('SearchEventsCtrl', SearchEventsCtrl);
-}());
+})();
